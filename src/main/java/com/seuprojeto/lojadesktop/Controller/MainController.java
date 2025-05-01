@@ -1,4 +1,4 @@
-package com.seuprojeto.lojadesktop.view;
+package com.seuprojeto.lojadesktop.Controller;
 
 import com.seuprojeto.lojadesktop.service.ClienteService;
 import javafx.fxml.FXML;
