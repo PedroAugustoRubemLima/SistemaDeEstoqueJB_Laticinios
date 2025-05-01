@@ -1,7 +1,7 @@
 package com.seuprojeto.lojadesktop.Controller;
 
 import com.seuprojeto.lojadesktop.model.Produto;
-import com.seuprojeto.lojadesktop.repository.ProdutoRepository;
+import com.seuprojeto.lojadesktop.Repository.ProdutoRepository;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
