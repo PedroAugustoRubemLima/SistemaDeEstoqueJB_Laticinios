@@ -2,7 +2,7 @@ package com.seuprojeto.lojadesktop.service;
 
 import com.seuprojeto.lojadesktop.model.ComPro;
 import com.seuprojeto.lojadesktop.model.ComPro.ComProId;
-import com.seuprojeto.lojadesktop.repository.ComProRepository;
+import com.seuprojeto.lojadesktop.Repository.ComProRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

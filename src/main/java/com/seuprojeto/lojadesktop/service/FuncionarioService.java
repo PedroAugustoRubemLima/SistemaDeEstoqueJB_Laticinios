@@ -1,7 +1,7 @@
 package com.seuprojeto.lojadesktop.service;
 
 import com.seuprojeto.lojadesktop.model.Funcionario;
-import com.seuprojeto.lojadesktop.repository.FuncionarioRepository;
+import com.seuprojeto.lojadesktop.Repository.FuncionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
