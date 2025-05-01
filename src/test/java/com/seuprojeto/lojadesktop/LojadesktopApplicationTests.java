@@ -1,4 +1,13 @@
 package com.seuprojeto.lojadesktop;
 
-public class LojadesktopApplicationTests {
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class LojadesktopApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+
 }
