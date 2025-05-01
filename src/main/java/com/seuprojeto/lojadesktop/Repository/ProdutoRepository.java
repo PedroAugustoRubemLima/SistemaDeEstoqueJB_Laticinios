@@ -1,4 +1,4 @@
-package com.seuprojeto.lojadesktop.repository;
+package com.seuprojeto.lojadesktop.Repository;
 
 import com.seuprojeto.lojadesktop.model.Produto;
 import org.springframework.data.jpa.repository.JpaRepository;
