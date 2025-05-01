@@ -1,5 +1,6 @@
 package com.seuprojeto.lojadesktop.Controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -7,6 +8,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.Parent;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
 
@@ -23,20 +25,22 @@ public class LoginController {
     private Label lblMensagem;
 
     @FXML
-    public void logar() {
+    public void logar(ActionEvent event) {
         String usuario = txtUsuario.getText();
         String senha = txtSenha.getText();
 
         if ("admin".equals(usuario) && "123".equals(senha)) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/telas/ProdutoCadastro.fxml"));
-                Scene scene = new Scene(loader.load());
+                Parent root = loader.load();
 
                 Stage stage = (Stage) txtUsuario.getScene().getWindow();
-                stage.setScene(scene);
+                stage.setScene(new Scene(root));
                 stage.setTitle("Cadastro de Produto");
+                stage.show();
 
             } catch (IOException e) {
+                e.printStackTrace();
                 lblMensagem.setText("Erro ao abrir a próxima tela.");
             }
 
@@ -44,5 +48,4 @@ public class LoginController {
             lblMensagem.setText("Usuário ou senha inválidos");
         }
     }
-
 }
