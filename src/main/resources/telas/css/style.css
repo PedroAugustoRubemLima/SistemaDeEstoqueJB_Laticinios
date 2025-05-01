@@ -1,0 +1,132 @@
+/* Define uma aparência geral limpa */
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: #f4f4f4;
+}
+
+/* Labels */
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;
+}
+
+/* Campos de texto */
+.text-field {
+    -fx-pref-width: 150px;
+    -fx-padding: 6 10;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1;
+    -fx-background-color: #fff;
+}
+
+/* Botão */
+.button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+    -fx-padding: 8 14;
+}
+
+.button:hover {
+    -fx-background-color: #45a049;
+}
+
+/* Mensagem de status */
+#lblMensagem {
+    -fx-font-style: italic;
+    -fx-font-size: 13px;
+}
+
+/* Estilo da tela de login */
+.login-background {
+    -fx-background-color: #101a49; /* Fundo azul escuro */
+}
+
+.login-box {
+    -fx-background-color: #0051b3; /* Painel central azul */
+    -fx-padding: 30;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+}
+
+.login-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.login-label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+    -fx-alignment: center-left;
+}
+
+.login-field {
+    -fx-background-radius: 20;
+    -fx-padding: 6 10;
+    -fx-font-size: 13px;
+}
+
+.login-button {
+    -fx-background-color: white;
+    -fx-text-fill: #0051b3;
+    -fx-background-radius: 20;
+    -fx-padding: 6 20;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.login-button:hover {
+    -fx-background-color: #e6e6e6;
+}
+
+/* Tela de listagem de produtos */
+
+.list-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+}
+
+.search-bar {
+    -fx-font-size: 14px;
+    -fx-padding: 6 10;
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: transparent;
+}
+
+.add-button {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-background-color: #0056b3;
+    -fx-text-fill: white;
+    -fx-background-radius: 100;
+    -fx-padding: 5 12;
+}
+
+.product-card {
+    -fx-background-color: #0066cc;
+    -fx-background-radius: 8;
+    -fx-padding: 15;
+    -fx-spacing: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);
+}
+
+.product-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.product-info {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+}
