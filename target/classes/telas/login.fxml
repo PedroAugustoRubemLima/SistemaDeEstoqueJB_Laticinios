@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.seuprojeto.lojadesktop.view.LoginController"
+            prefWidth="600" prefHeight="400" style="-fx-background-color: #10194A;">
+    <children>
+        <VBox alignment="CENTER" spacing="15" layoutX="150" layoutY="100" prefWidth="300">
+            <Label text="JB LATICÍNIOS" style="-fx-font-size: 22px; -fx-text-fill: white; -fx-font-weight: bold;"/>
+
+            <Label text="USUÁRIO:" style="-fx-text-fill: white;"/>
+            <TextField fx:id="txtUsuario" prefWidth="200"/>
+
+            <Label text="SENHA:" style="-fx-text-fill: white;"/>
+            <PasswordField fx:id="txtSenha" prefWidth="200"/>
+
+            <Button text="LOGIN" onAction="#logar" style="-fx-background-color: #0A73D8; -fx-text-fill: white; -fx-font-weight: bold;"/>
+
+            <Label fx:id="lblMensagem" text="" style="-fx-text-fill: red;"/>
+        </VBox>
+    </children>
+</AnchorPane>
