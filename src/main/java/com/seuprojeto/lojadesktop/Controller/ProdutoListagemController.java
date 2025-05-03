@@ -29,8 +29,8 @@ public class ProdutoListagemController {
     public void initialize() {
         // Exemplo: Adiciona 3 produtos estáticos ao iniciar
         adicionarProduto("QUEIJO LANCHE", "1 CAIXAS (60KG)", "30KG", "1KG", "XXX", "XXX", "/imagens/queijo1.png");
-        adicionarProduto("QUEIJO CHEDDAR", "0,1 CAIXAS (3KG) ⚠", "30KG", "1KG", "XXX", "XXX", "/imagens/queijo2.png");
-        adicionarProduto("QUEIJO GORGONZOLA", "4 CAIXAS (120KG)", "30KG", "1KG", "XXX", "XXX", "/imagens/queijo3.png");
+        adicionarProduto("QUEIJO CHEDDAR", "0,1 CAIXAS (3KG) ⚠", "30KG", "1KG", "XXX", "XXX", "/imagens/queijo2.jpg");
+        adicionarProduto("QUEIJO GORGONZOLA", "4 CAIXAS (120KG)", "30KG", "1KG", "XXX", "XXX", "/imagens/queijo3.jpg");
     }
 
     private void adicionarProduto(String nome, String estoque, String pesoCaixa, String pesoUnidade,

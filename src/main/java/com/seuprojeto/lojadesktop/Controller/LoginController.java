@@ -31,17 +31,17 @@ public class LoginController {
 
         if ("admin".equals(usuario) && "123".equals(senha)) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/telas/ProdutoCadastro.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/telas/ProdutoListagem.fxml"));
                 Parent root = loader.load();
 
                 Stage stage = (Stage) txtUsuario.getScene().getWindow();
                 stage.setScene(new Scene(root));
-                stage.setTitle("Cadastro de Produto");
+                stage.setTitle("Listagem de Produtos");
                 stage.show();
 
             } catch (IOException e) {
                 e.printStackTrace();
-                lblMensagem.setText("Erro ao abrir a próxima tela.");
+                lblMensagem.setText("Erro ao abrir a tela de listagem.");
             }
 
         } else {
@@ -49,3 +49,4 @@ public class LoginController {
         }
     }
 }
+
