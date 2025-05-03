@@ -2,6 +2,8 @@ package com.seuprojeto.lojadesktop.Controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -12,6 +14,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -27,7 +30,6 @@ public class ProdutoListagemController {
 
     @FXML
     public void initialize() {
-        // Exemplo: Adiciona 3 produtos estáticos ao iniciar
         adicionarProduto("QUEIJO LANCHE", "1 CAIXAS (60KG)", "30KG", "1KG", "XXX", "XXX", "/imagens/queijo1.png");
         adicionarProduto("QUEIJO CHEDDAR", "0,1 CAIXAS (3KG) ⚠", "30KG", "1KG", "XXX", "XXX", "/imagens/queijo2.jpg");
         adicionarProduto("QUEIJO GORGONZOLA", "4 CAIXAS (120KG)", "30KG", "1KG", "XXX", "XXX", "/imagens/queijo3.jpg");
@@ -76,4 +78,16 @@ public class ProdutoListagemController {
             e.printStackTrace();
         }
     }
+    @FXML
+    public void voltarParaLogin() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/telas/Login.fxml"));
+            AnchorPane pane = loader.load();
+            txtPesquisar.getScene().setRoot(pane); // Altera a cena da pesquisa de produto para o login
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
+

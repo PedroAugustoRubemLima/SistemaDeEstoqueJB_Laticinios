@@ -19,6 +19,8 @@
         <!-- Título -->
         <Label text="JB LATICÍNIOS" styleClass="list-title" alignment="CENTER" maxWidth="Infinity"/>
 
+        <Button text="Voltar" onAction="#voltarParaLogin" styleClass="button"/>
+
         <!-- Barra de pesquisa -->
         <HBox spacing="10">
             <TextField fx:id="txtPesquisar" promptText="Pesquisar" styleClass="search-bar" HBox.hgrow="ALWAYS"/>

@@ -47,6 +47,9 @@ public class LoginController {
         } else {
             lblMensagem.setText("Usuário ou senha inválidos");
         }
+
     }
 }
+
+
 

@@ -67,6 +67,7 @@
                     <children>
                         <Button text="Salvar" fx:id="btnSalvar" styleClass="salvar-button"/>
                         <Label fx:id="lblMensagem" text="Mensagem de status aparecerá aqui"/>
+                        <Button text="Voltar" onAction="#voltarParaListagem" styleClass="button"/>
                     </children>
                 </HBox>
             </children>

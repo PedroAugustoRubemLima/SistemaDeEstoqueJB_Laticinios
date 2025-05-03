@@ -4,9 +4,13 @@ import com.seuprojeto.lojadesktop.model.Produto;
 import com.seuprojeto.lojadesktop.Repository.ProdutoRepository;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
 
 @Component
 public class ProdutoCadastroController {
@@ -23,7 +27,6 @@ public class ProdutoCadastroController {
     @FXML
     private TextField txtPreco;
 
-
     @FXML
     private Label lblMensagem;
 
@@ -39,7 +42,6 @@ public class ProdutoCadastroController {
 
             lblMensagem.setText("Produto salvo com sucesso!");
 
-            // Limpar os campos
             txtNome.clear();
             txtTipo.clear();
             txtPreco.clear();
@@ -47,6 +49,18 @@ public class ProdutoCadastroController {
             lblMensagem.setText("Erro ao salvar: " + e.getMessage());
         }
     }
+
+    @FXML
+    public void voltarParaListagem() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/telas/ProdutoListagem.fxml"));
+            AnchorPane pane = loader.load();
+            txtNome.getScene().setRoot(pane);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
+
 
 
