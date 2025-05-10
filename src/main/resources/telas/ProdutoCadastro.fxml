@@ -6,9 +6,9 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Pos?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane fx:controller="com.seuprojeto.lojadesktop.Controller.ProdutoCadastroController"
+            xmlns:fx="http://javafx.com/fxml/1"
             xmlns="http://javafx.com/javafx/21"
-            fx:controller="com.seuprojeto.lojadesktop.Controller.ProdutoCadastroController"
             prefWidth="800" prefHeight="500"
             stylesheets="@css/style.css"
             styleClass="produto-cadastro-background">
@@ -46,7 +46,7 @@
                         <TextField fx:id="txtPreco" styleClass="produto-textfield" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
                         <Label text="Categoria:" styleClass="produto-label" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                        <TextField fx:id="txtCategoria" styleClass="produto-textfield" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                        <TextField fx:id="txtTipo" styleClass="produto-textfield" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
                         <Label text="Descrição:" styleClass="produto-label" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
                         <TextArea fx:id="txtDescricao" styleClass="produto-textarea" prefRowCount="3" prefColumnCount="20"
@@ -65,7 +65,7 @@
                 <!-- Botão salvar e mensagem -->
                 <HBox spacing="20" alignment="CENTER_LEFT">
                     <children>
-                        <Button text="Salvar" fx:id="btnSalvar" styleClass="salvar-button"/>
+                        <Button text="SALVAR" onAction="#cadastrarProduto" styleClass="salvar-button" />
                         <Label fx:id="lblMensagem" text="Mensagem de status aparecerá aqui"/>
                         <Button text="Voltar" onAction="#voltarParaListagem" styleClass="button"/>
                     </children>

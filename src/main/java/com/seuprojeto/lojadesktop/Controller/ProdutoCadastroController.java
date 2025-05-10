@@ -2,6 +2,7 @@ package com.seuprojeto.lojadesktop.Controller;
 
 import com.seuprojeto.lojadesktop.model.Produto;
 import com.seuprojeto.lojadesktop.Repository.ProdutoRepository;
+import com.seuprojeto.lojadesktop.view.SpringContextHolder;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +11,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import org.springframework.stereotype.Component;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.net.URL;
 
 @Component
 public class ProdutoCadastroController {
@@ -32,6 +35,7 @@ public class ProdutoCadastroController {
 
     @FXML
     public void cadastrarProduto() {
+        System.out.println("Salvando produto...");
         try {
             String nome = txtNome.getText();
             String tipo = txtTipo.getText();
@@ -47,19 +51,30 @@ public class ProdutoCadastroController {
             txtPreco.clear();
         } catch (Exception e) {
             lblMensagem.setText("Erro ao salvar: " + e.getMessage());
+            e.printStackTrace(); // Adicione isto também!
         }
     }
+
 
     @FXML
     public void voltarParaListagem() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/telas/ProdutoListagem.fxml"));
+            URL fxmlLocation = getClass().getResource("/telas/ProdutoListagem.fxml");
+            System.out.println("Localização do FXML: " + fxmlLocation); // debug importante
+
+            FXMLLoader loader = new FXMLLoader(fxmlLocation);
+            loader.setControllerFactory(SpringContextHolder.getContext()::getBean);
             AnchorPane pane = loader.load();
+
             txtNome.getScene().setRoot(pane);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
+
+
+
 }
 
 

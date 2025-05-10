@@ -27,7 +27,7 @@
                     <PasswordField fx:id="txtSenha" styleClass="login-field" />
                 </VBox>
 
-                <Button text="LOGIN" styleClass="login-button" onAction="#logar" maxWidth="Infinity"/>
+                <Button fx:id="loginButton"  text="LOGIN" styleClass="login-button" onAction="#logar" maxWidth="Infinity"/>
                 <Label fx:id="lblMensagem" styleClass="login-message" />
             </children>
             <padding>
