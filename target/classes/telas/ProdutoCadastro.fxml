@@ -40,13 +40,13 @@
 
                     <children>
                         <Label text="Nome:" styleClass="produto-label" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                        <TextField fx:id="txtNome" styleClass="produto-textfield" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        <TextField fx:id="txtNome" styleClass="produto-textfield" GridPane.rowIndex="0" GridPane.columnIndex="1" promptText="Nome do Produto"/>
 
                         <Label text="Preço:" styleClass="produto-label" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                        <TextField fx:id="txtPreco" styleClass="produto-textfield" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                        <TextField fx:id="txtPreco" styleClass="produto-textfield" GridPane.rowIndex="1" GridPane.columnIndex="1" promptText="Tipo do Produto"/>
 
                         <Label text="Categoria:" styleClass="produto-label" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                        <TextField fx:id="txtTipo" styleClass="produto-textfield" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                        <TextField fx:id="txtTipo" styleClass="produto-textfield" GridPane.rowIndex="2" GridPane.columnIndex="1" promptText="Preço do Produto"/>
 
                         <Label text="Descrição:" styleClass="produto-label" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
                         <TextArea fx:id="txtDescricao" styleClass="produto-textarea" prefRowCount="3" prefColumnCount="20"

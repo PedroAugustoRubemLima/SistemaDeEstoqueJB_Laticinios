@@ -14,6 +14,7 @@ public class ProdutoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
+
     public List<Produto> findAll() {
         return produtoRepository.findAll();
     }
@@ -29,4 +30,10 @@ public class ProdutoService {
     public void deleteById(Integer id) {
         produtoRepository.deleteById(id);
     }
+
+    public List<Produto> buscarPorNome(String nome){
+        return produtoRepository.findByNomeContainingIgnoreCase(nome);
+    }
+
+
 }

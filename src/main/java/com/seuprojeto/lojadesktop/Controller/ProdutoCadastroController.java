@@ -33,6 +33,15 @@ public class ProdutoCadastroController {
     @FXML
     private Label lblMensagem;
 
+    public static Produto produtoEditado;
+
+    public void preencherCampos(Produto produto) {
+        this.produtoEditado = produto;
+        txtNome.setText(produto.getNome());
+        txtTipo.setText(produto.getTipo());
+        txtPreco.setText(String.valueOf(produto.getPreco()));
+    }
+
     @FXML
     public void cadastrarProduto() {
         System.out.println("Salvando produto...");
@@ -41,19 +50,40 @@ public class ProdutoCadastroController {
             String tipo = txtTipo.getText();
             double preco = Double.parseDouble(txtPreco.getText());
 
-            Produto produto = new Produto(nome, tipo, preco);
-            produtoRepository.save(produto);
+            // Verifica se estamos editando um produto
+            if (produtoEditado != null) {
+                // Atualiza o produto existente
+                produtoEditado.setNome(nome);
+                produtoEditado.setTipo(tipo);
+                produtoEditado.setPreco(preco);
 
-            lblMensagem.setText("Produto salvo com sucesso!");
+                // Atualiza no banco de dados
+                produtoRepository.save(produtoEditado);
 
+                lblMensagem.setText("Produto atualizado com sucesso!");
+            } else {
+                // Cria um novo produto
+                Produto produto = new Produto(nome, tipo, preco);
+
+                // Salva o novo produto no banco de dados
+                produtoRepository.save(produto);
+
+                lblMensagem.setText("Produto salvo com sucesso!");
+            }
+
+            // Limpa os campos de entrada
             txtNome.clear();
             txtTipo.clear();
             txtPreco.clear();
+
+            produtoEditado = null;
+
         } catch (Exception e) {
             lblMensagem.setText("Erro ao salvar: " + e.getMessage());
-            e.printStackTrace(); // Adicione isto também!
+            e.printStackTrace();
         }
     }
+
 
 
     @FXML

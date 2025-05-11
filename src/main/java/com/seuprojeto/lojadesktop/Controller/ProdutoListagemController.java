@@ -2,6 +2,7 @@ package com.seuprojeto.lojadesktop.Controller;
 
 import com.seuprojeto.lojadesktop.Repository.ProdutoRepository;
 import com.seuprojeto.lojadesktop.model.Produto;
+import com.seuprojeto.lojadesktop.service.ProdutoService;
 import com.seuprojeto.lojadesktop.view.SpringContextHolder;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
@@ -29,15 +30,18 @@ public class ProdutoListagemController {
     private VBox listaProdutos;
 
     @Resource
-    private ProdutoRepository produtoRepository;
+    private ProdutoService produtoService;
+
 
     @FXML
     public void initialize() {
-        carregarProdutos(); // organiza melhor o código
+        carregarProdutos();
+        txtPesquisar.setOnAction(e -> pesquisarProduto());
+// organiza melhor o código
     }
 
 
-    private void adicionarProduto(String nome, String tipo, Double preco, String imagemPath) {
+    private void adicionarProduto(String nome, String tipo, Double preco, String imagemPath, Integer id) {
         HBox card = new HBox(15);
         card.getStyleClass().add("product-card");
 
@@ -60,13 +64,26 @@ public class ProdutoListagemController {
         imagem.setFitHeight(60);
         imagem.setPreserveRatio(true);
 
-        card.getChildren().addAll(infos, espacador, imagem);
+        // Botões de Editar e Deletar
+        Button btnEditar = new Button("Editar");
+        btnEditar.setOnAction(e -> editarProduto(id));
+
+        Button btnDeletar = new Button("Deletar");
+        btnDeletar.setOnAction(e -> deletarProduto(id));
+
+        HBox botoes = new HBox(10, btnEditar, btnDeletar);
+        botoes.getStyleClass().add("product-buttons");
+
+        card.getChildren().addAll(infos, espacador, imagem, botoes);
         listaProdutos.getChildren().add(card);
     }
+
 
     @FXML
     public void abrirCadastro() {
         try {
+            ProdutoCadastroController.produtoEditado = null;
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/telas/ProdutoCadastro.fxml"));
             // Garantir que o Spring injete o controller
             loader.setControllerFactory(SpringContextHolder.getContext()::getBean);
@@ -91,11 +108,51 @@ public class ProdutoListagemController {
         }
     }
     public void carregarProdutos() {
-        listaProdutos.getChildren().clear(); // para não duplicar
-        List<Produto> produtos = produtoRepository.findAll();
+        listaProdutos.getChildren().clear();
+        List<Produto> produtos = produtoService.findAll();
         for (Produto produto : produtos) {
-            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/imagens/queijo1.png");
+            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/imagens/queijo1.png", produto.getIdPro());
         }
     }
+    @FXML
+    public void pesquisarProduto() {
+        String termo = txtPesquisar.getText();
+        List<Produto> produtos;
+
+        if (termo == null || termo.isBlank()) {
+            produtos = produtoService.findAll();
+        } else {
+            produtos = produtoService.buscarPorNome(termo);
+        }
+
+        listaProdutos.getChildren().clear();
+        for (Produto produto : produtos) {
+            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/imagens/queijo1.png", produto.getIdPro());
+        }
+    }
+    @FXML
+    public void deletarProduto(Integer id) {
+        produtoService.deleteById(id);
+        carregarProdutos(); // Recarrega a lista após a exclusão
+    }
+    @FXML
+    public void editarProduto(Integer id) {
+        try {
+            Produto produto = produtoService.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/telas/ProdutoCadastro.fxml"));
+            loader.setControllerFactory(SpringContextHolder.getContext()::getBean);
+            AnchorPane pane = loader.load();
+
+            ProdutoCadastroController cadastroController = loader.getController();
+            cadastroController.preencherCampos(produto); // Passa o produto para o controller de cadastro
+
+            // Troca a cena para o cadastro de produto
+            listaProdutos.getScene().setRoot(pane);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
