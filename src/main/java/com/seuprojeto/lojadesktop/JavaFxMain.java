@@ -1,11 +1,9 @@
-package com.seuprojeto.lojadesktop.view;
+package com.seuprojeto.lojadesktop;
 
-import com.seuprojeto.lojadesktop.Controller.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -25,7 +23,7 @@ public class JavaFxMain extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // Carrega o FXML e injeta os beans do Spring nos controllers
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/telas/login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/telas/login.fxml"));
         loader.setControllerFactory(springContext::getBean); // Aqui ocorre a injeção dos controllers
 
         // Carrega a interface

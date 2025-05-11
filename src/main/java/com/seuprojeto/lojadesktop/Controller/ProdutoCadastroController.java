@@ -2,7 +2,7 @@ package com.seuprojeto.lojadesktop.Controller;
 
 import com.seuprojeto.lojadesktop.model.Produto;
 import com.seuprojeto.lojadesktop.Repository.ProdutoRepository;
-import com.seuprojeto.lojadesktop.view.SpringContextHolder;
+import com.seuprojeto.lojadesktop.SpringContextHolder;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import org.springframework.stereotype.Component;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 
@@ -89,7 +88,7 @@ public class ProdutoCadastroController {
     @FXML
     public void voltarParaListagem() {
         try {
-            URL fxmlLocation = getClass().getResource("/telas/ProdutoListagem.fxml");
+            URL fxmlLocation = getClass().getResource("/view/telas/ProdutoListagem.fxml");
             System.out.println("Localização do FXML: " + fxmlLocation); // debug importante
 
             FXMLLoader loader = new FXMLLoader(fxmlLocation);

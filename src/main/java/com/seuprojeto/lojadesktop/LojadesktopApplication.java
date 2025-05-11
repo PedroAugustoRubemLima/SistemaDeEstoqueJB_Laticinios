@@ -1,4 +1,4 @@
-package com.seuprojeto.lojadesktop.view;
+package com.seuprojeto.lojadesktop;
 import javafx.application.Application;
 
 public class LojadesktopApplication {

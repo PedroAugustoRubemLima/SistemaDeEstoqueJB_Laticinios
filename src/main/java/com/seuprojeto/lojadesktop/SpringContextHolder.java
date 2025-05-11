@@ -1,4 +1,4 @@
-package com.seuprojeto.lojadesktop.view;
+package com.seuprojeto.lojadesktop;
 
 import org.springframework.context.ConfigurableApplicationContext;
 

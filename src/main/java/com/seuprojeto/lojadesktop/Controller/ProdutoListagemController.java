@@ -1,9 +1,8 @@
 package com.seuprojeto.lojadesktop.Controller;
 
-import com.seuprojeto.lojadesktop.Repository.ProdutoRepository;
 import com.seuprojeto.lojadesktop.model.Produto;
 import com.seuprojeto.lojadesktop.service.ProdutoService;
-import com.seuprojeto.lojadesktop.view.SpringContextHolder;
+import com.seuprojeto.lojadesktop.SpringContextHolder;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,8 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.control.Button;
-import javafx.scene.Parent;
-import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -84,7 +81,7 @@ public class ProdutoListagemController {
         try {
             ProdutoCadastroController.produtoEditado = null;
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/telas/ProdutoCadastro.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/telas/ProdutoCadastro.fxml"));
             // Garantir que o Spring injete o controller
             loader.setControllerFactory(SpringContextHolder.getContext()::getBean);
             // Carrega a tela
@@ -100,7 +97,7 @@ public class ProdutoListagemController {
     @FXML
     public void voltarParaLogin() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/telas/Login.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/telas/Login.fxml"));
             AnchorPane pane = loader.load();
             txtPesquisar.getScene().setRoot(pane);
         } catch (IOException e) {
@@ -111,7 +108,7 @@ public class ProdutoListagemController {
         listaProdutos.getChildren().clear();
         List<Produto> produtos = produtoService.findAll();
         for (Produto produto : produtos) {
-            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/imagens/queijo1.png", produto.getIdPro());
+            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/view/imagens/queijo1.png", produto.getIdPro());
         }
     }
     @FXML
@@ -127,7 +124,7 @@ public class ProdutoListagemController {
 
         listaProdutos.getChildren().clear();
         for (Produto produto : produtos) {
-            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/imagens/queijo1.png", produto.getIdPro());
+            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/view/imagens/queijo1.png", produto.getIdPro());
         }
     }
     @FXML
@@ -140,7 +137,7 @@ public class ProdutoListagemController {
         try {
             Produto produto = produtoService.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/telas/ProdutoCadastro.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/telas/ProdutoCadastro.fxml"));
             loader.setControllerFactory(SpringContextHolder.getContext()::getBean);
             AnchorPane pane = loader.load();
 
