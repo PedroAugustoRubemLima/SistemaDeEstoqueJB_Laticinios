@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:controller="com.seuprojeto.lojadesktop.Controller.LoginController"
+            xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/21"
+            prefWidth="800" prefHeight="500"
+            stylesheets="@../css/style.css"
+            styleClass="login-background">
+
+    <children>
+        <VBox layoutX="250" layoutY="120" spacing="15" styleClass="login-box">
+            <children>
+                <Label text="JB LATICÍNIOS" styleClass="login-title" alignment="CENTER" maxWidth="Infinity" />
+
+                <VBox spacing="5">
+                    <Label text="USUÁRIO:" styleClass="login-label" />
+                    <TextField fx:id="txtUsuario" styleClass="login-field" />
+                </VBox>
+
+                <VBox spacing="5">
+                    <Label text="SENHA:" styleClass="login-label" />
+                    <PasswordField fx:id="txtSenha" styleClass="login-field" />
+                </VBox>
+
+                <Button fx:id="loginButton"  text="LOGIN" styleClass="login-button" onAction="#logar" maxWidth="Infinity"/>
+                <Label fx:id="lblMensagem" styleClass="login-message" />
+
+                <!-- NOVO BOTÃO PARA ABRIR CADASTRO -->
+                <Button text="Ir para Cadastro de Compra" styleClass="login-button" onAction="#onIrParaCadastro" maxWidth="Infinity"/>
+
+            </children>
+            <padding>
+                <Insets top="20" right="30" bottom="20" left="30"/>
+            </padding>
+        </VBox>
+    </children>
+</AnchorPane>
