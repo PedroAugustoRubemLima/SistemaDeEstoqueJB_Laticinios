@@ -43,17 +43,28 @@
                         <TextField fx:id="txtNome" styleClass="produto-textfield" GridPane.rowIndex="0" GridPane.columnIndex="1" promptText="Nome do Produto"/>
 
                         <Label text="Preço:" styleClass="produto-label" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                        <TextField fx:id="txtPreco" styleClass="produto-textfield" GridPane.rowIndex="1" GridPane.columnIndex="1" promptText="Tipo do Produto"/>
+                        <TextField fx:id="txtPreco" styleClass="produto-textfield" GridPane.rowIndex="1" GridPane.columnIndex="1" promptText="Preço do Produto"/>
 
                         <Label text="Categoria:" styleClass="produto-label" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                        <TextField fx:id="txtTipo" styleClass="produto-textfield" GridPane.rowIndex="2" GridPane.columnIndex="1" promptText="Preço do Produto"/>
+                        <TextField fx:id="txtTipo" styleClass="produto-textfield" GridPane.rowIndex="2" GridPane.columnIndex="1" promptText="Tipo do Produto"/>
 
                         <Label text="Descrição:" styleClass="produto-label" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
                         <TextArea fx:id="txtDescricao" styleClass="produto-textarea" prefRowCount="3" prefColumnCount="20"
                                   GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
-                        <Label text="Imagem:" styleClass="produto-label" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-                        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="4" GridPane.columnIndex="1">
+                        <!-- Campo de Quantidade -->
+                        <Label text="Quantidade:" styleClass="produto-label" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                        <TextField fx:id="txtQuantidade" styleClass="produto-textfield" GridPane.rowIndex="4" GridPane.columnIndex="1" promptText="Quantidade em estoque"/>
+
+                        <!-- Campo de Imagem (ajustado para a linha 5) -->
+                        <Label text="Imagem:" styleClass="produto-label" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="5" GridPane.columnIndex="1">
+
+                            <HBox spacing="10">
+                                <Label text="Código de Barras:"/>
+                                <TextField fx:id="codigoBarrasField" prefWidth="300"/>
+                            </HBox>
+
                             <children>
                                 <Button text="Anexar Imagem" styleClass="anexar-button" fx:id="btnAnexarImagem" />
                                 <ImageView fx:id="imageViewProduto" fitHeight="50" fitWidth="50"/>

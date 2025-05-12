@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.image.ImageView?>
+
 <AnchorPane fx:controller="com.seuprojeto.lojadesktop.Controller.ProdutoListagemController"
             xmlns:fx="http://javafx.com/fxml/1"
             xmlns="http://javafx.com/javafx/21"
@@ -27,9 +28,10 @@
             <Button text="+" onAction="#abrirCadastro" styleClass="add-button"/>
         </HBox>
 
+        <!-- NOVO BOTÃO -->
+        <Button text="Vender produto" onAction="#abrirVenda" styleClass="button" maxWidth="200"/>
+
         <!-- Lista de produtos -->
         <VBox fx:id="listaProdutos" spacing="15"/>
     </VBox>
 </AnchorPane>
-
-

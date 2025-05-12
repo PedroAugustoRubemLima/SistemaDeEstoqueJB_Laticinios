@@ -22,29 +22,83 @@ public class Compra {
     private LocalDate data;
 
     @ManyToOne
-    @JoinColumn(name = "ID_Cli", nullable = false)
+    @JoinColumn(name = "id_Cliente", nullable = false)
     private Cliente cliente;
 
     @ManyToOne
-    @JoinColumn(name = "ID_Fun", nullable = false)
+    @JoinColumn(name = "id_Funcionario", nullable = false)
     private Funcionario funcionario;
 
-    // Getters e setters
-    public Integer getIdCompra() { return idCompra; }
-    public void setIdCompra(Integer idCompra) { this.idCompra = idCompra; }
+    // Construtor padrão
+    public Compra() {}
 
-    public String getFormaPaga() { return formaPaga; }
-    public void setFormaPaga(String formaPaga) { this.formaPaga = formaPaga; }
+    // Construtor com todos os campos (exceto ID gerado)
+    public Compra(String formaPaga, Double valorTotal, LocalDate data, Cliente cliente, Funcionario funcionario) {
+        this.formaPaga = formaPaga;
+        this.valorTotal = valorTotal;
+        this.data = data;
+        this.cliente = cliente;
+        this.funcionario = funcionario;
+    }
 
-    public Double getValorTotal() { return valorTotal; }
-    public void setValorTotal(Double valorTotal) { this.valorTotal = valorTotal; }
+    // Getters e Setters
+    public Integer getIdCompra() {
+        return idCompra;
+    }
 
-    public LocalDate getData() { return data; }
-    public void setData(LocalDate data) { this.data = data; }
+    public void setIdCompra(Integer idCompra) {
+        this.idCompra = idCompra;
+    }
 
-    public Cliente getCliente() { return cliente; }
-    public void setCliente(Cliente cliente) { this.cliente = cliente; }
+    public String getFormaPaga() {
+        return formaPaga;
+    }
 
-    public Funcionario getFuncionario() { return funcionario; }
-    public void setFuncionario(Funcionario funcionario) { this.funcionario = funcionario; }
+    public void setFormaPaga(String formaPaga) {
+        this.formaPaga = formaPaga;
+    }
+
+    public Double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
+    public LocalDate getData() {
+        return data;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
+    }
+
+    @Override
+    public String toString() {
+        return "Compra{" +
+                "idCompra=" + idCompra +
+                ", formaPaga='" + formaPaga + '\'' +
+                ", valorTotal=" + valorTotal +
+                ", data=" + data +
+                ", cliente=" + (cliente != null ? cliente.getIdCliente() : "null") +
+                ", funcionario=" + (funcionario != null ? funcionario.getIdFuncionario() : "null") +
+                '}';
+    }
 }

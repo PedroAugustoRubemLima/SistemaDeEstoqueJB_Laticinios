@@ -108,7 +108,7 @@ public class ProdutoListagemController {
         listaProdutos.getChildren().clear();
         List<Produto> produtos = produtoService.findAll();
         for (Produto produto : produtos) {
-            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/view/imagens/queijo1.png", produto.getIdPro());
+            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/view/imagens/queijo1.png", produto.getIdProduto());
         }
     }
     @FXML
@@ -124,7 +124,7 @@ public class ProdutoListagemController {
 
         listaProdutos.getChildren().clear();
         for (Produto produto : produtos) {
-            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/view/imagens/queijo1.png", produto.getIdPro());
+            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/view/imagens/queijo1.png", produto.getIdProduto());
         }
     }
     @FXML
@@ -145,6 +145,18 @@ public class ProdutoListagemController {
             cadastroController.preencherCampos(produto); // Passa o produto para o controller de cadastro
 
             // Troca a cena para o cadastro de produto
+            listaProdutos.getScene().setRoot(pane);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    public void abrirVenda() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/telas/RetiraEstoque.fxml"));
+            loader.setControllerFactory(SpringContextHolder.getContext()::getBean);
+            AnchorPane pane = loader.load();
+
             listaProdutos.getScene().setRoot(pane);
         } catch (IOException e) {
             e.printStackTrace();

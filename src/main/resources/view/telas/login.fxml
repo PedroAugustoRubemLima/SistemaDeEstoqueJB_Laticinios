@@ -29,6 +29,7 @@
 
                 <Button fx:id="loginButton"  text="LOGIN" styleClass="login-button" onAction="#logar" maxWidth="Infinity"/>
                 <Label fx:id="lblMensagem" styleClass="login-message" />
+
             </children>
             <padding>
                 <Insets top="20" right="30" bottom="20" left="30"/>

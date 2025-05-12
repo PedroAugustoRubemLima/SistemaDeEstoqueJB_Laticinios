@@ -30,15 +30,23 @@ public class ProdutoCadastroController {
     private TextField txtPreco;
 
     @FXML
+    private TextField txtQuantidade;
+
+    @FXML
     private Label lblMensagem;
+
+    @FXML private TextField codigoBarrasField;
+
 
     public static Produto produtoEditado;
 
     public void preencherCampos(Produto produto) {
-        this.produtoEditado = produto;
+        produtoEditado = produto;
         txtNome.setText(produto.getNome());
         txtTipo.setText(produto.getTipo());
         txtPreco.setText(String.valueOf(produto.getPreco()));
+        txtQuantidade.setText(String.valueOf(produto.getQuantidade()));
+        codigoBarrasField.setText(produto.getCodigoBarras()); // <-- adicionar esta linha
     }
 
     @FXML
@@ -48,32 +56,38 @@ public class ProdutoCadastroController {
             String nome = txtNome.getText();
             String tipo = txtTipo.getText();
             double preco = Double.parseDouble(txtPreco.getText());
+            int quantidade = Integer.parseInt(txtQuantidade.getText());
+            String codigoBarras = codigoBarrasField.getText();
 
-            // Verifica se estamos editando um produto
             if (produtoEditado != null) {
                 // Atualiza o produto existente
                 produtoEditado.setNome(nome);
                 produtoEditado.setTipo(tipo);
                 produtoEditado.setPreco(preco);
+                produtoEditado.setQuantidade(quantidade);
+                produtoEditado.setCodigoBarras(codigoBarras);
 
-                // Atualiza no banco de dados
                 produtoRepository.save(produtoEditado);
-
                 lblMensagem.setText("Produto atualizado com sucesso!");
             } else {
-                // Cria um novo produto
-                Produto produto = new Produto(nome, tipo, preco);
+                // Cria um novo produto com os dados
+                Produto novoProduto = new Produto();
+                novoProduto.setNome(nome);
+                novoProduto.setTipo(tipo);
+                novoProduto.setPreco(preco);
+                novoProduto.setQuantidade(quantidade);
+                novoProduto.setCodigoBarras(codigoBarras);
 
-                // Salva o novo produto no banco de dados
-                produtoRepository.save(produto);
-
+                produtoRepository.save(novoProduto);
                 lblMensagem.setText("Produto salvo com sucesso!");
             }
 
-            // Limpa os campos de entrada
+            // Limpa os campos após salvar
             txtNome.clear();
             txtTipo.clear();
             txtPreco.clear();
+            txtQuantidade.clear();
+            codigoBarrasField.clear(); // <-- limpar também o campo novo
 
             produtoEditado = null;
 
@@ -84,12 +98,11 @@ public class ProdutoCadastroController {
     }
 
 
-
     @FXML
     public void voltarParaListagem() {
         try {
             URL fxmlLocation = getClass().getResource("/view/telas/ProdutoListagem.fxml");
-            System.out.println("Localização do FXML: " + fxmlLocation); // debug importante
+            System.out.println("Localização do FXML: " + fxmlLocation);
 
             FXMLLoader loader = new FXMLLoader(fxmlLocation);
             loader.setControllerFactory(SpringContextHolder.getContext()::getBean);
@@ -99,12 +112,5 @@ public class ProdutoCadastroController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-
-
-
 }
-
-
-
