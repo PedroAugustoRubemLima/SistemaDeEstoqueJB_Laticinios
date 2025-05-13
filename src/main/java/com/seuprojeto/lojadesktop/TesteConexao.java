@@ -36,14 +36,14 @@ public class TesteConexao implements CommandLineRunner {
         clienteService.save(cli);
         System.out.println("Cliente criado: " + cli);
 
-        Optional<Cliente> achadoCli = clienteService.findById(cli.getIdCli());
+        Optional<Cliente> achadoCli = clienteService.findById(cli.getIdCliente());
         achadoCli.ifPresent(value -> System.out.println("Cliente encontrado: " + value));
 
         cli.setNome("Fernando de Souza");
         clienteService.save(cli);
-        System.out.println("Cliente atualizado: " + clienteService.findById(cli.getIdCli()).get());
+        System.out.println("Cliente atualizado: " + clienteService.findById(cli.getIdCliente()).get());
 
-        clienteService.deleteById(cli.getIdCli());
+        clienteService.deleteById(cli.getIdCliente());
         System.out.println("Cliente deletado!");
 
         System.out.println("----- Clientes atualmente no banco: -----");
@@ -57,14 +57,14 @@ public class TesteConexao implements CommandLineRunner {
         funcionarioService.save(funcionario);
         System.out.println("Funcionário criado: " + funcionario);
 
-        Optional<Funcionario> achadoFunc = funcionarioService.findById(funcionario.getIdFun());
+        Optional<Funcionario> achadoFunc = funcionarioService.findById(funcionario.getIdFuncionario());
         achadoFunc.ifPresent(value -> System.out.println("Funcionário encontrado: " + value));
 
         funcionario.setNome("Paula da Costa");
         funcionarioService.save(funcionario);
-        System.out.println("Funcionário atualizado: " + funcionarioService.findById(funcionario.getIdFun()).get());
+        System.out.println("Funcionário atualizado: " + funcionarioService.findById(funcionario.getIdFuncionario()).get());
 
-        funcionarioService.deleteById(funcionario.getIdFun());
+        funcionarioService.deleteById(funcionario.getIdFuncionario());
         System.out.println("Funcionário deletado!");
 
         System.out.println("----- Funcionários atualmente no banco: -----");
@@ -77,17 +77,19 @@ public class TesteConexao implements CommandLineRunner {
         prod.setNome("Teclado Redragon");
         prod.setTipo("Periférico");
         prod.setPreco(119.90);
+        prod.setQuantidade(10);
         produtoService.save(prod);
         System.out.println("Produto criado: " + prod);
 
-        Optional<Produto> achadoProd = produtoService.findById(prod.getIdPro());
+        Optional<Produto> achadoProd = produtoService.findById(prod.getIdProduto());
         achadoProd.ifPresent(value -> System.out.println("Produto encontrado: " + value));
 
         prod.setPreco(99.90);
+        prod.setQuantidade(10);
         produtoService.save(prod);
-        System.out.println("Produto atualizado: " + produtoService.findById(prod.getIdPro()).get());
+        System.out.println("Produto atualizado: " + produtoService.findById(prod.getIdProduto()).get());
 
-        produtoService.deleteById(prod.getIdPro());
+        produtoService.deleteById(prod.getIdProduto());
         System.out.println("Produto deletado!");
 
         System.out.println("----- Produtos atualmente no banco: -----");

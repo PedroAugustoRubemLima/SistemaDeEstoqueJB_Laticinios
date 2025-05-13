@@ -29,7 +29,7 @@
         </HBox>
 
         <!-- NOVO BOTÃO -->
-        <Button text="Vender produto" onAction="#abrirVenda" styleClass="button" maxWidth="200"/>
+        <Button text="Ir para Cadastro de Compra" onAction="#abrirCadastroCompra" styleClass="button" maxWidth="200"/>
 
         <!-- Lista de produtos -->
         <VBox fx:id="listaProdutos" spacing="15"/>

@@ -2,17 +2,19 @@ package com.seuprojeto.lojadesktop.model;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import jakarta.persistence.Embeddable;
+import java.util.Objects;
 
 @Entity
-@Table(name = "Com_Pro")
+@Table(name = "Compra_Produto")
 public class ComPro {
 
     @Embeddable
     public static class ComProId implements Serializable {
-        @Column(name = "ID_Compra")
+        @Column(name = "id_Compra")
         private Integer idCompra;
 
-        @Column(name = "ID_Pro")
+        @Column(name = "id_Produto")
         private Integer idPro;
 
         // equals & hashCode obrigatórios para chave composta
@@ -30,11 +32,19 @@ public class ComPro {
         }
 
         // getters/setters
-        public Integer getIdCompra() { return idCompra; }
-        public void setIdCompra(Integer idCompra) { this.idCompra = idCompra; }
+        public Integer getIdCompra() {
+            return idCompra;
+        }
+        public void setIdCompra(Integer idCompra) {
+            this.idCompra = idCompra;
+        }
 
-        public Integer getIdPro() { return idPro; }
-        public void setIdPro(Integer idPro) { this.idPro = idPro; }
+        public Integer getIdPro() {
+            return idPro;
+        }
+        public void setIdPro(Integer idPro) {
+            this.idPro = idPro;
+        }
     }
 
     @EmbeddedId
@@ -42,13 +52,16 @@ public class ComPro {
 
     @ManyToOne
     @MapsId("idCompra")
-    @JoinColumn(name = "ID_Compra")
+    @JoinColumn(name = "id_Compra")
     private Compra compra;
 
     @ManyToOne
     @MapsId("idPro")
-    @JoinColumn(name = "ID_Pro")
+    @JoinColumn(name = "id_Produto")
     private Produto produto;
+
+    @Column(name = "quantidade", nullable = false)
+    private Integer quantidade = 1; // valor padrão
 
     // Getters e setters
     public ComProId getId() { return id; }
@@ -59,4 +72,22 @@ public class ComPro {
 
     public Produto getProduto() { return produto; }
     public void setProduto(Produto produto) { this.produto = produto; }
+
+    public Integer getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(Integer quantidade) {
+        if (quantidade == null || quantidade <= 0) {
+            throw new IllegalArgumentException("Quantidade deve ser maior que zero.");
+        }
+        this.quantidade = quantidade;
+
+    }
+
+    public void adicionarQuantidade(int qtd) {
+        this.quantidade += qtd;
+    }
+
+
 }

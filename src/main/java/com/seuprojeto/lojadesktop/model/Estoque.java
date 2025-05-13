@@ -1,36 +1,83 @@
 package com.seuprojeto.lojadesktop.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Estoque")
 public class Estoque {
 
     @Id
-    @Column(name = "ID_Pro")
-    private Integer idPro;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_Estoque")
+    private Integer idEstoque;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "ID_Pro")
+    @ManyToOne
+    @JoinColumn(name = "id_Produto", nullable = false)
     private Produto produto;
 
-    @Column(name = "Loc", length = 50, nullable = false)
-    private String loc;
+    @Column(name = "localizacao", length = 50, nullable = false)
+    private String localizacao;
 
-    @Column(name = "Qtde", nullable = false)
-    private Integer qtde;
+    @Column(name = "quantidade", nullable = false)
+    private Integer quantidade;
 
-    // Getters e setters
-    public Integer getIdPro() { return idPro; }
-    public void setIdPro(Integer idPro) { this.idPro = idPro; }
+    @Column(name = "data_criacao", updatable = false)
+    private LocalDateTime dataCriacao;
 
-    public Produto getProduto() { return produto; }
-    public void setProduto(Produto produto) { this.produto = produto; }
+    @Column(name = "data_atualizacao")
+    private LocalDateTime dataAtualizacao;
 
-    public String getLoc() { return loc; }
-    public void setLoc(String loc) { this.loc = loc; }
+    // Getters e Setters
 
-    public Integer getQtde() { return qtde; }
-    public void setQtde(Integer qtde) { this.qtde = qtde; }
+    public Integer getIdEstoque() {
+        return idEstoque;
+    }
+
+    public void setIdEstoque(Integer idEstoque) {
+        this.idEstoque = idEstoque;
+    }
+
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
+
+    public String getLocalizacao() {
+        return localizacao;
+    }
+
+    public void setLocalizacao(String localizacao) {
+        this.localizacao = localizacao;
+    }
+
+    public Integer getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public LocalDateTime getDataAtualizacao() {
+        return dataAtualizacao;
+    }
+
+    @PrePersist
+    public void onCreate() {
+        this.dataCriacao = LocalDateTime.now();
+        this.dataAtualizacao = this.dataCriacao;
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.dataAtualizacao = LocalDateTime.now();
+    }
 }
