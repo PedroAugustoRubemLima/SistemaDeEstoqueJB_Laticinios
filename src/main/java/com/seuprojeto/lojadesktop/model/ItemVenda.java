@@ -8,45 +8,30 @@ public class ItemVenda {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_item_venda")
+    private Integer idItemVenda;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "venda_id")
+    @ManyToOne
+    @JoinColumn(name = "id_venda", nullable = false)
     private Venda venda;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "produto_id")
+    @ManyToOne
+    @JoinColumn(name = "id_produto", nullable = false)
     private Produto produto;
 
     @Column(name = "quantidade", nullable = false)
-    private Integer quantidade; // em gramas
+    private Integer quantidade;
 
-    // Getters e Setters
-    public Long getId() {
-        return id;
-    }
+    // Getters e setters
+    public Integer getIdItemVenda() { return idItemVenda; }
+    public void setIdItemVenda(Integer idItemVenda) { this.idItemVenda = idItemVenda; }
 
-    public Venda getVenda() {
-        return venda;
-    }
+    public Venda getVenda() { return venda; }
+    public void setVenda(Venda venda) { this.venda = venda; }
 
-    public void setVenda(Venda venda) {
-        this.venda = venda;
-    }
+    public Produto getProduto() { return produto; }
+    public void setProduto(Produto produto) { this.produto = produto; }
 
-    public Produto getProduto() {
-        return produto;
-    }
-
-    public void setProduto(Produto produto) {
-        this.produto = produto;
-    }
-
-    public Integer getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(Integer quantidade) {
-        this.quantidade = quantidade;
-    }
+    public Integer getQuantidade() { return quantidade; }
+    public void setQuantidade(Integer quantidade) { this.quantidade = quantidade; }
 }

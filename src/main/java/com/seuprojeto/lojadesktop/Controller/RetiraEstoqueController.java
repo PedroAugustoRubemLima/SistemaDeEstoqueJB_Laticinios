@@ -1,8 +1,8 @@
 package com.seuprojeto.lojadesktop.Controller;
 
-import com.seuprojeto.lojadesktop.SpringContextHolder;
 import com.seuprojeto.lojadesktop.model.Produto;
 import com.seuprojeto.lojadesktop.service.ProdutoService;
+import com.seuprojeto.lojadesktop.service.VendaService;
 import jakarta.annotation.Resource;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,6 +11,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.Parent;
+import javafx.scene.Node;
+import javafx.event.ActionEvent;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -35,10 +40,10 @@ public class RetiraEstoqueController {
     @FXML private Label lblNomeProduto;
 
     @Resource private ProdutoService produtoService;
+    @Resource private VendaService vendaService;
 
     private final ObservableList<ItemVenda> itensVenda = FXCollections.observableArrayList();
-
-    private Produto produtoSelecionado; // Produto que veio da tela anterior (opcional)
+    private Produto produtoSelecionado;
 
     public void initialize() {
         produtoColumn.setCellValueFactory(new PropertyValueFactory<>("nomeProduto"));
@@ -59,7 +64,6 @@ public class RetiraEstoqueController {
     }
 
     private void carregarClientesEFucionarios() {
-        // Simulados. Substitua por dados reais se necessário.
         clienteComboBox.setItems(FXCollections.observableArrayList("João", "Maria", "Pedro"));
         funcionarioComboBox.setItems(FXCollections.observableArrayList("Atendente 1", "Atendente 2"));
     }
@@ -67,14 +71,14 @@ public class RetiraEstoqueController {
     public void setProdutoSelecionado(Produto produto) {
         this.produtoSelecionado = produto;
         lblNomeProduto.setText("Produto selecionado: " + produto.getNome());
-        produtoComboBox.setValue(produto); // Pré-seleciona
+        produtoComboBox.setValue(produto);
     }
 
     @FXML
     public void onAdicionarProduto() {
         Produto produto = produtoComboBox.getValue();
         if (produto == null) {
-            mostrarAlerta("Selecione um produto.");
+            mostrarAlerta(Alert.AlertType.WARNING, "Selecione um produto.");
             return;
         }
 
@@ -83,7 +87,12 @@ public class RetiraEstoqueController {
             quantidade = Integer.parseInt(quantidadeField.getText());
             if (quantidade <= 0) throw new NumberFormatException();
         } catch (NumberFormatException e) {
-            mostrarAlerta("Digite uma quantidade válida em gramas.");
+            mostrarAlerta(Alert.AlertType.WARNING, "Digite uma quantidade válida em gramas.");
+            return;
+        }
+
+        if (quantidade > produto.getQuantidade()) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Estoque insuficiente para o produto: " + produto.getNome());
             return;
         }
 
@@ -105,11 +114,7 @@ public class RetiraEstoqueController {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(btnRemover);
-                }
+                setGraphic(empty ? null : btnRemover);
             }
         });
     }
@@ -117,7 +122,7 @@ public class RetiraEstoqueController {
     @FXML
     public void onFinalizarCompra() {
         if (itensVenda.isEmpty()) {
-            mostrarAlerta("Nenhum produto adicionado.");
+            mostrarAlerta(Alert.AlertType.WARNING, "Nenhum produto adicionado.");
             return;
         }
 
@@ -127,14 +132,35 @@ public class RetiraEstoqueController {
         String formaPagamento = formaPagamentoField.getText();
 
         if (cliente == null || funcionario == null || formaPagamento.isBlank()) {
-            mostrarAlerta("Preencha todos os campos da venda.");
+            mostrarAlerta(Alert.AlertType.WARNING, "Preencha todos os campos da venda.");
             return;
         }
 
-        // Aqui você pode salvar no banco, gerar recibo, etc.
-        mostrarAlerta("Venda finalizada com sucesso!");
+        try {
+            for (ItemVenda item : itensVenda) {
+                Produto produto = item.getProduto();
+                int quantidadeVendida = item.getQuantidade();
 
-        // Limpar a tela
+                if (quantidadeVendida > produto.getQuantidade()) {
+                    mostrarAlerta(Alert.AlertType.ERROR, "Estoque insuficiente para: " + produto.getNome());
+                    return;
+                }
+
+                // Atualiza estoque
+                produto.setQuantidade(produto.getQuantidade() - quantidadeVendida);
+                produtoService.save(produto);
+            }
+
+            mostrarAlerta(Alert.AlertType.INFORMATION, "Venda finalizada com sucesso!");
+            limparTela();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta(Alert.AlertType.ERROR, "Erro ao finalizar a venda.");
+        }
+    }
+
+    private void limparTela() {
         clienteComboBox.setValue(null);
         funcionarioComboBox.setValue(null);
         formaPagamentoField.clear();
@@ -142,14 +168,13 @@ public class RetiraEstoqueController {
         lblNomeProduto.setText("Produto Selecionado aparecerá aqui");
     }
 
-    private void mostrarAlerta(String msg) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    private void mostrarAlerta(Alert.AlertType tipo, String msg) {
+        Alert alert = new Alert(tipo);
         alert.setTitle("Aviso");
         alert.setContentText(msg);
         alert.showAndWait();
     }
 
-    // Classe auxiliar para representar itens na tabela
     public static class ItemVenda {
         private final Produto produto;
         private final int quantidade;
@@ -169,6 +194,19 @@ public class RetiraEstoqueController {
 
         public Produto getProduto() {
             return produto;
+        }
+    }
+
+    @FXML
+    private void voltarParaListagem(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/seuprojeto/lojadesktop/view/ProdutoListagem.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

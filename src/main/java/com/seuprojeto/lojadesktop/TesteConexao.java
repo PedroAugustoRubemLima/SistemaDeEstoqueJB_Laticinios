@@ -36,14 +36,14 @@ public class TesteConexao implements CommandLineRunner {
         clienteService.save(cli);
         System.out.println("Cliente criado: " + cli);
 
-        Optional<Cliente> achadoCli = clienteService.findById(cli.getIdCliente());
+        Optional<Cliente> achadoCli = clienteService.findById(cli.getId());
         achadoCli.ifPresent(value -> System.out.println("Cliente encontrado: " + value));
 
         cli.setNome("Fernando de Souza");
         clienteService.save(cli);
-        System.out.println("Cliente atualizado: " + clienteService.findById(cli.getIdCliente()).get());
+        System.out.println("Cliente atualizado: " + clienteService.findById(cli.getId()).get());
 
-        clienteService.deleteById(cli.getIdCliente());
+        clienteService.deleteById(cli.getId());
         System.out.println("Cliente deletado!");
 
         System.out.println("----- Clientes atualmente no banco: -----");

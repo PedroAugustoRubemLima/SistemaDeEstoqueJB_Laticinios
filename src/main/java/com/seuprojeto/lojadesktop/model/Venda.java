@@ -1,8 +1,7 @@
 package com.seuprojeto.lojadesktop.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -11,68 +10,47 @@ public class Venda {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_venda")
+    private Integer idVenda;
 
     @ManyToOne
-    @JoinColumn(name = "cliente_id", nullable = false)
+    @JoinColumn(name = "id_cliente", nullable = false)
     private Cliente cliente;
 
     @ManyToOne
-    @JoinColumn(name = "funcionario_id", nullable = false)
+    @JoinColumn(name = "id_funcionario", nullable = false)
     private Funcionario funcionario;
 
-    @Column(name = "data", nullable = false)
-    private LocalDate data;
+    @Column(name = "data_venda", nullable = false)
+    private LocalDateTime dataVenda;
 
-    @Column(name = "forma_pagamento", nullable = false, length = 50)
+    @Column(name = "forma_pagamento", nullable = false)
     private String formaPagamento;
 
-    @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ItemVenda> itens = new ArrayList<>();
+    @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
+    private List<ItemVenda> itens;
 
-    // Getters e Setters
-    public Long getId() {
-        return id;
+    @PrePersist
+    public void onCreate() {
+        dataVenda = LocalDateTime.now();
     }
 
-    public Cliente getCliente() {
-        return cliente;
-    }
+    // Getters e setters
+    public Integer getIdVenda() { return idVenda; }
+    public void setIdVenda(Integer idVenda) { this.idVenda = idVenda; }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
+    public Cliente getCliente() { return cliente; }
+    public void setCliente(Cliente cliente) { this.cliente = cliente; }
 
-    public Funcionario getFuncionario() {
-        return funcionario;
-    }
+    public Funcionario getFuncionario() { return funcionario; }
+    public void setFuncionario(Funcionario funcionario) { this.funcionario = funcionario; }
 
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
-    }
+    public LocalDateTime getDataVenda() { return dataVenda; }
+    public void setDataVenda(LocalDateTime dataVenda) { this.dataVenda = dataVenda; }
 
-    public LocalDate getData() {
-        return data;
-    }
+    public String getFormaPagamento() { return formaPagamento; }
+    public void setFormaPagamento(String formaPagamento) { this.formaPagamento = formaPagamento; }
 
-    public void setData(LocalDate data) {
-        this.data = data;
-    }
-
-    public String getFormaPagamento() {
-        return formaPagamento;
-    }
-
-    public void setFormaPagamento(String formaPagamento) {
-        this.formaPagamento = formaPagamento;
-    }
-
-    public List<ItemVenda> getItens() {
-        return itens;
-    }
-
-    public void adicionarItem(ItemVenda item) {
-        itens.add(item);
-        item.setVenda(this);
-    }
+    public List<ItemVenda> getItens() { return itens; }
+    public void setItens(List<ItemVenda> itens) { this.itens = itens; }
 }

@@ -160,22 +160,29 @@ public class ProdutoListagemController {
     @FXML
     public void abrirVendaComProduto(Integer idProduto) {
         try {
+            System.out.println("Abrindo venda para produto ID: " + idProduto);
             Produto produto = produtoService.findById(idProduto)
                     .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+            System.out.println("Produto carregado: " + produto.getNome());
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/telas/RetiraEstoque.fxml"));
             loader.setControllerFactory(SpringContextHolder.getContext()::getBean);
             AnchorPane pane = loader.load();
 
-            // Passa o produto para a próxima tela
             RetiraEstoqueController controller = loader.getController();
             controller.setProdutoSelecionado(produto);
 
             listaProdutos.getScene().setRoot(pane);
         } catch (IOException e) {
             e.printStackTrace();
+            System.err.println("Erro ao carregar FXML: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Erro geral: " + e.getMessage());
         }
     }
+
 
 
 
