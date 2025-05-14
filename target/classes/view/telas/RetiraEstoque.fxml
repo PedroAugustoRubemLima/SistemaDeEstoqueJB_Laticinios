@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            xmlns="http://javafx.com/javafx"
+            fx:controller="com.seuprojeto.lojadesktop.Controller.RetiraEstoqueController"
+            prefWidth="800.0" prefHeight="500.0">
+
+    <VBox spacing="10.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0"
+          AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+        <padding>
+            <Insets top="15" right="15" bottom="15" left="15"/>
+        </padding>
+
+        <!-- Título -->
+        <Label text="Retirada de Estoque" styleClass="titulo"/>
+
+        <!-- Nome do produto selecionado -->
+        <Label fx:id="lblNomeProduto" text="Produto Selecionado aparecerá aqui" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+
+        <!-- Linha Cliente e Funcionário -->
+        <HBox spacing="10.0">
+            <Label text="Cliente:"/>
+            <ComboBox fx:id="clienteComboBox" prefWidth="200.0"/>
+            <Label text="Funcionário:"/>
+            <ComboBox fx:id="funcionarioComboBox" prefWidth="200.0"/>
+        </HBox>
+
+        <!-- Linha Data e Forma de Pagamento -->
+        <HBox spacing="10.0">
+            <Label text="Data:"/>
+            <DatePicker fx:id="dataPicker"/>
+            <Label text="Forma de Pagamento:"/>
+            <TextField fx:id="formaPagamentoField" promptText="Ex: Pix, Dinheiro..." prefWidth="200.0"/>
+        </HBox>
+
+        <!-- Linha Produto, Quantidade e Botão -->
+        <HBox spacing="10.0">
+            <Label text="Produto:"/>
+            <ComboBox fx:id="produtoComboBox" prefWidth="300.0"/>
+            <Label text="Quantidade (g):"/>
+            <TextField fx:id="quantidadeField" promptText="Ex: 250" prefWidth="100.0"/>
+            <Button text="Adicionar Produto" onAction="#onAdicionarProduto"/>
+        </HBox>
+
+        <!-- Tabela de Produtos -->
+        <TableView fx:id="produtosTable" prefHeight="200.0">
+            <columns>
+                <TableColumn fx:id="produtoColumn" text="Produto" prefWidth="250.0"/>
+                <TableColumn fx:id="quantidadeColumn" text="Quantidade (g)" prefWidth="150.0"/>
+                <TableColumn fx:id="acaoColumn" text="Ação" prefWidth="100.0"/>
+            </columns>
+        </TableView>
+
+        <!-- Botão Finalizar -->
+        <HBox alignment="CENTER_RIGHT">
+            <Button text="Finalizar Venda" onAction="#onFinalizarCompra" styleClass="botaoPrincipal"/>
+        </HBox>
+
+    </VBox>
+</AnchorPane>
