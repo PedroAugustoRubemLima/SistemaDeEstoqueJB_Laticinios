@@ -8,26 +8,21 @@ public class Funcionario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_Funcionario") // <- CORRETO AGORA
+    @Column(name = "id_funcionario")
     private Integer idFuncionario;
 
     @Column(name = "nome", length = 100, nullable = false)
     private String nome;
 
     // Getters e setters
-    public Integer getIdFuncionario() {
-        return idFuncionario;
-    }
+    public Integer getIdFuncionario() { return idFuncionario; }
+    public void setIdFuncionario(Integer idFuncionario) { this.idFuncionario = idFuncionario; }
 
-    public void setIdFuncionario(Integer idFuncionario) {
-        this.idFuncionario = idFuncionario;
-    }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public String getNome() {
+    @Override
+    public String toString() {
         return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 }

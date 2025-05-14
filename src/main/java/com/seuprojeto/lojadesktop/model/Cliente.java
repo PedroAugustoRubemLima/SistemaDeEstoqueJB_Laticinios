@@ -9,8 +9,8 @@ public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_Cliente")
-    private Integer idCliente;
+    @Column(name = "id_cliente")
+    private Integer id;
 
     @Column(name = "cpf", length = 11, nullable = false, unique = true)
     private String cpf;
@@ -28,9 +28,8 @@ public class Cliente {
     private LocalDateTime dataAtualizacao;
 
     // Getters e setters
-
-    public Integer getIdCliente() { return idCliente; }
-    public void setIdCliente(Integer idCliente) { this.idCliente = idCliente; }
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
 
     public String getCpf() { return cpf; }
     public void setCpf(String cpf) { this.cpf = cpf; }
@@ -44,8 +43,6 @@ public class Cliente {
     public LocalDateTime getDataCriacao() { return dataCriacao; }
     public LocalDateTime getDataAtualizacao() { return dataAtualizacao; }
 
-    // Auditoria automática
-
     @PrePersist
     public void onCreate() {
         dataCriacao = LocalDateTime.now();
@@ -55,5 +52,10 @@ public class Cliente {
     @PreUpdate
     public void onUpdate() {
         dataAtualizacao = LocalDateTime.now();
+    }
+
+    @Override
+    public String toString() {
+        return nome + " (" + cpf + ")";
     }
 }

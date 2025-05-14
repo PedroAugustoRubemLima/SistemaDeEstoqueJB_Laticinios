@@ -60,7 +60,12 @@
                         <Label text="Imagem:" styleClass="produto-label" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
                         <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="5" GridPane.columnIndex="1">
 
-                        <children>
+                            <HBox spacing="10">
+                                <Label text="Código de Barras:"/>
+                                <TextField fx:id="codigoBarrasField" prefWidth="300"/>
+                            </HBox>
+
+                            <children>
                                 <Button text="Anexar Imagem" styleClass="anexar-button" fx:id="btnAnexarImagem" />
                                 <ImageView fx:id="imageViewProduto" fitHeight="50" fitWidth="50"/>
                             </children>

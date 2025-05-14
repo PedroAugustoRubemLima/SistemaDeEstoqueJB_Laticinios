@@ -30,9 +30,6 @@
                 <Button fx:id="loginButton"  text="LOGIN" styleClass="login-button" onAction="#logar" maxWidth="Infinity"/>
                 <Label fx:id="lblMensagem" styleClass="login-message" />
 
-                <!-- NOVO BOTÃO PARA ABRIR CADASTRO -->
-                <Button text="Ir para Cadastro de Compra" styleClass="login-button" onAction="#onIrParaCadastro" maxWidth="Infinity"/>
-
             </children>
             <padding>
                 <Insets top="20" right="30" bottom="20" left="30"/>
