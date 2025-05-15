@@ -97,7 +97,7 @@ public class Compra {
                 ", formaPaga='" + formaPaga + '\'' +
                 ", valorTotal=" + valorTotal +
                 ", data=" + data +
-                ", cliente=" + (cliente != null ? cliente.getIdCliente() : "null") +
+                ", cliente=" + (cliente != null ? cliente.getId() : "null") +
                 ", funcionario=" + (funcionario != null ? funcionario.getIdFuncionario() : "null") +
                 '}';
     }

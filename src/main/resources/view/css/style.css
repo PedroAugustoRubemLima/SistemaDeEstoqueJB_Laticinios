@@ -216,3 +216,69 @@
     -fx-background-color: #096509;
 }
 
+/* ============================
+   Tela de Retirada de Estoque
+   ============================ */
+
+.retirada-background {
+    -fx-background-color: #101a49;
+    -fx-padding: 30;
+}
+
+.titulo {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+}
+
+.botaoPrincipal {
+    -fx-background-color: #0c7b0c;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 8 20;
+}
+
+.botaoPrincipal:hover {
+    -fx-background-color: #096509;
+}
+
+.label, .label-combo {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.combo-box, .text-field {
+    -fx-background-radius: 6;
+    -fx-padding: 6 10;
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+    -fx-font-size: 13px;
+}
+
+.table-view {
+    -fx-background-color: white;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+
+.table-column {
+    -fx-font-size: 13px;
+}
+
+/* Botão de adicionar produto */
+.adicionar-button {
+    -fx-background-color: #0056b3;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 6 16;
+}
+
+.adicionar-button:hover {
+    -fx-background-color: #004ba0;
+}

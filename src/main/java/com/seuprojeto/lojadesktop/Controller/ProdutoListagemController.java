@@ -29,6 +29,9 @@ public class ProdutoListagemController {
     @Resource
     private ProdutoService produtoService;
 
+    @FXML
+    private Label lblNomeProduto;
+
 
     @FXML
     public void initialize() {
@@ -61,19 +64,23 @@ public class ProdutoListagemController {
         imagem.setFitHeight(60);
         imagem.setPreserveRatio(true);
 
-        // Botões de Editar e Deletar
+        // Botões de ação
         Button btnEditar = new Button("Editar");
         btnEditar.setOnAction(e -> editarProduto(id));
 
         Button btnDeletar = new Button("Deletar");
         btnDeletar.setOnAction(e -> deletarProduto(id));
 
-        HBox botoes = new HBox(10, btnEditar, btnDeletar);
+        Button btnVender = new Button("Vender");
+        btnVender.setOnAction(e -> abrirVendaComProduto(id));
+
+        HBox botoes = new HBox(10, btnEditar, btnDeletar, btnVender);
         botoes.getStyleClass().add("product-buttons");
 
         card.getChildren().addAll(infos, espacador, imagem, botoes);
         listaProdutos.getChildren().add(card);
     }
+
 
 
     @FXML
@@ -151,17 +158,32 @@ public class ProdutoListagemController {
         }
     }
     @FXML
-    public void abrirVenda() {
+    public void abrirVendaComProduto(Integer idProduto) {
         try {
+            System.out.println("Abrindo venda para produto ID: " + idProduto);
+            Produto produto = produtoService.findById(idProduto)
+                    .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+            System.out.println("Produto carregado: " + produto.getNome());
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/telas/RetiraEstoque.fxml"));
             loader.setControllerFactory(SpringContextHolder.getContext()::getBean);
             AnchorPane pane = loader.load();
 
+            RetiraEstoqueController controller = loader.getController();
+            controller.setProdutoSelecionado(produto);
+
             listaProdutos.getScene().setRoot(pane);
         } catch (IOException e) {
             e.printStackTrace();
+            System.err.println("Erro ao carregar FXML: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Erro geral: " + e.getMessage());
         }
     }
+
+
 
 
 }

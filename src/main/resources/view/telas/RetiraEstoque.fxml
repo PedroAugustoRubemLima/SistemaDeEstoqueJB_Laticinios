@@ -1,49 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            xmlns="http://javafx.com/javafx"
             fx:controller="com.seuprojeto.lojadesktop.Controller.RetiraEstoqueController"
-            prefHeight="500.0" prefWidth="800.0">
+            prefWidth="800.0" prefHeight="550.0"
+            style="-fx-background-color: #0F1C4D;">
 
-    <VBox spacing="10" padding="15" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
-          AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+    <VBox spacing="15.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0"
+          AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
 
-        <Label text="Retirada de Estoque" styleClass="titulo"/>
+        <!-- Título -->
+        <Label text="RETIRADA DE ESTOQUE"
+               style="-fx-font-size: 22px; -fx-text-fill: white; -fx-font-weight: bold;"
+               alignment="CENTER"/>
 
-        <HBox spacing="10">
-            <Label text="Cliente:"/>
-            <ComboBox fx:id="clienteComboBox" prefWidth="200"/>
-            <Label text="Funcionário:"/>
-            <ComboBox fx:id="funcionarioComboBox" prefWidth="200"/>
+        <!-- Produto selecionado -->
+        <Label fx:id="lblNomeProduto"
+               text="Produto selecionado aparecerá aqui"
+               style="-fx-font-size: 16px; -fx-text-fill: white;"/>
+
+        <!-- Linha Cliente / Funcionário -->
+        <HBox spacing="10.0">
+            <Label text="Cliente:" style="-fx-text-fill: white;"/>
+            <ComboBox fx:id="clienteComboBox" prefWidth="200.0"
+                      style="-fx-background-radius: 10;"/>
+            <Label text="Funcionário:" style="-fx-text-fill: white;"/>
+            <ComboBox fx:id="funcionarioComboBox" prefWidth="200.0"
+                      style="-fx-background-radius: 10;"/>
         </HBox>
 
-        <HBox spacing="10">
-            <Label text="Data:"/>
+        <!-- Linha Data / Pagamento -->
+        <HBox spacing="10.0">
+            <Label text="Data:" style="-fx-text-fill: white;"/>
             <DatePicker fx:id="dataPicker"/>
-            <Label text="Forma de Pagamento:"/>
-            <TextField fx:id="formaPagamentoField" prefWidth="200"/>
+            <Label text="Forma de Pagamento:" style="-fx-text-fill: white;"/>
+            <TextField fx:id="formaPagamentoField" promptText="Ex: Pix, Dinheiro..."
+                       prefWidth="200.0" style="-fx-background-radius: 10;"/>
         </HBox>
 
-        <TableView fx:id="produtosTable" prefHeight="200">
+        <!-- Linha Produto / Quantidade / Botão -->
+        <HBox spacing="10.0">
+            <Label text="Produto:" style="-fx-text-fill: white;"/>
+            <ComboBox fx:id="produtoComboBox" prefWidth="300.0"
+                      style="-fx-background-radius: 10;"/>
+            <Label text="Quantidade (g):" style="-fx-text-fill: white;"/>
+            <TextField fx:id="quantidadeField" promptText="Ex: 250" prefWidth="100.0"
+                       style="-fx-background-radius: 10;"/>
+            <Button text="Adicionar Produto" onAction="#onAdicionarProduto"
+                    style="-fx-background-color: #00ADEF; -fx-text-fill: white; -fx-background-radius: 10;"/>
+        </HBox>
+
+        <!-- Tabela -->
+        <TableView fx:id="produtosTable" prefHeight="200.0">
             <columns>
-                <TableColumn fx:id="produtoColumn" text="Produto" prefWidth="200"/>
-                <TableColumn fx:id="quantidadeColumn" text="Quantidade" prefWidth="100"/>
-                <TableColumn fx:id="acaoColumn" text="Ação" prefWidth="100"/>
+                <TableColumn fx:id="produtoColumn" text="Produto" prefWidth="250.0"/>
+                <TableColumn fx:id="quantidadeColumn" text="Quantidade (g)" prefWidth="150.0"/>
+                <TableColumn fx:id="acaoColumn" text="Ação" prefWidth="100.0"/>
             </columns>
         </TableView>
 
-        <HBox spacing="10">
-            <ComboBox fx:id="produtoComboBox" promptText="Selecionar Produto" prefWidth="300"/>
-            <TextField fx:id="quantidadeField" promptText="Qtd" prefWidth="100"/>
-            <Button text="Adicionar Produto" onAction="#onAdicionarProduto"/>
+        <!-- Botões -->
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Button text="Voltar" onAction="#voltarParaListagem"
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 10;"/>
+            <Button text="Finalizar Venda" onAction="#onFinalizarCompra"
+                    style="-fx-background-color: #00ADEF; -fx-text-fill: white; -fx-background-radius: 10;"/>
         </HBox>
-
-        <Button text="Finalizar Compra" onAction="#onFinalizarCompra" maxWidth="200" styleClass="botaoPrincipal"/>
     </VBox>
 </AnchorPane>
