@@ -69,7 +69,7 @@
 
         <!-- Botões -->
         <HBox spacing="10" alignment="CENTER_RIGHT">
-            <Button text="Voltar" onAction="#voltarParaListagem"
+            <Button text="Voltar" onAction="#voltarParaListagemdoEstoqueVendas"
                     style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 10;"/>
             <Button text="Finalizar Venda" onAction="#onFinalizarCompra"
                     style="-fx-background-color: #00ADEF; -fx-text-fill: white; -fx-background-radius: 10;"/>

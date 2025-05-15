@@ -1,5 +1,6 @@
 package com.seuprojeto.lojadesktop.Controller;
 
+import com.seuprojeto.lojadesktop.SpringContextHolder;
 import com.seuprojeto.lojadesktop.model.Produto;
 import com.seuprojeto.lojadesktop.service.ProdutoService;
 import com.seuprojeto.lojadesktop.service.VendaService;
@@ -16,10 +17,13 @@ import javafx.scene.Scene;
 import javafx.scene.Parent;
 import javafx.scene.Node;
 import javafx.event.ActionEvent;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Component
 public class RetiraEstoqueController {
@@ -198,15 +202,19 @@ public class RetiraEstoqueController {
     }
 
     @FXML
-    private void voltarParaListagem(ActionEvent event) {
+    public void voltarParaListagemdoEstoqueVendas() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/seuprojeto/lojadesktop/view/ProdutoListagem.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+            URL fxmlLocation = this.getClass().getResource("/view/telas/ProdutoListagem.fxml");
+            System.out.println("Localização do FXML: " + String.valueOf(fxmlLocation));
+            FXMLLoader loader = new FXMLLoader(fxmlLocation);
+            ConfigurableApplicationContext var10001 = SpringContextHolder.getContext();
+            Objects.requireNonNull(var10001);
+            loader.setControllerFactory(var10001::getBean);
+            AnchorPane pane = (AnchorPane)loader.load();
+            clienteComboBox.getScene().setRoot(pane);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 }
