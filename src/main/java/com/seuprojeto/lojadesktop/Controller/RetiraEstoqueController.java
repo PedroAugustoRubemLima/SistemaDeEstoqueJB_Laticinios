@@ -46,21 +46,21 @@ public class RetiraEstoqueController {
     private Produto produtoSelecionado;
 
     public void initialize() {
-        produtoColumn.setCellValueFactory(new PropertyValueFactory<>("nomeProduto"));
-        quantidadeColumn.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
-
-        produtosTable.setItems(itensVenda);
-
+        configurarTabela();
         configurarBotaoRemover();
         carregarProdutos();
         carregarClientesEFucionarios();
-
         dataPicker.setValue(LocalDate.now());
     }
 
+    private void configurarTabela() {
+        produtoColumn.setCellValueFactory(new PropertyValueFactory<>("nomeProduto"));
+        quantidadeColumn.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
+        produtosTable.setItems(itensVenda);
+    }
+
     private void carregarProdutos() {
-        ObservableList<Produto> produtos = FXCollections.observableArrayList(produtoService.findAll());
-        produtoComboBox.setItems(produtos);
+        produtoComboBox.setItems(FXCollections.observableArrayList(produtoService.findAll()));
     }
 
     private void carregarClientesEFucionarios() {
@@ -146,7 +146,6 @@ public class RetiraEstoqueController {
                     return;
                 }
 
-                // Atualiza estoque
                 produto.setQuantidade(produto.getQuantidade() - quantidadeVendida);
                 produtoService.save(produto);
             }
