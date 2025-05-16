@@ -1,5 +1,6 @@
 package com.seuprojeto.lojadesktop.Controller;
 
+import com.seuprojeto.lojadesktop.SpringContextHolder;
 import com.seuprojeto.lojadesktop.model.Produto;
 import com.seuprojeto.lojadesktop.service.ProdutoService;
 import com.seuprojeto.lojadesktop.service.VendaService;
@@ -19,6 +20,7 @@ import javafx.event.ActionEvent;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 
 @Component
@@ -51,6 +53,16 @@ public class RetiraEstoqueController {
         carregarProdutos();
         carregarClientesEFucionarios();
         dataPicker.setValue(LocalDate.now());
+        produtoComboBox.setEditable(true);
+        produtoComboBox.getEditor().textProperty().addListener((obs, oldVal, newVal) -> {
+            for (Produto p : produtoComboBox.getItems()) {
+                if (p.getCodigoBarras().equalsIgnoreCase(newVal.trim())) {
+                    produtoComboBox.setValue(p);
+                    break;
+                }
+            }
+        });
+
     }
 
     private void configurarTabela() {
@@ -77,6 +89,7 @@ public class RetiraEstoqueController {
     @FXML
     public void onAdicionarProduto() {
         Produto produto = produtoComboBox.getValue();
+
         if (produto == null) {
             mostrarAlerta(Alert.AlertType.WARNING, "Selecione um produto.");
             return;
@@ -197,15 +210,20 @@ public class RetiraEstoqueController {
     }
 
     @FXML
-    private void voltarParaListagem(ActionEvent event) {
+    public void voltarParaListagem() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/seuprojeto/lojadesktop/view/ProdutoListagem.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+            URL fxmlLocation = getClass().getResource("/view/telas/ProdutoListagem.fxml");
+            System.out.println("Localização do FXML: " + fxmlLocation);
+
+            FXMLLoader loader = new FXMLLoader(fxmlLocation);
+            loader.setControllerFactory(SpringContextHolder.getContext()::getBean);
+            AnchorPane pane = loader.load();
+
+            lblNomeProduto.getScene().setRoot(pane);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
 }
