@@ -113,4 +113,9 @@ public class Produto {
     public void onUpdate() {
         this.dataAtualizacao = LocalDateTime.now();
     }
+    @Override
+    public String toString() {
+        return nome + " - " + codigoBarras;
+    }
+
 }
