@@ -14,6 +14,7 @@ import javafx.scene.layout.*;
 import javafx.scene.control.Button;
 import org.springframework.stereotype.Component;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class ProdutoListagemController {
     }
 
 
-    private void adicionarProduto(String nome, String tipo, Double preco, String imagemPath, Integer id) {
+    private void adicionarProduto(String nome, String tipo, Double preco, String imagemPath, Integer id, Integer quantidade) {
         HBox card = new HBox(15);
         card.getStyleClass().add("product-card");
 
@@ -51,11 +52,12 @@ public class ProdutoListagemController {
 
         Label lblTipo = new Label("Tipo: " + tipo);
         Label lblPreco = new Label("Preço: R$ " + preco);
+        Label lblQuantidade = new Label("Quantidade:"+ quantidade);
 
         lblTipo.getStyleClass().add("product-info");
         lblPreco.getStyleClass().add("product-info");
-
-        infos.getChildren().addAll(lblNome, lblTipo, lblPreco);
+        lblQuantidade.getStyleClass().add("product-info");
+        infos.getChildren().addAll(lblNome, lblTipo, lblPreco,lblQuantidade);
 
         Region espacador = new Region();
         HBox.setHgrow(espacador, Priority.ALWAYS);
@@ -115,7 +117,7 @@ public class ProdutoListagemController {
         listaProdutos.getChildren().clear();
         List<Produto> produtos = produtoService.findAll();
         for (Produto produto : produtos) {
-            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/view/imagens/queijo1.png", produto.getIdProduto());
+            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/view/imagens/queijo1.png", produto.getIdProduto(),produto.getQuantidade());
         }
     }
     @FXML
@@ -131,7 +133,7 @@ public class ProdutoListagemController {
 
         listaProdutos.getChildren().clear();
         for (Produto produto : produtos) {
-            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/view/imagens/queijo1.png", produto.getIdProduto());
+            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/view/imagens/queijo1.png", produto.getIdProduto(), produto.getQuantidade());
         }
     }
     @FXML
