@@ -121,17 +121,22 @@ public class ProdutoListagemController {
     public void carregarProdutos() {
         listaProdutos.getChildren().clear();
         List<Produto> produtos = produtoService.findAll();
-        double somaTotalvalor=0;
+
+        double somaTotalValor = 0.0;
         int somaQuantidade = 0;
+
         for (Produto produto : produtos) {
-            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/view/imagens/queijo1.png", produto.getIdProduto(), produto.getQuantidade());
+            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(),
+                    "/view/imagens/queijo1.png", produto.getIdProduto(), produto.getQuantidade());
+
             somaQuantidade += produto.getQuantidade();
-            somaTotalvalor+=produto.getPreco() * produto.getQuantidade();
+            somaTotalValor += produto.getPreco(); // Não multiplicando mais pela quantidade
         }
 
-        lblSomaQtdEstoque.setText(String.format("Quantidade total em estoque: %dg",somaQuantidade));
-        lblSomaValorEstoque.setText("   Valor total no estoque: R$" + somaTotalvalor );
+        lblSomaQtdEstoque.setText(String.format("Quantidade total em estoque: %dg", somaQuantidade));
+        lblSomaValorEstoque.setText(String.format("   Valor total no estoque: R$%.2f", somaTotalValor));
     }
+
 
     @FXML
     public void pesquisarProduto() {
@@ -149,14 +154,17 @@ public class ProdutoListagemController {
         double somaValorTotal = 0.0;
 
         for (Produto produto : produtos) {
-            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/view/imagens/queijo1.png", produto.getIdProduto(), produto.getQuantidade());
+            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(),
+                    "/view/imagens/queijo1.png", produto.getIdProduto(), produto.getQuantidade());
+
             somaQuantidade += produto.getQuantidade();
-            somaValorTotal += produto.getPreco() * produto.getQuantidade();
+            somaValorTotal += produto.getPreco();// Soma direta do preço
         }
 
-        lblSomaQtdEstoque.setText(String.format("Quantidade total: %dg",somaQuantidade));
-        lblSomaValorEstoque.setText(String.format("  Valor total: R$" + somaValorTotal));
+        lblSomaQtdEstoque.setText(String.format("Quantidade total: %dg", somaQuantidade));
+        lblSomaValorEstoque.setText(String.format("  Valor total: R$%.2f", somaValorTotal));
     }
+
 
 
     @FXML
