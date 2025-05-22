@@ -20,8 +20,13 @@
         <!-- Título -->
         <Label text="JB LATICÍNIOS" styleClass="list-title" alignment="CENTER" maxWidth="Infinity"/>
 
-        <Button text="Voltar" onAction="#voltarParaLogin" styleClass="button"/>
-
+        <!-- Lista de produtos -->
+        <VBox fx:id="listaProdutos" spacing="15"/>
+        <HBox>
+        <!-- Soma total do estoque -->
+        <Label fx:id="lblSomaQtdEstoque" text="Quantidade Total em estoque: 0g" styleClass="estoque-total-label"/>
+        <Label fx:id="lblSomaValorEstoque" text="   Valor Total em estoque: R$0" styleClass="estoque-total-label"/>
+        </HBox>
         <!-- Barra de pesquisa -->
         <HBox spacing="10">
             <TextField fx:id="txtPesquisar" promptText="Pesquisar" styleClass="search-bar" HBox.hgrow="ALWAYS"/>
@@ -30,5 +35,12 @@
 
         <!-- Lista de produtos -->
         <VBox fx:id="listaProdutos" spacing="15"/>
+
+        <HBox spacing="10">
+            <Button text="Voltar" onAction="#voltarParaLogin" styleClass="button"/>
+            <Button text="Produtos Vendidos" onAction="#abrirProdutosVendidos" styleClass="button"/>
+        </HBox>
+
     </VBox>
 </AnchorPane>
+

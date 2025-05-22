@@ -33,6 +33,11 @@ public class ProdutoListagemController {
     @FXML
     private Label lblNomeProduto;
 
+    @FXML
+    private Label lblSomaQtdEstoque;
+
+    @FXML
+    private Label lblSomaValorEstoque;
 
     @FXML
     public void initialize() {
@@ -116,10 +121,18 @@ public class ProdutoListagemController {
     public void carregarProdutos() {
         listaProdutos.getChildren().clear();
         List<Produto> produtos = produtoService.findAll();
+        double somaTotalvalor=0;
+        int somaQuantidade = 0;
         for (Produto produto : produtos) {
-            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/view/imagens/queijo1.png", produto.getIdProduto(),produto.getQuantidade());
+            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/view/imagens/queijo1.png", produto.getIdProduto(), produto.getQuantidade());
+            somaQuantidade += produto.getQuantidade();
+            somaTotalvalor+=produto.getPreco() * produto.getQuantidade();
         }
+
+        lblSomaQtdEstoque.setText(String.format("Quantidade total em estoque: %dg",somaQuantidade));
+        lblSomaValorEstoque.setText("   Valor total no estoque: R$" + somaTotalvalor );
     }
+
     @FXML
     public void pesquisarProduto() {
         String termo = txtPesquisar.getText();
@@ -132,10 +145,20 @@ public class ProdutoListagemController {
         }
 
         listaProdutos.getChildren().clear();
+        int somaQuantidade = 0;
+        double somaValorTotal = 0.0;
+
         for (Produto produto : produtos) {
             adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/view/imagens/queijo1.png", produto.getIdProduto(), produto.getQuantidade());
+            somaQuantidade += produto.getQuantidade();
+            somaValorTotal += produto.getPreco() * produto.getQuantidade();
         }
+
+        lblSomaQtdEstoque.setText(String.format("Quantidade total: %dg",somaQuantidade));
+        lblSomaValorEstoque.setText(String.format("  Valor total: R$" + somaValorTotal));
     }
+
+
     @FXML
     public void deletarProduto(Integer id) {
         produtoService.deleteById(id);
@@ -184,6 +207,19 @@ public class ProdutoListagemController {
             System.err.println("Erro geral: " + e.getMessage());
         }
     }
+    @FXML
+    public void abrirProdutosVendidos() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/telas/ProdutosVendidos.fxml"));
+            loader.setControllerFactory(SpringContextHolder.getContext()::getBean);
+            AnchorPane pane = loader.load();
+            this.listaProdutos.getScene().setRoot(pane);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Erro ao abrir a tela de Produtos Vendidos: " + e.getMessage());
+        }
+    }
+
 
 
 

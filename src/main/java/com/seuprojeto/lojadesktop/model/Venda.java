@@ -27,7 +27,7 @@ public class Venda {
     @Column(name = "forma_pagamento", nullable = false)
     private String formaPagamento;
 
-    @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "venda", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ItemVenda> itens;
 
     @PrePersist

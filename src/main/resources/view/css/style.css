@@ -135,6 +135,10 @@
     -fx-text-fill: white;
     -fx-font-size: 13px;
 }
+.estoque-total-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
 
 /* ============================
    Tela de Cadastro de Produto

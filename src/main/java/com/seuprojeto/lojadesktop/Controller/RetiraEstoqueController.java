@@ -1,9 +1,14 @@
 package com.seuprojeto.lojadesktop.Controller;
 
 import com.seuprojeto.lojadesktop.SpringContextHolder;
+import com.seuprojeto.lojadesktop.model.Cliente;
+import com.seuprojeto.lojadesktop.model.Funcionario;
 import com.seuprojeto.lojadesktop.model.Produto;
+import com.seuprojeto.lojadesktop.model.Venda;
 import com.seuprojeto.lojadesktop.service.ProdutoService;
 import com.seuprojeto.lojadesktop.service.VendaService;
+import com.seuprojeto.lojadesktop.service.ClienteService;
+import com.seuprojeto.lojadesktop.service.FuncionarioService;
 import jakarta.annotation.Resource;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -45,6 +50,9 @@ public class RetiraEstoqueController {
 
     @Resource private ProdutoService produtoService;
     @Resource private VendaService vendaService;
+    @Resource private ClienteService clienteService;
+    @Resource private FuncionarioService funcionarioService;
+
 
     private final ObservableList<ItemVenda> itensVenda = FXCollections.observableArrayList();
     private Produto produtoSelecionado;
@@ -68,9 +76,21 @@ public class RetiraEstoqueController {
     }
 
     private void carregarClientesEFucionarios() {
-        clienteComboBox.setItems(FXCollections.observableArrayList("João", "Maria", "Pedro"));
-        funcionarioComboBox.setItems(FXCollections.observableArrayList("Atendente 1", "Atendente 2"));
+        // Carrega clientes reais
+        ObservableList<String> nomesClientes = FXCollections.observableArrayList(
+                clienteService.findAll().stream().map(Cliente::getNome).toList()
+        );
+        clienteComboBox.setItems(nomesClientes);
+        clienteComboBox.setEditable(true); // Permite digitação
+
+        // Carrega funcionários reais
+        ObservableList<String> nomesFuncionarios = FXCollections.observableArrayList(
+                funcionarioService.findAll().stream().map(Funcionario::getNome).toList()
+        );
+        funcionarioComboBox.setItems(nomesFuncionarios);
+        funcionarioComboBox.setEditable(true); // Permite digitação para novo funcionário
     }
+
 
     public void setProdutoSelecionado(Produto produto) {
         this.produtoSelecionado = produto;
@@ -130,17 +150,33 @@ public class RetiraEstoqueController {
             return;
         }
 
-        String cliente = clienteComboBox.getValue();
-        String funcionario = funcionarioComboBox.getValue();
+        String clienteNome = clienteComboBox.getValue();
+        String funcionarioNome = funcionarioComboBox.getValue();
         LocalDate data = dataPicker.getValue();
         String formaPagamento = formaPagamentoField.getText();
 
-        if (cliente == null || funcionario == null || formaPagamento.isBlank()) {
+        if (clienteNome == null || clienteNome.isBlank() ||
+                funcionarioNome == null || funcionarioNome.isBlank() ||
+                formaPagamento == null || formaPagamento.isBlank()) {
             mostrarAlerta(Alert.AlertType.WARNING, "Preencha todos os campos da venda.");
             return;
         }
 
         try {
+            // Busca cliente pelo nome; cria novo se não existir
+            Cliente cliente = buscarClientePorNome(clienteNome);
+
+            // Atualiza comboBox cliente caso tenha criado novo cliente
+            if (!clienteComboBox.getItems().contains(cliente.getNome())) {
+                clienteComboBox.getItems().add(cliente.getNome());
+            }
+
+            // Busca funcionário pelo nome; lança exceção se não encontrar
+            Funcionario funcionario = buscarFuncionarioPorNome(funcionarioNome);
+            if (!funcionarioComboBox.getItems().contains(funcionario.getNome())) {
+                funcionarioComboBox.getItems().add(funcionario.getNome());
+            }
+            // Verifica e atualiza estoque
             for (ItemVenda item : itensVenda) {
                 Produto produto = item.getProduto();
                 int quantidadeVendida = item.getQuantidade();
@@ -154,14 +190,35 @@ public class RetiraEstoqueController {
                 produtoService.save(produto);
             }
 
+            // Cria a venda com itens convertidos
+            Venda venda = new Venda();
+            venda.setCliente(cliente);
+            venda.setFuncionario(funcionario);
+            venda.setFormaPagamento(formaPagamento);
+            venda.setDataVenda(data != null ? data.atStartOfDay() : null);
+
+            // Converte itensVenda para o tipo esperado em Venda
+            venda.setItens(itensVenda.stream().map(item -> {
+                com.seuprojeto.lojadesktop.model.ItemVenda itemVenda = new com.seuprojeto.lojadesktop.model.ItemVenda();
+                itemVenda.setProduto(item.getProduto());
+                itemVenda.setQuantidade(item.getQuantidade());
+                return itemVenda;
+            }).toList());
+
+            vendaService.salvarVenda(venda);
+
             mostrarAlerta(Alert.AlertType.INFORMATION, "Venda finalizada com sucesso!");
             limparTela();
 
+        } catch (RuntimeException e) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Funcionário não encontrado: " + funcionarioNome);
         } catch (Exception e) {
             e.printStackTrace();
-            mostrarAlerta(Alert.AlertType.ERROR, "Erro ao finalizar a venda.");
+            mostrarAlerta(Alert.AlertType.ERROR, "Erro ao finalizar a venda: " + e.getMessage());
         }
     }
+
+
 
     private void limparTela() {
         clienteComboBox.setValue(null);
@@ -216,4 +273,28 @@ public class RetiraEstoqueController {
         }
 
     }
+    private Cliente buscarClientePorNome(String nome) {
+        return clienteService.findByNome(nome)
+                .stream()
+                .findFirst()
+                .orElseGet(() -> {
+                    // Se não existir, cria novo cliente
+                    Cliente novoCliente = new Cliente();
+                    novoCliente.setNome(nome);
+                    return clienteService.save(novoCliente);
+                });
+    }
+
+    private Funcionario buscarFuncionarioPorNome(String nome) {
+        return funcionarioService.findByNome(nome)
+                .stream()
+                .findFirst()
+                .orElseGet(() -> {
+                    // Se não existir, cria novo Funcionario
+                    Funcionario novoFuncionario = new Funcionario();
+                    novoFuncionario.setNome(nome);
+                    return funcionarioService.save(novoFuncionario);
+                });
+    }
+
 }

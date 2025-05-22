@@ -22,6 +22,14 @@ public class ClienteService {
         return clienteRepository.findById(id);
     }
 
+    public Optional<Cliente> findByCpf(String cpf) {
+        return clienteRepository.findByCpf(cpf);
+    }
+
+    public List<Cliente> findByNome(String nome) {
+        return clienteRepository.findByNomeContainingIgnoreCase(nome);
+    }
+
     public Cliente save(Cliente cliente) {
         return clienteRepository.save(cliente);
     }
@@ -30,3 +38,4 @@ public class ClienteService {
         clienteRepository.deleteById(id);
     }
 }
+

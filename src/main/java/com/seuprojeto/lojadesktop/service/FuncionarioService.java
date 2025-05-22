@@ -22,6 +22,10 @@ public class FuncionarioService {
         return funcionarioRepository.findById(id);
     }
 
+    public List<Funcionario> findByNome(String nome) {
+        return funcionarioRepository.findByNomeContainingIgnoreCase(nome);
+    }
+
     public Funcionario save(Funcionario funcionario) {
         return funcionarioRepository.save(funcionario);
     }
@@ -30,3 +34,4 @@ public class FuncionarioService {
         funcionarioRepository.deleteById(id);
     }
 }
+
