@@ -1,6 +1,8 @@
 package com.seuprojeto.lojadesktop.model;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -32,6 +34,13 @@ public class Produto {
 
     @Column(name = "codigo_barras")
     private String codigoBarras;
+
+    @Column(nullable = false)
+    private Double margemLucro;
+
+    @Column(name = "data_vencimento")
+    private LocalDate dataVencimento;
+
 
     // Construtor padrão
     public Produto() {
@@ -103,6 +112,8 @@ public class Produto {
         this.codigoBarras = codigoBarras;
     }
 
+
+
     @PrePersist
     public void onCreate() {
         this.dataCriacao = LocalDateTime.now();
@@ -118,4 +129,11 @@ public class Produto {
         return nome + " - " + codigoBarras;
     }
 
+    public void setDataVencimento(LocalDate dataVencimento) {
+        this.dataVencimento = dataVencimento;
+    }
+
+    public LocalDate getDataVencimento() {
+        return dataVencimento;
+    }
 }

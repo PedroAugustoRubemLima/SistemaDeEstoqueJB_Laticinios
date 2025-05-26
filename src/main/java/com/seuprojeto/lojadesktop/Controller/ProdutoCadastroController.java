@@ -2,10 +2,11 @@ package com.seuprojeto.lojadesktop.Controller;
 
 import com.seuprojeto.lojadesktop.model.Produto;
 import com.seuprojeto.lojadesktop.Repository.ProdutoRepository;
-import com.seuprojeto.lojadesktop.SpringContextHolder;
+import com.seuprojeto.lojadesktop.config.SpringContextHolder;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -37,6 +38,10 @@ public class ProdutoCadastroController {
 
     @FXML private TextField codigoBarrasField;
 
+    @FXML
+    private DatePicker dataVencimentoPicker;
+
+
 
     public static Produto produtoEditado;
 
@@ -46,8 +51,10 @@ public class ProdutoCadastroController {
         txtTipo.setText(produto.getTipo());
         txtPreco.setText(String.valueOf(produto.getPreco()));
         txtQuantidade.setText(String.valueOf(produto.getQuantidade()));
-        codigoBarrasField.setText(produto.getCodigoBarras()); // <-- adicionar esta linha
+        codigoBarrasField.setText(produto.getCodigoBarras());
+        dataVencimentoPicker.setValue(produto.getDataVencimento());
     }
+
 
     @FXML
     public void cadastrarProduto() {
@@ -60,23 +67,23 @@ public class ProdutoCadastroController {
             String codigoBarras = codigoBarrasField.getText();
 
             if (produtoEditado != null) {
-                // Atualiza o produto existente
                 produtoEditado.setNome(nome);
                 produtoEditado.setTipo(tipo);
                 produtoEditado.setPreco(preco);
                 produtoEditado.setQuantidade(quantidade);
                 produtoEditado.setCodigoBarras(codigoBarras);
+                produtoEditado.setDataVencimento(dataVencimentoPicker.getValue()); //<-- Aqui adiciona
 
                 produtoRepository.save(produtoEditado);
                 lblMensagem.setText("Produto atualizado com sucesso!");
             } else {
-                // Cria um novo produto com os dados
                 Produto novoProduto = new Produto();
                 novoProduto.setNome(nome);
                 novoProduto.setTipo(tipo);
                 novoProduto.setPreco(preco);
                 novoProduto.setQuantidade(quantidade);
                 novoProduto.setCodigoBarras(codigoBarras);
+                novoProduto.setDataVencimento(dataVencimentoPicker.getValue());
 
                 produtoRepository.save(novoProduto);
                 lblMensagem.setText("Produto salvo com sucesso!");
@@ -113,4 +120,6 @@ public class ProdutoCadastroController {
             e.printStackTrace();
         }
     }
+
+
 }

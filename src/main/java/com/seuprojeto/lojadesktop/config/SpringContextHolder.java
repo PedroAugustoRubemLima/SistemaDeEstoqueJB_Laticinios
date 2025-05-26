@@ -1,4 +1,4 @@
-package com.seuprojeto.lojadesktop;
+package com.seuprojeto.lojadesktop.config;
 
 import org.springframework.context.ConfigurableApplicationContext;
 public class SpringContextHolder {

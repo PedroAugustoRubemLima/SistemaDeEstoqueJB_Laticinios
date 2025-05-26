@@ -1,6 +1,8 @@
 package com.seuprojeto.lojadesktop.Controller;
 
-import com.seuprojeto.lojadesktop.SpringContextHolder;
+import com.seuprojeto.lojadesktop.model.Cliente;
+import com.seuprojeto.lojadesktop.service.ClienteService;
+import com.seuprojeto.lojadesktop.config.SpringContextHolder;
 import com.seuprojeto.lojadesktop.model.Produto;
 import com.seuprojeto.lojadesktop.service.ProdutoService;
 import com.seuprojeto.lojadesktop.service.VendaService;
@@ -14,9 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.Parent;
-import javafx.scene.Node;
-import javafx.event.ActionEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -25,6 +25,9 @@ import java.time.LocalDate;
 
 @Component
 public class RetiraEstoqueController {
+
+    @Autowired
+    private ClienteService clienteService;
 
     @FXML private ComboBox<String> clienteComboBox;
     @FXML private ComboBox<String> funcionarioComboBox;
@@ -221,6 +224,47 @@ public class RetiraEstoqueController {
 
             lblNomeProduto.getScene().setRoot(pane);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void abrirTelaCadastroCliente() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/telas/ClienteCadastro.fxml"));
+            fxmlLoader.setControllerFactory(SpringContextHolder.getContext()::getBean);
+
+            Stage stage = new Stage();
+            stage.setTitle("Cadastro de Cliente");
+            stage.setScene(new Scene(fxmlLoader.load()));
+            stage.setResizable(false);
+            stage.showAndWait();
+
+            // Atualiza o ComboBox de cliente depois que fechar o cadastro
+            clienteComboBox.setItems(FXCollections.observableArrayList(
+                    clienteService.findAll().stream()
+                            .map(Cliente::getNome)
+                            .toList()
+            ));
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void abrirHistoricoVendas() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/telas/HistoricoVendas.fxml"));
+            fxmlLoader.setControllerFactory(SpringContextHolder.getContext()::getBean);
+
+            Stage stage = new Stage();
+            stage.setTitle("Histórico de Vendas");
+            stage.setScene(new Scene(fxmlLoader.load()));
+            stage.setResizable(false);
+            stage.show();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

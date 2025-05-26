@@ -2,16 +2,18 @@ package com.seuprojeto.lojadesktop.Controller;
 
 import com.seuprojeto.lojadesktop.model.Produto;
 import com.seuprojeto.lojadesktop.service.ProdutoService;
-import com.seuprojeto.lojadesktop.SpringContextHolder;
+import com.seuprojeto.lojadesktop.config.SpringContextHolder;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -41,7 +43,7 @@ public class ProdutoListagemController {
     }
 
 
-    private void adicionarProduto(String nome, String tipo, Double preco, String imagemPath, Integer id) {
+    private void adicionarProduto(String nome, String tipo, Double preco, String vencimento, String imagemPath, Integer id) {
         HBox card = new HBox(15);
         card.getStyleClass().add("product-card");
 
@@ -51,11 +53,14 @@ public class ProdutoListagemController {
 
         Label lblTipo = new Label("Tipo: " + tipo);
         Label lblPreco = new Label("Preço: R$ " + preco);
+        Label lblVencimento = new Label("Vencimento: " + vencimento);
+
 
         lblTipo.getStyleClass().add("product-info");
         lblPreco.getStyleClass().add("product-info");
+        lblVencimento.getStyleClass().add("product-info");
 
-        infos.getChildren().addAll(lblNome, lblTipo, lblPreco);
+        infos.getChildren().addAll(lblNome, lblTipo, lblPreco, lblVencimento);
 
         Region espacador = new Region();
         HBox.setHgrow(espacador, Priority.ALWAYS);
@@ -115,7 +120,9 @@ public class ProdutoListagemController {
         listaProdutos.getChildren().clear();
         List<Produto> produtos = produtoService.findAll();
         for (Produto produto : produtos) {
-            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/view/imagens/queijo1.png", produto.getIdProduto());
+            String vencimento = produto.getDataVencimento() != null ? produto.getDataVencimento().toString() : "Sem Data";
+            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), vencimento, "/view/imagens/queijo1.png", produto.getIdProduto());
+
         }
     }
     @FXML
@@ -131,7 +138,9 @@ public class ProdutoListagemController {
 
         listaProdutos.getChildren().clear();
         for (Produto produto : produtos) {
-            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), "/view/imagens/queijo1.png", produto.getIdProduto());
+            String vencimento = produto.getDataVencimento() != null ? produto.getDataVencimento().toString() : "Sem Data";
+            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), vencimento, "/view/imagens/queijo1.png", produto.getIdProduto());
+
         }
     }
     @FXML
@@ -183,7 +192,20 @@ public class ProdutoListagemController {
         }
     }
 
+    @FXML
+    private void abrirHistoricoVendas() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/telas/HistoricoVendas.fxml"));
+            fxmlLoader.setControllerFactory(SpringContextHolder.getContext()::getBean);
 
-
+            Stage stage = new Stage();
+            stage.setTitle("Histórico de Vendas");
+            stage.setScene(new Scene(fxmlLoader.load()));
+            stage.setResizable(false);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

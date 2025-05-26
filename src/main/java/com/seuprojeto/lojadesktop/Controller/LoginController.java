@@ -1,6 +1,6 @@
 package com.seuprojeto.lojadesktop.Controller;
 
-import com.seuprojeto.lojadesktop.SpringContextHolder;
+import com.seuprojeto.lojadesktop.config.SpringContextHolder;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
