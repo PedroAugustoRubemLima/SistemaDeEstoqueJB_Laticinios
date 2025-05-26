@@ -1,38 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<AnchorPane fx:controller="com.seuprojeto.lojadesktop.Controller.LoginController"
-            xmlns:fx="http://javafx.com/fxml/1"
-            xmlns="http://javafx.com/javafx/21"
-            prefWidth="800" prefHeight="500"
-            stylesheets="@../css/style.css"
-            styleClass="login-background">
+<AnchorPane prefHeight="500" prefWidth="800" styleClass="login-background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.seuprojeto.lojadesktop.Controller.LoginController">
 
     <children>
-        <VBox layoutX="250" layoutY="120" spacing="15" styleClass="login-box">
+        <VBox alignment="CENTER" layoutX="250" layoutY="120" spacing="15" styleClass="login-box">
             <children>
-                <Label text="JB LATICÍNIOS" styleClass="login-title" alignment="CENTER" maxWidth="Infinity" />
+                <Label alignment="CENTER" maxWidth="Infinity" styleClass="login-title" text="JB LATICÍNIOS" />
 
                 <VBox spacing="5">
-                    <Label text="USUÁRIO:" styleClass="login-label" />
+                    <Label styleClass="login-label" text="USUÁRIO:" />
                     <TextField fx:id="txtUsuario" styleClass="login-field" />
                 </VBox>
 
                 <VBox spacing="5">
-                    <Label text="SENHA:" styleClass="login-label" />
+                    <Label styleClass="login-label" text="SENHA:" />
                     <PasswordField fx:id="txtSenha" styleClass="login-field" />
                 </VBox>
 
-                <Button fx:id="loginButton"  text="LOGIN" styleClass="login-button" onAction="#logar" maxWidth="Infinity"/>
+                <Button fx:id="loginButton" maxWidth="Infinity" onAction="#logar" styleClass="login-button" text="LOGIN" />
                 <Label fx:id="lblMensagem" styleClass="login-message" />
 
             </children>
             <padding>
-                <Insets top="20" right="30" bottom="20" left="30"/>
+                <Insets bottom="20" left="30" right="30" top="20" />
             </padding>
         </VBox>
     </children>
