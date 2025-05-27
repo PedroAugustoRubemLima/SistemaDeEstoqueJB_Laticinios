@@ -1,5 +1,7 @@
 package com.seuprojeto.lojadesktop;
 
+import com.seuprojeto.lojadesktop.config.SpringContext;
+import com.seuprojeto.lojadesktop.config.SpringContextHolder;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

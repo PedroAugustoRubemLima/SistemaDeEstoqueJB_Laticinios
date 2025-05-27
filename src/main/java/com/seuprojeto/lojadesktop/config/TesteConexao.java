@@ -1,4 +1,4 @@
-package com.seuprojeto.lojadesktop;
+package com.seuprojeto.lojadesktop.config;
 
 import com.seuprojeto.lojadesktop.model.Cliente;
 import com.seuprojeto.lojadesktop.model.Funcionario;

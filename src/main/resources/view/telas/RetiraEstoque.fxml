@@ -73,6 +73,8 @@
                     style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 10;"/>
             <Button text="Finalizar Venda" onAction="#onFinalizarCompra"
                     style="-fx-background-color: #00ADEF; -fx-text-fill: white; -fx-background-radius: 10;"/>
+            <Button layoutX="450" layoutY="350" text="Histórico de Vendas" onAction="#abrirHistoricoVendas"/>
+
         </HBox>
     </VBox>
 </AnchorPane>

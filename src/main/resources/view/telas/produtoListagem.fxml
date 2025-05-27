@@ -1,46 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane fx:controller="com.seuprojeto.lojadesktop.Controller.ProdutoListagemController"
-            xmlns:fx="http://javafx.com/fxml/1"
-            xmlns="http://javafx.com/javafx/21"
-            prefWidth="800" prefHeight="500"
-            stylesheets="@../css/style.css"
-            styleClass="login-background">
+<AnchorPane prefHeight="500" prefWidth="800" styleClass="login-background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.seuprojeto.lojadesktop.Controller.ProdutoListagemController">
 
     <VBox spacing="20">
         <padding>
-            <Insets top="20" right="20" bottom="20" left="20"/>
+            <Insets bottom="20" left="20" right="20" top="20" />
         </padding>
 
         <!-- Título -->
-        <Label text="JB LATICÍNIOS" styleClass="list-title" alignment="CENTER" maxWidth="Infinity"/>
+        <Label alignment="CENTER" maxWidth="Infinity" styleClass="list-title" text="JB LATICÍNIOS" />
 
-        <!-- Lista de produtos -->
-        <VBox fx:id="listaProdutos" spacing="15"/>
-        <HBox>
-        <!-- Soma total do estoque -->
-        <Label fx:id="lblSomaQtdEstoque" text="Quantidade Total em estoque: 0g" styleClass="estoque-total-label"/>
-        <Label fx:id="lblSomaValorEstoque" text="   Valor Total em estoque: R$0" styleClass="estoque-total-label"/>
-        </HBox>
+        <Button onAction="#voltarParaLogin" styleClass="button" text="Voltar" />
+
         <!-- Barra de pesquisa -->
         <HBox spacing="10">
-            <TextField fx:id="txtPesquisar" promptText="Pesquisar" styleClass="search-bar" HBox.hgrow="ALWAYS"/>
-            <Button text="+" onAction="#abrirCadastro" styleClass="add-button"/>
+            <TextField fx:id="txtPesquisar" alignment="CENTER" promptText="Pesquisar" styleClass="search-bar" HBox.hgrow="ALWAYS" />
+            <Button onAction="#abrirCadastro" styleClass="add-button" text="+" />
+            <Button layoutX="500" layoutY="20" text="Histórico de Vendas" onAction="#abrirHistoricoVendas"/>
         </HBox>
 
         <!-- Lista de produtos -->
-        <VBox fx:id="listaProdutos" spacing="15"/>
-
-        <HBox spacing="10">
-            <Button text="Voltar" onAction="#voltarParaLogin" styleClass="button"/>
-            <Button text="Produtos Vendidos" onAction="#abrirProdutosVendidos" styleClass="button"/>
-        </HBox>
-
+        <VBox fx:id="listaProdutos" spacing="15" />
     </VBox>
 </AnchorPane>
-

@@ -1,88 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.image.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.geometry.Pos?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane fx:controller="com.seuprojeto.lojadesktop.Controller.ProdutoCadastroController"
-            xmlns:fx="http://javafx.com/fxml/1"
-            xmlns="http://javafx.com/javafx/21"
-            prefWidth="800" prefHeight="500"
-            stylesheets="@../css/style.css"
-            styleClass="produto-cadastro-background">
+<AnchorPane prefHeight="500" prefWidth="800" styleClass="produto-cadastro-background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.seuprojeto.lojadesktop.Controller.ProdutoCadastroController">
 
     <children>
-        <VBox layoutX="50" layoutY="30" spacing="20">
+        <VBox layoutX="41.0" layoutY="14.0" prefHeight="517.0" prefWidth="606.0" spacing="20">
             <children>
                 <!-- Título principal -->
-                <Label text="JB LATICÍNIOS" styleClass="produto-cadastro-titulo"/>
+                <Label alignment="CENTER" styleClass="produto-cadastro-titulo" text="JB LATICÍNIOS" />
 
                 <!-- Subtítulo botão azul -->
-                <Button text="NOVO REGISTRO DE PRODUTO" styleClass="cadastro-header-button" />
+                <Button alignment="CENTER" prefHeight="35.0" prefWidth="283.0" styleClass="cadastro-header-button" text="NOVO REGISTRO DE PRODUTO" />
 
                 <!-- Formulário -->
-                <GridPane hgap="15" vgap="12">
+                <GridPane alignment="CENTER" hgap="15" vgap="12">
                     <columnConstraints>
                         <ColumnConstraints minWidth="100" />
                         <ColumnConstraints minWidth="250" />
                     </columnConstraints>
 
                     <rowConstraints>
+                  <RowConstraints minHeight="30.0" prefHeight="30.0" />
                         <RowConstraints minHeight="30" />
                         <RowConstraints minHeight="30" />
                         <RowConstraints minHeight="30" />
                         <RowConstraints minHeight="80" />
                         <RowConstraints minHeight="30" />
+                  <RowConstraints minHeight="30.0" prefHeight="30.0" />
                         <RowConstraints minHeight="30" />
                     </rowConstraints>
 
                     <children>
-                        <Label text="Nome:" styleClass="produto-label" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                        <TextField fx:id="txtNome" styleClass="produto-textfield" GridPane.rowIndex="0" GridPane.columnIndex="1" promptText="Nome do Produto"/>
+                        <Label styleClass="produto-label" text="Nome:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="txtNome" promptText="Nome do Produto" styleClass="produto-textfield" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                        <Label text="Preço:" styleClass="produto-label" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                        <TextField fx:id="txtPreco" styleClass="produto-textfield" GridPane.rowIndex="1" GridPane.columnIndex="1" promptText="Preço do Produto"/>
+                        <Label styleClass="produto-label" text="Preço:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField fx:id="txtPreco" promptText="Preço do Produto" styleClass="produto-textfield" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                        <Label text="Categoria:" styleClass="produto-label" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                        <TextField fx:id="txtTipo" styleClass="produto-textfield" GridPane.rowIndex="2" GridPane.columnIndex="1" promptText="Tipo do Produto"/>
+                        <Label styleClass="produto-label" text="Categoria:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <TextField fx:id="txtTipo" promptText="Tipo do Produto" styleClass="produto-textfield" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-                        <Label text="Descrição:" styleClass="produto-label" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-                        <TextArea fx:id="txtDescricao" styleClass="produto-textarea" prefRowCount="3" prefColumnCount="20"
-                                  GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                        <Label styleClass="produto-label" text="Descrição:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <TextArea fx:id="txtDescricao" prefColumnCount="20" prefRowCount="3" styleClass="produto-textarea" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
                         <!-- Campo de Quantidade -->
-                        <Label text="Quantidade:" styleClass="produto-label" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-                        <TextField fx:id="txtQuantidade" styleClass="produto-textfield" GridPane.rowIndex="4" GridPane.columnIndex="1" promptText="Quantidade em estoque"/>
+                        <Label styleClass="produto-label" text="Quantidade:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <TextField fx:id="txtQuantidade" promptText="Quantidade em estoque" styleClass="produto-textfield" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-                        <!-- Campo de Imagem (ajustado para a linha 5) -->
-                        <Label text="Imagem:" styleClass="produto-label" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-                        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="5" GridPane.columnIndex="1">
+                        <!-- Código de Barras -->
+                        <Label styleClass="produto-label" text="Código de Barras:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                        <TextField fx:id="codigoBarrasField" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
-                            <HBox spacing="10">
-                                <Label text="Código de Barras:"/>
-                                <TextField fx:id="codigoBarrasField" prefWidth="300"/>
-                            </HBox>
+                        <!-- Campo de Imagem -->
+                        <Label styleClass="produto-label" text="Imagem:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                        <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="7">
+
+                            <Label layoutX="14.0" layoutY="180.0" text="Data Vencimento:"/>
+                            <DatePicker fx:id="dataVencimentoPicker" layoutX="150.0" layoutY="175.0"/>
+
 
                             <children>
-                                <Button text="Anexar Imagem" styleClass="anexar-button" fx:id="btnAnexarImagem" />
-                                <ImageView fx:id="imageViewProduto" fitHeight="50" fitWidth="50"/>
+                                <Button fx:id="btnAnexarImagem" styleClass="anexar-button" text="Anexar Imagem" />
+                                <ImageView fx:id="imageViewProduto" fitHeight="50" fitWidth="50" />
                             </children>
                         </HBox>
                     </children>
                 </GridPane>
 
                 <!-- Botão salvar e mensagem -->
-                <HBox spacing="20" alignment="CENTER_LEFT">
+                <HBox alignment="CENTER_LEFT" spacing="20">
                     <children>
-                        <Button text="SALVAR" onAction="#cadastrarProduto" styleClass="salvar-button" />
-                        <Label fx:id="lblMensagem" text="Mensagem de status aparecerá aqui"/>
-                        <Button text="Voltar" onAction="#voltarParaListagem" styleClass="button"/>
+                        <Button onAction="#cadastrarProduto" styleClass="salvar-button" text="SALVAR" />
+                        <Label fx:id="lblMensagem" text="Mensagem de status aparecerá aqui" />
+                        <Button onAction="#voltarParaListagem" prefHeight="31.0" prefWidth="139.0" styleClass="button" text="Voltar" />
                     </children>
                 </HBox>
             </children>
         </VBox>
     </children>
 </AnchorPane>
-

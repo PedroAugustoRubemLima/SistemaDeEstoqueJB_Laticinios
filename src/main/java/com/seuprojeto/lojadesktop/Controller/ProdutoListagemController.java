@@ -2,19 +2,20 @@ package com.seuprojeto.lojadesktop.Controller;
 
 import com.seuprojeto.lojadesktop.model.Produto;
 import com.seuprojeto.lojadesktop.service.ProdutoService;
-import com.seuprojeto.lojadesktop.SpringContextHolder;
+import com.seuprojeto.lojadesktop.config.SpringContextHolder;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.List;
 
@@ -33,11 +34,6 @@ public class ProdutoListagemController {
     @FXML
     private Label lblNomeProduto;
 
-    @FXML
-    private Label lblSomaQtdEstoque;
-
-    @FXML
-    private Label lblSomaValorEstoque;
 
     @FXML
     public void initialize() {
@@ -47,7 +43,7 @@ public class ProdutoListagemController {
     }
 
 
-    private void adicionarProduto(String nome, String tipo, Double preco, String imagemPath, Integer id, Integer quantidade) {
+    private void adicionarProduto(String nome, String tipo, Double preco, String vencimento, String imagemPath, Integer id) {
         HBox card = new HBox(15);
         card.getStyleClass().add("product-card");
 
@@ -57,12 +53,14 @@ public class ProdutoListagemController {
 
         Label lblTipo = new Label("Tipo: " + tipo);
         Label lblPreco = new Label("Preço: R$ " + preco);
-        Label lblQuantidade = new Label("Quantidade:"+ quantidade);
+        Label lblVencimento = new Label("Vencimento: " + vencimento);
+
 
         lblTipo.getStyleClass().add("product-info");
         lblPreco.getStyleClass().add("product-info");
-        lblQuantidade.getStyleClass().add("product-info");
-        infos.getChildren().addAll(lblNome, lblTipo, lblPreco,lblQuantidade);
+        lblVencimento.getStyleClass().add("product-info");
+
+        infos.getChildren().addAll(lblNome, lblTipo, lblPreco, lblVencimento);
 
         Region espacador = new Region();
         HBox.setHgrow(espacador, Priority.ALWAYS);
@@ -121,23 +119,12 @@ public class ProdutoListagemController {
     public void carregarProdutos() {
         listaProdutos.getChildren().clear();
         List<Produto> produtos = produtoService.findAll();
-
-        double somaTotalValor = 0.0;
-        int somaQuantidade = 0;
-
         for (Produto produto : produtos) {
-            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(),
-                    "/view/imagens/queijo1.png", produto.getIdProduto(), produto.getQuantidade());
+            String vencimento = produto.getDataVencimento() != null ? produto.getDataVencimento().toString() : "Sem Data";
+            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), vencimento, "/view/imagens/queijo1.png", produto.getIdProduto());
 
-            somaQuantidade += produto.getQuantidade();
-            somaTotalValor += produto.getPreco(); // Não multiplicando mais pela quantidade
         }
-
-        lblSomaQtdEstoque.setText(String.format("Quantidade total em estoque: %dg", somaQuantidade));
-        lblSomaValorEstoque.setText(String.format("   Valor total no estoque: R$%.2f", somaTotalValor));
     }
-
-
     @FXML
     public void pesquisarProduto() {
         String termo = txtPesquisar.getText();
@@ -150,23 +137,12 @@ public class ProdutoListagemController {
         }
 
         listaProdutos.getChildren().clear();
-        int somaQuantidade = 0;
-        double somaValorTotal = 0.0;
-
         for (Produto produto : produtos) {
-            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(),
-                    "/view/imagens/queijo1.png", produto.getIdProduto(), produto.getQuantidade());
+            String vencimento = produto.getDataVencimento() != null ? produto.getDataVencimento().toString() : "Sem Data";
+            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), vencimento, "/view/imagens/queijo1.png", produto.getIdProduto());
 
-            somaQuantidade += produto.getQuantidade();
-            somaValorTotal += produto.getPreco();// Soma direta do preço
         }
-
-        lblSomaQtdEstoque.setText(String.format("Quantidade total: %dg", somaQuantidade));
-        lblSomaValorEstoque.setText(String.format("  Valor total: R$%.2f", somaValorTotal));
     }
-
-
-
     @FXML
     public void deletarProduto(Integer id) {
         produtoService.deleteById(id);
@@ -215,21 +191,21 @@ public class ProdutoListagemController {
             System.err.println("Erro geral: " + e.getMessage());
         }
     }
+
     @FXML
-    public void abrirProdutosVendidos() {
+    private void abrirHistoricoVendas() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/telas/ProdutosVendidos.fxml"));
-            loader.setControllerFactory(SpringContextHolder.getContext()::getBean);
-            AnchorPane pane = loader.load();
-            this.listaProdutos.getScene().setRoot(pane);
-        } catch (IOException e) {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/telas/HistoricoVendas.fxml"));
+            fxmlLoader.setControllerFactory(SpringContextHolder.getContext()::getBean);
+
+            Stage stage = new Stage();
+            stage.setTitle("Histórico de Vendas");
+            stage.setScene(new Scene(fxmlLoader.load()));
+            stage.setResizable(false);
+            stage.show();
+        } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Erro ao abrir a tela de Produtos Vendidos: " + e.getMessage());
         }
     }
-
-
-
-
 
 }
