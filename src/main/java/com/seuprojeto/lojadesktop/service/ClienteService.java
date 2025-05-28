@@ -1,7 +1,7 @@
 package com.seuprojeto.lojadesktop.service;
 
 import com.seuprojeto.lojadesktop.model.Cliente;
-import com.seuprojeto.lojadesktop.Repository.ClienteRepository;
+import com.seuprojeto.lojadesktop.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +22,6 @@ public class ClienteService {
         return clienteRepository.findById(id);
     }
 
-    public Optional<Cliente> findByCpf(String cpf) {
-        return clienteRepository.findByCpf(cpf);
-    }
-
-    public List<Cliente> findByNome(String nome) {
-        return clienteRepository.findByNomeContainingIgnoreCase(nome);
-    }
-
     public Cliente save(Cliente cliente) {
         return clienteRepository.save(cliente);
     }
@@ -38,4 +30,3 @@ public class ClienteService {
         clienteRepository.deleteById(id);
     }
 }
-

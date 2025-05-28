@@ -12,7 +12,7 @@ public class Cliente {
     @Column(name = "id_cliente")
     private Integer id;
 
-    @Column(name = "cpf", length = 11, unique = true)
+    @Column(name = "cpf", length = 11, nullable = false, unique = true)
     private String cpf;
 
     @Column(name = "nome", length = 100, nullable = false)

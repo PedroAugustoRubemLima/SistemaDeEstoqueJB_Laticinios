@@ -1,7 +1,7 @@
 package com.seuprojeto.lojadesktop.service;
 
 import com.seuprojeto.lojadesktop.model.Funcionario;
-import com.seuprojeto.lojadesktop.Repository.FuncionarioRepository;
+import com.seuprojeto.lojadesktop.repository.FuncionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +22,6 @@ public class FuncionarioService {
         return funcionarioRepository.findById(id);
     }
 
-    public List<Funcionario> findByNome(String nome) {
-        return funcionarioRepository.findByNomeContainingIgnoreCase(nome);
-    }
-
     public Funcionario save(Funcionario funcionario) {
         return funcionarioRepository.save(funcionario);
     }
@@ -34,4 +30,3 @@ public class FuncionarioService {
         funcionarioRepository.deleteById(id);
     }
 }
-

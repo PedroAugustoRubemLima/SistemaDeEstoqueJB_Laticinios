@@ -2,11 +2,9 @@ package com.seuprojeto.lojadesktop.service;
 
 import com.seuprojeto.lojadesktop.model.Venda;
 import com.seuprojeto.lojadesktop.model.ItemVenda;
-import com.seuprojeto.lojadesktop.Repository.VendaRepository;
+import com.seuprojeto.lojadesktop.repository.VendaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class VendaService {
@@ -24,8 +22,4 @@ public class VendaService {
         }
         vendaRepository.save(venda);
     }
-    public List<Venda> buscarTodasVendas() {
-        return vendaRepository.findAllWithItens(); // Usa o JOIN FETCH
-    }
-
 }

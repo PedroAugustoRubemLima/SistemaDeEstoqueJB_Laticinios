@@ -35,9 +35,6 @@ public class Produto {
     @Column(name = "codigo_barras")
     private String codigoBarras;
 
-    @Column(nullable = false)
-    private Double margemLucro;
-
     @Column(name = "data_vencimento")
     private LocalDate dataVencimento;
 
