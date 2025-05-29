@@ -42,9 +42,6 @@ public class ProdutoCadastroController {
     @FXML
     private DatePicker dataVencimentoPicker;
 
-    @FXML
-    private TextField pesoPorCaixaField;
-
 
     public static Produto produtoEditado;
 
@@ -60,9 +57,6 @@ public class ProdutoCadastroController {
             if (produto.getDataVencimento() != null) {
                 dataVencimentoPicker.setValue(produto.getDataVencimento());
             }
-            if (produto.getPesoPorCaixa() != null) {
-                pesoPorCaixaField.setText(String.valueOf(produto.getPesoPorCaixa()));
-            }
         }
     }
 
@@ -76,8 +70,6 @@ public class ProdutoCadastroController {
             Double quantidade = Double.parseDouble(txtQuantidade.getText());
             String codigoBarras = codigoBarrasField.getText();
             LocalDate dataVencimento = dataVencimentoPicker.getValue();
-            Double pesoPorCaixa = Double.parseDouble(pesoPorCaixaField.getText());
-
 
             if (produtoEditado != null) {
                 produtoEditado.setNome(nome);
@@ -86,7 +78,6 @@ public class ProdutoCadastroController {
                 produtoEditado.setQuantidade(quantidade);
                 produtoEditado.setCodigoBarras(codigoBarras);
                 produtoEditado.setDataVencimento(dataVencimentoPicker.getValue());
-                produtoEditado.setPesoPorCaixa(pesoPorCaixa);
 
                 produtoRepository.save(produtoEditado);
                 lblMensagem.setText("Produto atualizado com sucesso!");
@@ -109,7 +100,6 @@ public class ProdutoCadastroController {
             txtPreco.clear();
             txtQuantidade.clear();
             codigoBarrasField.clear();
-            pesoPorCaixaField.clear();
             dataVencimentoPicker.setValue(null);
 
             produtoEditado = null;
