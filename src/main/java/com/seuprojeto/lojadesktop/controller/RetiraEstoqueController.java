@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 
 @Component
 public class RetiraEstoqueController {
@@ -35,11 +36,11 @@ public class RetiraEstoqueController {
     @FXML private TextField formaPagamentoField;
 
     @FXML private ComboBox<Produto> produtoComboBox;
-    @FXML private TextField quantidadeField;
+    @FXML private TextField quantidadeField; // Este campo agora receberá a quantidade em CAIXAS
 
     @FXML private TableView<ItemVenda> produtosTable;
     @FXML private TableColumn<ItemVenda, String> produtoColumn;
-    @FXML private TableColumn<ItemVenda, Integer> quantidadeColumn;
+    @FXML private TableColumn<ItemVenda, Double> quantidadeColumn; // ALTERADO: Agora é Double para KG
     @FXML private TableColumn<ItemVenda, Void> acaoColumn;
 
     @FXML private Label lblNomeProduto;
@@ -56,26 +57,30 @@ public class RetiraEstoqueController {
         carregarProdutos();
         carregarClientesEFucionarios();
         dataPicker.setValue(LocalDate.now());
-        produtoComboBox.setEditable(true);
-        produtoComboBox.getEditor().textProperty().addListener((obs, oldVal, newVal) -> {
-            for (Produto p : produtoComboBox.getItems()) {
-                if (p.getCodigoBarras().equalsIgnoreCase(newVal.trim())) {
-                    produtoComboBox.setValue(p);
-                    break;
-                }
+
+        produtoComboBox.setEditable(false);
+
+        produtoComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                lblNomeProduto.setText("Produto selecionado: " + newVal.getNome());
+            } else {
+                lblNomeProduto.setText("Produto Selecionado aparecerá aqui");
             }
         });
-
     }
 
     private void configurarTabela() {
         produtoColumn.setCellValueFactory(new PropertyValueFactory<>("nomeProduto"));
-        quantidadeColumn.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
+        quantidadeColumn.setCellValueFactory(new PropertyValueFactory<>("quantidade")); // Agora exibe KG
         produtosTable.setItems(itensVenda);
     }
 
     private void carregarProdutos() {
-        produtoComboBox.setItems(FXCollections.observableArrayList(produtoService.findAll()));
+        List<Produto> allProducts = produtoService.findAll();
+        if (allProducts.isEmpty()) {
+            System.out.println("Nenhum produto encontrado no banco de dados. Verifique se há produtos cadastrados.");
+        }
+        produtoComboBox.setItems(FXCollections.observableArrayList(allProducts));
     }
 
     private void carregarClientesEFucionarios() {
@@ -85,7 +90,6 @@ public class RetiraEstoqueController {
 
     public void setProdutoSelecionado(Produto produto) {
         this.produtoSelecionado = produto;
-        lblNomeProduto.setText("Produto selecionado: " + produto.getNome());
         produtoComboBox.setValue(produto);
     }
 
@@ -94,26 +98,50 @@ public class RetiraEstoqueController {
         Produto produto = produtoComboBox.getValue();
 
         if (produto == null) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Selecione um produto.");
+            mostrarAlerta(Alert.AlertType.WARNING, "Selecione um produto válido.");
             return;
         }
 
-        int quantidade;
+        int quantidadeCaixas; // Agora esperamos a quantidade em CAIXAS
         try {
-            quantidade = Integer.parseInt(quantidadeField.getText());
-            if (quantidade <= 0) throw new NumberFormatException();
+            quantidadeCaixas = Integer.parseInt(quantidadeField.getText());
+            if (quantidadeCaixas <= 0) throw new NumberFormatException();
         } catch (NumberFormatException e) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Digite uma quantidade válida em gramas.");
+            mostrarAlerta(Alert.AlertType.WARNING, "Digite uma quantidade válida de caixas.");
             return;
         }
 
-        if (quantidade > produto.getQuantidade()) {
-            mostrarAlerta(Alert.AlertType.ERROR, "Estoque insuficiente para o produto: " + produto.getNome());
+        // CONVERSÃO CRÍTICA: Converte a quantidade de caixas para quilogramas
+        double quantidadeEmKgParaAdicionar = quantidadeCaixas * 25.0; // Assumindo 25.0 kg por caixa
+
+        if (quantidadeEmKgParaAdicionar > produto.getQuantidade()) { // Compara em KG
+            mostrarAlerta(Alert.AlertType.ERROR, "Estoque insuficiente para o produto: " + produto.getNome() + ". Quantidade em estoque: " + produto.getQuantidade() + " kg.");
             return;
         }
 
-        itensVenda.add(new ItemVenda(produto, quantidade));
+        // Verifica se o produto já está na lista para atualizar a quantidade
+        boolean foundInList = false;
+        for (ItemVenda item : itensVenda) {
+            if (item.getProduto().getIdProduto().equals(produto.getIdProduto())) {
+                // Atualiza a quantidade do item existente (em KG)
+                double novaQuantidadeTotalEmKg = item.getQuantidade() + quantidadeEmKgParaAdicionar;
+                if (novaQuantidadeTotalEmKg > produto.getQuantidade()) { // Verifica o estoque total
+                    mostrarAlerta(Alert.AlertType.ERROR, "Estoque insuficiente para o produto: " + produto.getNome() + ". Quantidade em estoque: " + produto.getQuantidade() + " kg.");
+                    return;
+                }
+                item.setQuantidade(novaQuantidadeTotalEmKg); // Adiciona em KG
+                produtosTable.refresh(); // Atualiza a tabela para mostrar a quantidade atualizada
+                foundInList = true;
+                break;
+            }
+        }
+
+        if (!foundInList) {
+            itensVenda.add(new ItemVenda(produto, quantidadeEmKgParaAdicionar)); // Adiciona novo item (quantidade em KG)
+        }
+
         quantidadeField.clear();
+        produtoComboBox.setValue(null);
     }
 
     private void configurarBotaoRemover() {
@@ -155,14 +183,14 @@ public class RetiraEstoqueController {
         try {
             for (ItemVenda item : itensVenda) {
                 Produto produto = item.getProduto();
-                int quantidadeVendida = item.getQuantidade();
+                double quantidadeVendidaEmKg = item.getQuantidade(); // Já está em KG
 
-                if (quantidadeVendida > produto.getQuantidade()) {
+                if (quantidadeVendidaEmKg > produto.getQuantidade()) { // Compara em KG
                     mostrarAlerta(Alert.AlertType.ERROR, "Estoque insuficiente para: " + produto.getNome());
                     return;
                 }
 
-                produto.setQuantidade(produto.getQuantidade() - quantidadeVendida);
+                produto.setQuantidade(produto.getQuantidade() - quantidadeVendidaEmKg); // Atualiza o estoque em KG
                 produtoService.save(produto);
             }
 
@@ -190,11 +218,12 @@ public class RetiraEstoqueController {
         alert.showAndWait();
     }
 
+    // CLASSE INTERNA ItemVenda - ALTERADA PARA TRABALHAR COM DOUBLE (KG)
     public static class ItemVenda {
         private final Produto produto;
-        private final int quantidade;
+        private double quantidade; // ALTERADO: Agora em quilogramas (KG)
 
-        public ItemVenda(Produto produto, int quantidade) {
+        public ItemVenda(Produto produto, double quantidade) { // ALTERADO: Construtor aceita double
             this.produto = produto;
             this.quantidade = quantidade;
         }
@@ -203,8 +232,12 @@ public class RetiraEstoqueController {
             return produto.getNome();
         }
 
-        public int getQuantidade() {
+        public double getQuantidade() { // ALTERADO: Retorna double
             return quantidade;
+        }
+
+        public void setQuantidade(double quantidade) { // ALTERADO: Aceita double
+            this.quantidade = quantidade;
         }
 
         public Produto getProduto() {
@@ -240,14 +273,11 @@ public class RetiraEstoqueController {
             stage.setResizable(false);
             stage.showAndWait();
 
-            // Atualiza o ComboBox de cliente depois que fechar o cadastro
             clienteComboBox.setItems(FXCollections.observableArrayList(
                     clienteService.findAll().stream()
                             .map(Cliente::getNome)
                             .toList()
             ));
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -268,6 +298,4 @@ public class RetiraEstoqueController {
             e.printStackTrace();
         }
     }
-
-
 }

@@ -45,7 +45,7 @@ public class ProdutoListagemController {
     }
 
 
-    private void adicionarProduto(String nome, String tipo, Double preco, String vencimento, String imagemPath, Integer id) {
+    private void adicionarProduto(String nome, String tipo, Double preco, String vencimento, String imagemPath, Integer id, Integer quantidadeCaixas) {
         HBox card = new HBox(15);
         card.getStyleClass().add("product-card");
 
@@ -56,13 +56,14 @@ public class ProdutoListagemController {
         Label lblTipo = new Label("Tipo: " + tipo);
         Label lblPreco = new Label("Preço: R$ " + preco);
         Label lblVencimento = new Label("Vencimento: " + vencimento);
-
+        Label lblCaixas = new Label(String.format("Caixas: %d", quantidadeCaixas));
 
         lblTipo.getStyleClass().add("product-info");
         lblPreco.getStyleClass().add("product-info");
         lblVencimento.getStyleClass().add("product-info");
+        lblCaixas.getStyleClass().add("product-info");
 
-        infos.getChildren().addAll(lblNome, lblTipo, lblPreco, lblVencimento);
+        infos.getChildren().addAll(lblNome, lblTipo, lblPreco, lblVencimento, lblCaixas);
 
         Region espacador = new Region();
         HBox.setHgrow(espacador, Priority.ALWAYS);
@@ -123,7 +124,10 @@ public class ProdutoListagemController {
         List<Produto> produtos = produtoService.findAll();
         for (Produto produto : produtos) {
             String vencimento = produto.getDataVencimento() != null ? produto.getDataVencimento().toString() : "Sem Data";
-            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), vencimento, "/view/imagens/queijo1.png", produto.getIdProduto());
+
+            Integer quantidadeCaixas = produto.getQuantidadeCaixas();
+
+            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), vencimento, "/view/imagens/queijo1.png", produto.getIdProduto(), quantidadeCaixas);
 
         }
     }
@@ -141,8 +145,10 @@ public class ProdutoListagemController {
         listaProdutos.getChildren().clear();
         for (Produto produto : produtos) {
             String vencimento = produto.getDataVencimento() != null ? produto.getDataVencimento().toString() : "Sem Data";
-            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), vencimento, "/view/imagens/queijo1.png", produto.getIdProduto());
 
+            Integer quantidadeCaixas = produto.getQuantidadeCaixas();
+
+            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), vencimento, "/view/imagens/queijo1.png", produto.getIdProduto(), quantidadeCaixas);
         }
     }
     @FXML
@@ -231,5 +237,6 @@ public class ProdutoListagemController {
             }
         }
     }
+
 
 }

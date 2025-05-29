@@ -51,8 +51,8 @@
             <Label text="Produto:" style="-fx-text-fill: white;"/>
             <ComboBox fx:id="produtoComboBox" prefWidth="300.0"
                       style="-fx-background-radius: 10;"/>
-            <Label text="Quantidade (g):" style="-fx-text-fill: white;"/>
-            <TextField fx:id="quantidadeField" promptText="Ex: 250" prefWidth="100.0"
+            <Label text="Quantidade (caixas):" style="-fx-text-fill: white;"/>
+            <TextField fx:id="quantidadeField" promptText="Ex: 2" prefWidth="100.0"
                        style="-fx-background-radius: 10;"/>
             <Button text="Adicionar Produto" onAction="#onAdicionarProduto"
                     style="-fx-background-color: #00ADEF; -fx-text-fill: white; -fx-background-radius: 10;"/>
@@ -62,7 +62,7 @@
         <TableView fx:id="produtosTable" prefHeight="200.0">
             <columns>
                 <TableColumn fx:id="produtoColumn" text="Produto" prefWidth="250.0"/>
-                <TableColumn fx:id="quantidadeColumn" text="Quantidade (g)" prefWidth="150.0"/>
+                <TableColumn fx:id="quantidadeColumn" text="Quantidade (kg)" prefWidth="150.0"/>
                 <TableColumn fx:id="acaoColumn" text="Ação" prefWidth="100.0"/>
             </columns>
         </TableView>

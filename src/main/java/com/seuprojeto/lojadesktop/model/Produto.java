@@ -142,4 +142,12 @@ public class Produto {
     public LocalDate getDataVencimento() {
         return dataVencimento;
     }
+
+    public Integer getQuantidadeCaixas() {
+        if (this.quantidade == null || this.quantidade <= 0) {
+            return 0;
+        }
+        // Usamos Math.floor para arredondar para baixo, garantindo apenas caixas completas
+        return (int) Math.floor(this.quantidade / 25.0);
+    }
 }

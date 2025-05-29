@@ -47,11 +47,9 @@
                         <TextArea fx:id="txtDescricao" prefColumnCount="20" prefRowCount="3" styleClass="produto-textarea" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
                         <!-- Campo de Quantidade -->
+                        <Label styleClass="produto-label" text="Quantidade (KG):" GridPane.columnIndex="0" GridPane.rowIndex="5" />
                         <TextField fx:id="txtQuantidade" promptText="Quantidade em KG (inteiro)" styleClass="produto-textfield" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                         <Label styleClass="produto-info" text="A quantidade será armazenada em KG inteiros." GridPane.columnIndex="1" GridPane.rowIndex="6" />
-
-                        <Label styleClass="produto-label" text="Peso por Caixa (kg):" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-                        <TextField fx:id="pesoPorCaixaField" promptText="Peso por Caixa (ex: 25.0)" styleClass="produto-textfield" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 
                         <!-- Código de Barras -->
                         <Label styleClass="produto-label" text="Código de Barras:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
