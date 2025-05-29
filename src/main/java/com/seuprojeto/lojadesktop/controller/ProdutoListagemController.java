@@ -37,14 +37,32 @@ public class ProdutoListagemController {
     @FXML
     private Label lblNomeProduto;
 
+    @FXML
+    private Label lblValorTotalEstoque;
 
     @FXML
     public void initialize() {
         carregarProdutos();
         txtPesquisar.setOnAction(e -> pesquisarProduto());
         verificarProdutosVencidos();// Chama a verificação na inicialização
+        calcularEExibirValorTotalEstoque();
     }
 
+    private void calcularEExibirValorTotalEstoque() {
+        List<Produto> todosOsProdutos = produtoService.findAll();
+        double valorTotalEstoque = 0.0;
+
+        for (Produto produto : todosOsProdutos) {
+            // O getPreco() agora é o preço por caixa
+            // O getQuantidadeCaixas() retorna o número de caixas completas em estoque
+            // Multiplicamos o número de caixas pelo preço por caixa
+            valorTotalEstoque += produto.getQuantidadeCaixas() * produto.getPreco();
+        }
+
+        // Formata o valor para exibição (ex: R$ 1.234,56)
+        String valorFormatado = String.format("R$ %.2f", valorTotalEstoque);
+        lblValorTotalEstoque.setText("Valor Total do Estoque: " + valorFormatado);
+    }
 
     private void adicionarProduto(String nome, String tipo, Double preco, String vencimento, String imagemPath, Integer id, Integer quantidadeCaixas) {
         HBox card = new HBox(15);
@@ -129,8 +147,8 @@ public class ProdutoListagemController {
             Integer quantidadeCaixas = produto.getQuantidadeCaixas();
 
             adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), vencimento, "/view/imagens/queijo1.png", produto.getIdProduto(), quantidadeCaixas);
-
         }
+        calcularEExibirValorTotalEstoque();
     }
     @FXML
     public void pesquisarProduto() {
