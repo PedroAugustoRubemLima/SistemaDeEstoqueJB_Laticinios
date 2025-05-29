@@ -5,7 +5,14 @@ import com.seuprojeto.lojadesktop.service.ClienteService;
 import com.seuprojeto.lojadesktop.SpringContextHolder;
 import com.seuprojeto.lojadesktop.model.Produto;
 import com.seuprojeto.lojadesktop.service.ProdutoService;
-import com.seuprojeto.lojadesktop.service.VendaService;
+import com.seuprojeto.lojadesktop.service.VendaService; // Embora VendaService exista, vamos usar CompraService para o histórico
+import com.seuprojeto.lojadesktop.model.Compra; // Importar a entidade Compra
+import com.seuprojeto.lojadesktop.model.ComPro; // Importar a entidade ComPro
+import com.seuprojeto.lojadesktop.model.Funcionario; // Importar a entidade Funcionario
+import com.seuprojeto.lojadesktop.service.CompraService; // Importar o serviço de Compra
+import com.seuprojeto.lojadesktop.service.ComProService; // Importar o serviço de ComPro
+import com.seuprojeto.lojadesktop.service.FuncionarioService; // Importar o serviço de Funcionario
+
 import jakarta.annotation.Resource;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,12 +30,20 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional; // Para lidar com Optional de findById
+import java.net.URL;
 
 @Component
 public class RetiraEstoqueController {
 
     @Autowired
     private ClienteService clienteService;
+    @Autowired // Adicionado
+    private FuncionarioService funcionarioService; // Adicionado
+    @Autowired // Adicionado
+    private CompraService compraService; // Adicionado
+    @Autowired // Adicionado
+    private ComProService comProService; // Adicionado
 
     @FXML private ComboBox<String> clienteComboBox;
     @FXML private ComboBox<String> funcionarioComboBox;
@@ -45,8 +60,9 @@ public class RetiraEstoqueController {
 
     @FXML private Label lblNomeProduto;
 
-    @Resource private ProdutoService produtoService;
-    @Resource private VendaService vendaService;
+    @Resource
+    private ProdutoService produtoService;
+    @Resource private VendaService vendaService; // Mantido, mas não será usado para salvar a Compra
 
     private final ObservableList<ItemVenda> itensVenda = FXCollections.observableArrayList();
     private Produto produtoSelecionado;
@@ -84,8 +100,17 @@ public class RetiraEstoqueController {
     }
 
     private void carregarClientesEFucionarios() {
-        clienteComboBox.setItems(FXCollections.observableArrayList("João", "Maria", "Pedro"));
-        funcionarioComboBox.setItems(FXCollections.observableArrayList("Atendente 1", "Atendente 2"));
+        // Carrega clientes do serviço
+        List<String> nomesClientes = clienteService.findAll().stream()
+                .map(Cliente::getNome)
+                .toList();
+        clienteComboBox.setItems(FXCollections.observableArrayList(nomesClientes));
+
+        // Carrega funcionários do serviço
+        List<String> nomesFuncionarios = funcionarioService.findAll().stream()
+                .map(Funcionario::getNome)
+                .toList();
+        funcionarioComboBox.setItems(FXCollections.observableArrayList(nomesFuncionarios));
     }
 
     public void setProdutoSelecionado(Produto produto) {
@@ -170,17 +195,41 @@ public class RetiraEstoqueController {
             return;
         }
 
-        String cliente = clienteComboBox.getValue();
-        String funcionario = funcionarioComboBox.getValue();
+        String clienteNome = clienteComboBox.getValue();
+        String funcionarioNome = funcionarioComboBox.getValue();
         LocalDate data = dataPicker.getValue();
         String formaPagamento = formaPagamentoField.getText();
 
-        if (cliente == null || funcionario == null || formaPagamento.isBlank()) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Preencha todos os campos da venda.");
+        if (clienteNome == null || funcionarioNome == null || formaPagamento.isBlank()) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Preencha todos os campos da venda (Cliente, Funcionário, Forma de Pagamento).");
             return;
         }
 
         try {
+            // 1. Buscar Cliente e Funcionário pelo nome (ou ID, se disponível)
+            // Para simplificar, vamos buscar o primeiro cliente/funcionário com o nome correspondente.
+            // Em um sistema real, você teria um mecanismo mais robusto (ex: ComboBox de objetos, não strings).
+            Optional<Cliente> clienteOpt = clienteService.findAll().stream()
+                    .filter(c -> c.getNome().equals(clienteNome))
+                    .findFirst();
+            if (clienteOpt.isEmpty()) {
+                mostrarAlerta(Alert.AlertType.ERROR, "Cliente não encontrado.");
+                return;
+            }
+            Cliente cliente = clienteOpt.get();
+
+            Optional<Funcionario> funcionarioOpt = funcionarioService.findAll().stream()
+                    .filter(f -> f.getNome().equals(funcionarioNome))
+                    .findFirst();
+            if (funcionarioOpt.isEmpty()) {
+                mostrarAlerta(Alert.AlertType.ERROR, "Funcionário não encontrado.");
+                return;
+            }
+            Funcionario funcionario = funcionarioOpt.get();
+
+            double valorTotalVenda = 0.0;
+
+            // 2. Atualizar estoque e calcular valor total
             for (ItemVenda item : itensVenda) {
                 Produto produto = item.getProduto();
                 double quantidadeVendidaEmKg = item.getQuantidade(); // Já está em KG
@@ -191,7 +240,39 @@ public class RetiraEstoqueController {
                 }
 
                 produto.setQuantidade(produto.getQuantidade() - quantidadeVendidaEmKg); // Atualiza o estoque em KG
-                produtoService.save(produto);
+                produtoService.save(produto); // Salva o produto com a nova quantidade
+
+                double numeroDeCaixasVendidas = quantidadeVendidaEmKg / 25.0;
+                valorTotalVenda += produto.getPreco() * numeroDeCaixasVendidas; // Calcula o valor para este item
+            }
+
+            // 3. Criar e Salvar a Compra
+            Compra novaCompra = new Compra();
+            novaCompra.setCliente(cliente);
+            novaCompra.setFuncionario(funcionario);
+            novaCompra.setData(data);
+            novaCompra.setFormaPagamento(formaPagamento);
+            novaCompra.setValorTotal(valorTotalVenda);
+
+            Compra compraSalva = compraService.save(novaCompra); // Salva a compra principal
+
+            // 4. Criar e Salvar os itens ComPro para a compra
+            for (ItemVenda item : itensVenda) {
+                ComPro comPro = new ComPro();
+                ComPro.ComProId comProId = new ComPro.ComProId();
+                comProId.setIdCompra(compraSalva.getIdCompra());
+                comProId.setIdPro(item.getProduto().getIdProduto());
+                comPro.setId(comProId);
+                comPro.setCompra(compraSalva);
+                comPro.setProduto(item.getProduto());
+                // Convertendo KG para "caixas" (inteiro), arredondando para o mais próximo
+                // Isso é uma adaptação devido à inconsistência do tipo Integer em ComPro.quantidade
+                int quantidadeComPro = (int) Math.round(item.getQuantidade() / 25.0);
+                if (quantidadeComPro == 0 && item.getQuantidade() > 0) { // Garante que pelo menos 1 unidade seja registrada se houver venda
+                    quantidadeComPro = 1;
+                }
+                comPro.setQuantidade(quantidadeComPro);
+                comProService.save(comPro); // Salva o item da compra
             }
 
             mostrarAlerta(Alert.AlertType.INFORMATION, "Venda finalizada com sucesso!");
@@ -199,7 +280,7 @@ public class RetiraEstoqueController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            mostrarAlerta(Alert.AlertType.ERROR, "Erro ao finalizar a venda.");
+            mostrarAlerta(Alert.AlertType.ERROR, "Erro ao finalizar a venda: " + e.getMessage());
         }
     }
 
@@ -273,6 +354,7 @@ public class RetiraEstoqueController {
             stage.setResizable(false);
             stage.showAndWait();
 
+            // Recarrega a lista de clientes após o cadastro
             clienteComboBox.setItems(FXCollections.observableArrayList(
                     clienteService.findAll().stream()
                             .map(Cliente::getNome)
@@ -286,16 +368,21 @@ public class RetiraEstoqueController {
     @FXML
     private void abrirHistoricoVendas() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/telas/HistoricoVendas.fxml"));
-            fxmlLoader.setControllerFactory(SpringContextHolder.getContext()::getBean);
+            // Carrega o FXML do histórico de vendas
+            URL fxmlLocation = getClass().getResource("/view/telas/HistoricoVendas.fxml");
+            FXMLLoader loader = new FXMLLoader(fxmlLocation);
 
-            Stage stage = new Stage();
-            stage.setTitle("Histórico de Vendas");
-            stage.setScene(new Scene(fxmlLoader.load()));
-            stage.setResizable(false);
-            stage.show();
-        } catch (Exception e) {
+            loader.setControllerFactory(SpringContextHolder.getContext()::getBean);
+
+            AnchorPane pane = loader.load();
+
+            // Obtém a cena atual e define o novo painel como raiz
+            // Usamos lblNomeProduto.getScene() para obter a cena atual
+            lblNomeProduto.getScene().setRoot(pane);
+
+        } catch (IOException e) {
             e.printStackTrace();
+            mostrarAlerta(Alert.AlertType.ERROR, "Erro ao abrir o histórico de vendas: " + e.getMessage());
         }
     }
 }

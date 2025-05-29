@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.List;
 import java.time.LocalDate;
 import javafx.scene.control.Alert;
+import java.net.URL;
 
 @Component
 public class ProdutoListagemController {
@@ -203,16 +204,21 @@ public class ProdutoListagemController {
     @FXML
     private void abrirHistoricoVendas() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/telas/HistoricoVendas.fxml"));
+            // Carrega o FXML do histórico de vendas
+            URL fxmlLocation = getClass().getResource("/view/telas/HistoricoVendas.fxml");
+            FXMLLoader fxmlLoader = new FXMLLoader(fxmlLocation);
             fxmlLoader.setControllerFactory(SpringContextHolder.getContext()::getBean);
 
-            Stage stage = new Stage();
-            stage.setTitle("Histórico de Vendas");
-            stage.setScene(new Scene(fxmlLoader.load()));
-            stage.setResizable(false);
-            stage.show();
-        } catch (Exception e) {
+            // Carrega o painel do histórico
+            AnchorPane historicoPane = fxmlLoader.load();
+
+            // Obtém a cena atual e define o novo painel como raiz
+            // Usamos txtPesquisar.getScene() para obter a cena atual, pois é um nó da cena
+            txtPesquisar.getScene().setRoot(historicoPane);
+
+        } catch (IOException e) {
             e.printStackTrace();
+            mostrarAlerta("Erro", "Erro ao abrir o histórico de vendas: " + e.getMessage());
         }
     }
 

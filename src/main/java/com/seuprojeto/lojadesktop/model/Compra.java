@@ -12,8 +12,8 @@ public class Compra {
     @Column(name = "ID_Compra")
     private Integer idCompra;
 
-    @Column(name = "Forma_paga", length = 50, nullable = false)
-    private String formaPaga;
+    @Column(name = "forma_pagamento", length = 50, nullable = false)
+    private String formaPagamento;
 
     @Column(name = "Valor_total", nullable = false)
     private Double valorTotal;
@@ -34,7 +34,7 @@ public class Compra {
 
     // Construtor com todos os campos (exceto ID gerado)
     public Compra(String formaPaga, Double valorTotal, LocalDate data, Cliente cliente, Funcionario funcionario) {
-        this.formaPaga = formaPaga;
+        this.formaPagamento = formaPaga;
         this.valorTotal = valorTotal;
         this.data = data;
         this.cliente = cliente;
@@ -50,12 +50,12 @@ public class Compra {
         this.idCompra = idCompra;
     }
 
-    public String getFormaPaga() {
-        return formaPaga;
+    public String getFormaPagamento() {
+        return formaPagamento;
     }
 
-    public void setFormaPaga(String formaPaga) {
-        this.formaPaga = formaPaga;
+    public void setFormaPagamento(String formaPagamento) {
+        this.formaPagamento = formaPagamento;
     }
 
     public Double getValorTotal() {
@@ -94,7 +94,7 @@ public class Compra {
     public String toString() {
         return "Compra{" +
                 "idCompra=" + idCompra +
-                ", formaPaga='" + formaPaga + '\'' +
+                ", formaPaga='" + formaPagamento + '\'' +
                 ", valorTotal=" + valorTotal +
                 ", data=" + data +
                 ", cliente=" + (cliente != null ? cliente.getId() : "null") +
