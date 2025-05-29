@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
+import java.time.LocalDate;
+import javafx.scene.control.Alert;
 
 @Component
 public class ProdutoListagemController {
@@ -39,7 +41,7 @@ public class ProdutoListagemController {
     public void initialize() {
         carregarProdutos();
         txtPesquisar.setOnAction(e -> pesquisarProduto());
-// organiza melhor o código
+        verificarProdutosVencidos();// Chama a verificação na inicialização
     }
 
 
@@ -205,6 +207,28 @@ public class ProdutoListagemController {
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void mostrarAlerta(String titulo, String mensagem) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensagem);
+        alert.showAndWait();
+    }
+
+    private void verificarProdutosVencidos() {
+        LocalDate hoje = LocalDate.now();
+        List<Produto> produtos = produtoService.findAll();
+        for (Produto produto : produtos) {
+            if (produto.getDataVencimento() != null && produto.getDataVencimento().isBefore(hoje)) {
+                mostrarAlerta("Produto Vencido", "O produto '" + produto.getNome() + "' com vencimento em " + produto.getDataVencimento() + " está vencido!");
+            } else if (produto.getDataVencimento() != null && produto.getDataVencimento().isEqual(hoje)) {
+                mostrarAlerta("Produto Vencendo Hoje", "O produto '" + produto.getNome() + "' vence hoje (" + produto.getDataVencimento() + ")!");
+            } else if (produto.getDataVencimento() != null && produto.getDataVencimento().isBefore(hoje.plusDays(7))) {
+                mostrarAlerta("Produto Próximo do Vencimento", "O produto '" + produto.getNome() + "' vencerá em breve (" + produto.getDataVencimento() + ")!");
+            }
         }
     }
 

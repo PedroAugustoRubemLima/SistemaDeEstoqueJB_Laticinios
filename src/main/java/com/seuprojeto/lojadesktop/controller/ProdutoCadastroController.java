@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 
 @Component
 public class ProdutoCadastroController {
@@ -41,20 +42,29 @@ public class ProdutoCadastroController {
     @FXML
     private DatePicker dataVencimentoPicker;
 
+    @FXML
+    private TextField pesoPorCaixaField;
 
 
     public static Produto produtoEditado;
 
     public void preencherCampos(Produto produto) {
-        produtoEditado = produto;
-        txtNome.setText(produto.getNome());
-        txtTipo.setText(produto.getTipo());
-        txtPreco.setText(String.valueOf(produto.getPreco()));
-        txtQuantidade.setText(String.valueOf(produto.getQuantidade()));
-        codigoBarrasField.setText(produto.getCodigoBarras());
-        dataVencimentoPicker.setValue(produto.getDataVencimento());
+        if (produto != null) {
+            produtoEditado = produto;
+            txtNome.setText(produto.getNome());
+            txtTipo.setText(produto.getTipo());
+            txtPreco.setText(String.valueOf(produto.getPreco()));
+            txtQuantidade.setText(String.valueOf(produto.getQuantidade()));
+            codigoBarrasField.setText(produto.getCodigoBarras());
+            dataVencimentoPicker.setValue(produto.getDataVencimento());
+            if (produto.getDataVencimento() != null) {
+                dataVencimentoPicker.setValue(produto.getDataVencimento());
+            }
+            if (produto.getPesoPorCaixa() != null) {
+                pesoPorCaixaField.setText(String.valueOf(produto.getPesoPorCaixa()));
+            }
+        }
     }
-
 
     @FXML
     public void cadastrarProduto() {
@@ -62,9 +72,12 @@ public class ProdutoCadastroController {
         try {
             String nome = txtNome.getText();
             String tipo = txtTipo.getText();
-            double preco = Double.parseDouble(txtPreco.getText());
-            int quantidade = Integer.parseInt(txtQuantidade.getText());
+            Double preco = Double.parseDouble(txtPreco.getText());
+            Double quantidade = Double.parseDouble(txtQuantidade.getText());
             String codigoBarras = codigoBarrasField.getText();
+            LocalDate dataVencimento = dataVencimentoPicker.getValue();
+            Double pesoPorCaixa = Double.parseDouble(pesoPorCaixaField.getText());
+
 
             if (produtoEditado != null) {
                 produtoEditado.setNome(nome);
@@ -72,7 +85,8 @@ public class ProdutoCadastroController {
                 produtoEditado.setPreco(preco);
                 produtoEditado.setQuantidade(quantidade);
                 produtoEditado.setCodigoBarras(codigoBarras);
-                produtoEditado.setDataVencimento(dataVencimentoPicker.getValue()); //<-- Aqui adiciona
+                produtoEditado.setDataVencimento(dataVencimentoPicker.getValue());
+                produtoEditado.setPesoPorCaixa(pesoPorCaixa);
 
                 produtoRepository.save(produtoEditado);
                 lblMensagem.setText("Produto atualizado com sucesso!");
@@ -94,7 +108,9 @@ public class ProdutoCadastroController {
             txtTipo.clear();
             txtPreco.clear();
             txtQuantidade.clear();
-            codigoBarrasField.clear(); // <-- limpar também o campo novo
+            codigoBarrasField.clear();
+            pesoPorCaixaField.clear();
+            dataVencimentoPicker.setValue(null);
 
             produtoEditado = null;
 

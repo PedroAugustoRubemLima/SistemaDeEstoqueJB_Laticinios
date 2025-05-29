@@ -24,7 +24,7 @@ public class Produto {
     private Double preco;
 
     @Column(name = "quantidade", nullable = false)
-    private Integer quantidade;
+    private Double quantidade;
 
     @Column(name = "data_criacao", updatable = false)
     private LocalDateTime dataCriacao;
@@ -38,12 +38,15 @@ public class Produto {
     @Column(name = "data_vencimento")
     private LocalDate dataVencimento;
 
+    @Column(name = "peso_por_caixa")
+    private Double pesoPorCaixa; // em kg
+
 
     // Construtor padrão
     public Produto() {
     }
     // Construtor com campos principais
-    public Produto(String nome, String tipo, Double preco, Integer quantidade, String codigoBarras) {
+    public Produto(String nome, String tipo, Double preco, Double quantidade, String codigoBarras) {
         this.nome = nome;
         this.tipo = tipo;
         this.preco = preco;
@@ -85,11 +88,11 @@ public class Produto {
         this.preco = preco;
     }
 
-    public Integer getQuantidade() {
+    public Double getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(Integer quantidade) {
+    public void setQuantidade(Double quantidade) {
         this.quantidade = quantidade;
     }
 
@@ -109,7 +112,13 @@ public class Produto {
         this.codigoBarras = codigoBarras;
     }
 
+    public Double getPesoPorCaixa() {
+        return pesoPorCaixa;
+    }
 
+    public void setPesoPorCaixa(Double pesoPorCaixa) {
+        this.pesoPorCaixa = pesoPorCaixa;
+    }
 
     @PrePersist
     public void onCreate() {
