@@ -7,20 +7,18 @@ import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
 import java.time.LocalDate;
-import javafx.scene.control.Alert;
 import java.net.URL;
+import java.util.Optional;
 
 @Component
 public class ProdutoListagemController {
@@ -40,11 +38,15 @@ public class ProdutoListagemController {
     @FXML
     private Label lblValorTotalEstoque;
 
+    // NOVO CAMINHO PADRÃO PARA AS IMAGENS DE PRODUTOS
+    private static final String DEFAULT_IMAGE_PATH = "/assets/product_images/default_product.png";
+
+
     @FXML
     public void initialize() {
         carregarProdutos();
         txtPesquisar.setOnAction(e -> pesquisarProduto());
-        verificarProdutosVencidos();// Chama a verificação na inicialização
+        verificarProdutosVencidos();
         calcularEExibirValorTotalEstoque();
     }
 
@@ -53,18 +55,14 @@ public class ProdutoListagemController {
         double valorTotalEstoque = 0.0;
 
         for (Produto produto : todosOsProdutos) {
-            // O getPreco() agora é o preço por caixa
-            // O getQuantidadeCaixas() retorna o número de caixas completas em estoque
-            // Multiplicamos o número de caixas pelo preço por caixa
             valorTotalEstoque += produto.getQuantidadeCaixas() * produto.getPreco();
         }
 
-        // Formata o valor para exibição (ex: R$ 1.234,56)
         String valorFormatado = String.format("R$ %.2f", valorTotalEstoque);
         lblValorTotalEstoque.setText("Valor Total do Estoque: " + valorFormatado);
     }
 
-    private void adicionarProduto(String nome, String tipo, Double preco, String vencimento, String imagemPath, Integer id, Integer quantidadeCaixas) {
+    private void adicionarProduto(String nome, String tipo, Double preco, String vencimento, String imagePath, Integer id, Integer quantidadeCaixas) {
         HBox card = new HBox(15);
         card.getStyleClass().add("product-card");
 
@@ -87,11 +85,36 @@ public class ProdutoListagemController {
         Region espacador = new Region();
         HBox.setHgrow(espacador, Priority.ALWAYS);
 
-        ImageView imagem = new ImageView(new Image(getClass().getResourceAsStream(imagemPath)));
+        ImageView imagem = new ImageView();
         imagem.setFitHeight(60);
         imagem.setPreserveRatio(true);
 
-        // Botões de ação
+        // Tenta carregar a imagem do produto
+        URL imageUrl = null;
+        if (imagePath != null && !imagePath.isEmpty()) {
+            try {
+                imageUrl = getClass().getResource(imagePath);
+            } catch (Exception e) {
+                System.err.println("Erro ao obter URL da imagem para o produto " + nome + " no caminho: " + imagePath + " - " + e.getMessage());
+            }
+        }
+
+        if (imageUrl != null) {
+            imagem.setImage(new Image(imageUrl.toExternalForm()));
+        } else {
+            // Se não houver caminho de imagem, ou a imagem não for encontrada, usa a imagem padrão
+            try {
+                URL defaultImageUrl = getClass().getResource(DEFAULT_IMAGE_PATH);
+                if (defaultImageUrl != null) {
+                    imagem.setImage(new Image(defaultImageUrl.toExternalForm()));
+                } else {
+                    System.err.println("Imagem padrão não encontrada: " + DEFAULT_IMAGE_PATH);
+                }
+            } catch (Exception e) {
+                System.err.println("Erro ao carregar imagem padrão: " + e.getMessage());
+            }
+        }
+
         Button btnEditar = new Button("Editar");
         btnEditar.setOnAction(e -> editarProduto(id));
 
@@ -108,25 +131,19 @@ public class ProdutoListagemController {
         listaProdutos.getChildren().add(card);
     }
 
-
-
     @FXML
     public void abrirCadastro() {
         try {
             ProdutoCadastroController.produtoEditado = null;
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/telas/ProdutoCadastro.fxml"));
-            // Garantir que o Spring injete o controller
             loader.setControllerFactory(SpringContextHolder.getContext()::getBean);
-            // Carrega a tela
             AnchorPane pane = loader.load();
-            // Troca a cena
             listaProdutos.getScene().setRoot(pane);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 
     @FXML
     public void voltarParaLogin() {
@@ -138,18 +155,18 @@ public class ProdutoListagemController {
             e.printStackTrace();
         }
     }
+
     public void carregarProdutos() {
         listaProdutos.getChildren().clear();
         List<Produto> produtos = produtoService.findAll();
         for (Produto produto : produtos) {
             String vencimento = produto.getDataVencimento() != null ? produto.getDataVencimento().toString() : "Sem Data";
-
             Integer quantidadeCaixas = produto.getQuantidadeCaixas();
-
-            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), vencimento, "/view/imagens/queijo1.png", produto.getIdProduto(), quantidadeCaixas);
+            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), vencimento, produto.getImagePath(), produto.getIdProduto(), quantidadeCaixas);
         }
         calcularEExibirValorTotalEstoque();
     }
+
     @FXML
     public void pesquisarProduto() {
         String termo = txtPesquisar.getText();
@@ -164,17 +181,32 @@ public class ProdutoListagemController {
         listaProdutos.getChildren().clear();
         for (Produto produto : produtos) {
             String vencimento = produto.getDataVencimento() != null ? produto.getDataVencimento().toString() : "Sem Data";
-
             Integer quantidadeCaixas = produto.getQuantidadeCaixas();
-
-            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), vencimento, "/view/imagens/queijo1.png", produto.getIdProduto(), quantidadeCaixas);
+            adicionarProduto(produto.getNome(), produto.getTipo(), produto.getPreco(), vencimento, produto.getImagePath(), produto.getIdProduto(), quantidadeCaixas);
         }
     }
+
     @FXML
     public void deletarProduto(Integer id) {
-        produtoService.deleteById(id);
-        carregarProdutos(); // Recarrega a lista após a exclusão
+        // Adicione uma confirmação para o usuário antes de "deletar"
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmAlert.setTitle("Confirmar Exclusão");
+        confirmAlert.setHeaderText("Tem certeza que deseja inativar este produto?");
+        confirmAlert.setContentText("O produto será marcado como inativo e não aparecerá mais na listagem, mas seu histórico de vendas será preservado.");
+
+        Optional<ButtonType> result = confirmAlert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                produtoService.deleteById(id); // Agora faz o soft delete
+                carregarProdutos(); // Recarrega a lista após a "exclusão"
+                mostrarAlerta("Sucesso", "Produto inativado com sucesso!");
+            } catch (Exception e) {
+                mostrarAlerta("Erro", "Erro ao inativar produto: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
     }
+
     @FXML
     public void editarProduto(Integer id) {
         try {
@@ -185,14 +217,14 @@ public class ProdutoListagemController {
             AnchorPane pane = loader.load();
 
             ProdutoCadastroController cadastroController = loader.getController();
-            cadastroController.preencherCampos(produto); // Passa o produto para o controller de cadastro
+            cadastroController.preencherCampos(produto);
 
-            // Troca a cena para o cadastro de produto
             listaProdutos.getScene().setRoot(pane);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     @FXML
     public void abrirVendaComProduto(Integer idProduto) {
         try {
@@ -222,16 +254,11 @@ public class ProdutoListagemController {
     @FXML
     private void abrirHistoricoVendas() {
         try {
-            // Carrega o FXML do histórico de vendas
             URL fxmlLocation = getClass().getResource("/view/telas/HistoricoVendas.fxml");
             FXMLLoader fxmlLoader = new FXMLLoader(fxmlLocation);
             fxmlLoader.setControllerFactory(SpringContextHolder.getContext()::getBean);
 
-            // Carrega o painel do histórico
             AnchorPane historicoPane = fxmlLoader.load();
-
-            // Obtém a cena atual e define o novo painel como raiz
-            // Usamos txtPesquisar.getScene() para obter a cena atual, pois é um nó da cena
             txtPesquisar.getScene().setRoot(historicoPane);
 
         } catch (IOException e) {
@@ -261,6 +288,4 @@ public class ProdutoListagemController {
             }
         }
     }
-
-
 }

@@ -15,6 +15,11 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 
 @Component
 public class ProdutoCadastroController {
@@ -37,11 +42,18 @@ public class ProdutoCadastroController {
     @FXML
     private Label lblMensagem;
 
-    @FXML private TextField codigoBarrasField;
+    @FXML
+    private TextField codigoBarrasField;
 
     @FXML
     private DatePicker dataVencimentoPicker;
 
+    @FXML
+    private ImageView imageViewProduto;
+    @FXML
+    private Button btnAnexarImagem;
+
+    private String selectedImagePath;
 
     public static Produto produtoEditado;
 
@@ -56,6 +68,29 @@ public class ProdutoCadastroController {
             dataVencimentoPicker.setValue(produto.getDataVencimento());
             if (produto.getDataVencimento() != null) {
                 dataVencimentoPicker.setValue(produto.getDataVencimento());
+            }
+
+            // Carregar e exibir a imagem existente
+            if (produto.getImagePath() != null && !produto.getImagePath().isEmpty()) {
+                try {
+                    URL imageUrl = getClass().getResource(produto.getImagePath());
+                    if (imageUrl != null) {
+                        Image image = new Image(imageUrl.toExternalForm());
+                        imageViewProduto.setImage(image);
+                        this.selectedImagePath = produto.getImagePath();
+                    } else {
+                        System.err.println("Imagem não encontrada no caminho: " + produto.getImagePath());
+                        imageViewProduto.setImage(null);
+                        this.selectedImagePath = null;
+                    }
+                } catch (Exception e) {
+                    System.err.println("Erro ao carregar imagem para edição: " + e.getMessage());
+                    imageViewProduto.setImage(null);
+                    this.selectedImagePath = null;
+                }
+            } else {
+                imageViewProduto.setImage(null);
+                this.selectedImagePath = null;
             }
         }
     }
@@ -78,6 +113,7 @@ public class ProdutoCadastroController {
                 produtoEditado.setQuantidade(quantidade);
                 produtoEditado.setCodigoBarras(codigoBarras);
                 produtoEditado.setDataVencimento(dataVencimentoPicker.getValue());
+                produtoEditado.setImagePath(selectedImagePath);
 
                 produtoRepository.save(produtoEditado);
                 lblMensagem.setText("Produto atualizado com sucesso!");
@@ -89,27 +125,70 @@ public class ProdutoCadastroController {
                 novoProduto.setQuantidade(quantidade);
                 novoProduto.setCodigoBarras(codigoBarras);
                 novoProduto.setDataVencimento(dataVencimentoPicker.getValue());
+                novoProduto.setImagePath(selectedImagePath);
 
                 produtoRepository.save(novoProduto);
                 lblMensagem.setText("Produto salvo com sucesso!");
             }
 
-            // Limpa os campos após salvar
             txtNome.clear();
             txtTipo.clear();
             txtPreco.clear();
             txtQuantidade.clear();
             codigoBarrasField.clear();
             dataVencimentoPicker.setValue(null);
+            imageViewProduto.setImage(null);
+            selectedImagePath = null;
 
             produtoEditado = null;
 
+        } catch (NumberFormatException e) {
+            lblMensagem.setText("Erro de formato: Verifique Preço e Quantidade.");
+            e.printStackTrace();
         } catch (Exception e) {
             lblMensagem.setText("Erro ao salvar: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
+    @FXML
+    private void handleAnexarImagem() {
+        System.out.println("Botão Anexar Imagem clicado! Tentando abrir a galeria...");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/telas/ImageGallery.fxml"));
+            loader.setControllerFactory(SpringContextHolder.getContext()::getBean);
+
+            AnchorPane root = loader.load();
+            ImageGalleryController galleryController = loader.getController();
+
+            Stage stage = new Stage();
+            stage.setTitle("Galeria de Imagens");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.initOwner(btnAnexarImagem.getScene().getWindow());
+            stage.showAndWait();
+
+            String returnedPath = galleryController.getSelectedImagePath();
+            if (returnedPath != null && !returnedPath.isEmpty()) {
+                this.selectedImagePath = returnedPath;
+                URL imageUrl = getClass().getResource(this.selectedImagePath);
+                if (imageUrl != null) {
+                    imageViewProduto.setImage(new Image(imageUrl.toExternalForm()));
+                    lblMensagem.setText("Imagem selecionada da galeria.");
+                } else {
+                    lblMensagem.setText("Erro: Imagem selecionada não encontrada nos recursos.");
+                    imageViewProduto.setImage(null);
+                    this.selectedImagePath = null;
+                }
+            } else {
+                lblMensagem.setText("Nenhuma imagem selecionada.");
+            }
+
+        } catch (IOException e) {
+            lblMensagem.setText("Erro ao abrir a galeria de imagens: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     public void voltarParaListagem() {
@@ -126,6 +205,4 @@ public class ProdutoCadastroController {
             e.printStackTrace();
         }
     }
-
-
 }
