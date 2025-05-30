@@ -1,7 +1,6 @@
 package com.seuprojeto.lojadesktop.model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -41,10 +40,17 @@ public class Produto {
     @Column(name = "peso_por_caixa")
     private Double pesoPorCaixa; // em kg
 
+    @Column(name = "image_path", length = 255)
+    private String imagePath;
+
+    // NOVO CAMPO PARA SOFT DELETE
+    @Column(name = "ativo", nullable = false)
+    private Boolean ativo = true; // Por padrão, o produto é ativo
 
     // Construtor padrão
     public Produto() {
     }
+
     // Construtor com campos principais
     public Produto(String nome, String tipo, Double preco, Double quantidade, String codigoBarras) {
         this.nome = nome;
@@ -54,70 +60,35 @@ public class Produto {
         this.codigoBarras = codigoBarras;
     }
 
-    // Getters e Setters
+    // Getters e Setters (EXISTENTES)
+    public Integer getIdProduto() { return idProduto; }
+    public void setIdProduto(Integer idProduto) { this.idProduto = idProduto; }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+    public String getTipo() { return tipo; }
+    public void setTipo(String tipo) { this.tipo = tipo; }
+    public Double getPreco() { return preco; }
+    public void setPreco(Double preco) { this.preco = preco; }
+    public Double getQuantidade() { return quantidade; }
+    public void setQuantidade(Double quantidade) { this.quantidade = quantidade; }
+    public LocalDateTime getDataCriacao() { return dataCriacao; }
+    public LocalDateTime getDataAtualizacao() { return dataAtualizacao; }
+    public String getCodigoBarras() { return codigoBarras; }
+    public void setCodigoBarras(String codigoBarras) { this.codigoBarras = codigoBarras; }
+    public Double getPesoPorCaixa() { return pesoPorCaixa; }
+    public void setPesoPorCaixa(Double pesoPorCaixa) { this.pesoPorCaixa = pesoPorCaixa; }
+    public void setDataVencimento(LocalDate dataVencimento) { this.dataVencimento = dataVencimento; }
+    public LocalDate getDataVencimento() { return dataVencimento; }
+    public String getImagePath() { return imagePath; }
+    public void setImagePath(String imagePath) { this.imagePath = imagePath; }
 
-    public Integer getIdProduto() {
-        return idProduto;
+    // NOVO GETTER E SETTER PARA 'ativo'
+    public Boolean getAtivo() {
+        return ativo;
     }
 
-    public void setIdProduto(Integer idProduto) {
-        this.idProduto = idProduto;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public Double getPreco() {
-        return preco;
-    }
-
-    public void setPreco(Double preco) {
-        this.preco = preco;
-    }
-
-    public Double getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(Double quantidade) {
-        this.quantidade = quantidade;
-    }
-
-    public LocalDateTime getDataCriacao() {
-        return dataCriacao;
-    }
-
-    public LocalDateTime getDataAtualizacao() {
-        return dataAtualizacao;
-    }
-
-    public String getCodigoBarras() {
-        return codigoBarras;
-    }
-
-    public void setCodigoBarras(String codigoBarras) {
-        this.codigoBarras = codigoBarras;
-    }
-
-    public Double getPesoPorCaixa() {
-        return pesoPorCaixa;
-    }
-
-    public void setPesoPorCaixa(Double pesoPorCaixa) {
-        this.pesoPorCaixa = pesoPorCaixa;
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
     }
 
     @PrePersist
@@ -130,24 +101,16 @@ public class Produto {
     public void onUpdate() {
         this.dataAtualizacao = LocalDateTime.now();
     }
+
     @Override
     public String toString() {
         return nome + " - " + codigoBarras;
-    }
-
-    public void setDataVencimento(LocalDate dataVencimento) {
-        this.dataVencimento = dataVencimento;
-    }
-
-    public LocalDate getDataVencimento() {
-        return dataVencimento;
     }
 
     public Integer getQuantidadeCaixas() {
         if (this.quantidade == null || this.quantidade <= 0) {
             return 0;
         }
-        // Usamos Math.floor para arredondar para baixo, garantindo apenas caixas completas
         return (int) Math.floor(this.quantidade / 25.0);
     }
 }
