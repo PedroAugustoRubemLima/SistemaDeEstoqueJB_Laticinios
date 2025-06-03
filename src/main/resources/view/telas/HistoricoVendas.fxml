@@ -1,26 +1,191 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.TextField?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.seuprojeto.lojadesktop.controller.HistoricoVendasController">
-
+<AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.seuprojeto.lojadesktop.controller.HistoricoVendasController">
     <children>
+        <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="14.0" prefHeight="572.0" prefWidth="772.0" spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+            <children>
+                <Label styleClass="list-title" text="Histórico e Relatórios de Vendas">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+                <TabPane prefHeight="450.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                    <tabs>
+                        <Tab text="Histórico Detalhado">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <VBox layoutX="14.0" layoutY="14.0" prefHeight="380.0" prefWidth="744.0" spacing="10.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                                            <children>
+                                                <TableView fx:id="vendasTable" prefHeight="380.0" prefWidth="744.0" VBox.vgrow="ALWAYS">
+                                                    <columns>
+                                                        <TableColumn fx:id="colCliente" prefWidth="150.0" text="Cliente" />
+                                                        <TableColumn fx:id="colFuncionario" prefWidth="150.0" text="Funcionário" />
+                                                        <TableColumn fx:id="colData" prefWidth="150.0" text="Data" />
+                                                        <TableColumn fx:id="colValorTotal" prefWidth="150.0" text="Valor Total" />
+                                                    </columns>
+                                                    <columnResizePolicy>
+                                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                    </columnResizePolicy>
+                                                </TableView>
+                                                <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                                                    <children>
+                                                        <Button mnemonicParsing="false" onAction="#onGerarPdfHistoricoDetalhado" styleClass="salvar-button" text="Gerar PDF" />
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                        <Tab text="Relatório por Período">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <VBox layoutX="14.0" layoutY="14.0" prefHeight="380.0" prefWidth="744.0" spacing="10.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                                            <children>
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                    <children>
+                                                        <Label styleClass="produto-label" text="Data Inicial:" />
+                                                        <DatePicker fx:id="datePickerInicio" promptText="Selecione a data inicial" />
+                                                        <Label styleClass="produto-label" text="Data Final:" />
+                                                        <DatePicker fx:id="datePickerFim" promptText="Selecione a data final" />
+                                                        <Button mnemonicParsing="false" onAction="#gerarRelatorioVendasPorPeriodo" styleClass="salvar-button" text="Gerar Relatório" />
+                                                    </children>
+                                                </HBox>
+                                                <TableView fx:id="tabelaRelatorioVendas" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                                    <columns>
+                                                        <TableColumn fx:id="colDataVenda" prefWidth="150.0" text="Data da Venda" />
+                                                        <TableColumn fx:id="colTotalVendas" prefWidth="150.0" text="Total de Vendas (R$)" />
+                                                    </columns>
+                                                    <columnResizePolicy>
+                                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                    </columnResizePolicy>
+                                                </TableView>
+                                                <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                                                    <children>
+                                                        <Button mnemonicParsing="false" onAction="#onGerarPdfVendasPorPeriodo" styleClass="salvar-button" text="Gerar PDF" />
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                        <Tab text="Produtos Mais Vendidos">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <VBox layoutX="14.0" layoutY="14.0" prefHeight="380.0" prefWidth="744.0" spacing="10.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                                            <children>
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                    <children>
+                                                        <Label styleClass="produto-label" text="Data Inicial:" />
+                                                        <DatePicker fx:id="datePickerInicioProdutos" promptText="Selecione a data inicial" />
+                                                        <Label styleClass="produto-label" text="Data Final:" />
+                                                        <DatePicker fx:id="datePickerFimProdutos" promptText="Selecione a data final" />
+                                                        <Button mnemonicParsing="false" onAction="#gerarRelatorioProdutosMaisVendidos" styleClass="salvar-button" text="Gerar Relatório" />
+                                                    </children>
+                                                </HBox>
+                                                <TableView fx:id="tabelaProdutosMaisVendidos" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                                    <columns>
+                                                        <TableColumn fx:id="colNomeProdutoVendido" prefWidth="200.0" text="Produto" />
+                                                        <TableColumn fx:id="colTipoProdutoVendido" prefWidth="150.0" text="Tipo" />
+                                                        <TableColumn fx:id="colQuantidadeVendida" prefWidth="100.0" text="Qtd. Vendida (Caixas)" />
+                                                    </columns>
+                                                    <columnResizePolicy>
+                                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                    </columnResizePolicy>
+                                                </TableView>
+                                                <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                                                    <children>
+                                                        <Button mnemonicParsing="false" onAction="#onGerarPdfProdutosMaisVendidos" styleClass="salvar-button" text="Gerar PDF" />
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                        <!-- NOVA ABA: Relatórios de Estoque -->
+                        <Tab text="Relatórios de Estoque">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <VBox layoutX="14.0" layoutY="14.0" prefHeight="380.0" prefWidth="744.0" spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                                            <children>
+                                                <!-- Seção de Produtos com Baixo Estoque -->
+                                                <Label styleClass="produto-label" text="Produtos com Baixo Estoque:" />
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                    <children>
+                                                        <Label styleClass="produto-label" text="Limite (KG):" />
+                                                        <TextField fx:id="txtLimiteBaixoEstoque" promptText="Ex: 50.0" prefWidth="100.0" />
+                                                        <Button mnemonicParsing="false" onAction="#gerarRelatorioBaixoEstoque" styleClass="salvar-button" text="Gerar Relatório" />
+                                                        <Button mnemonicParsing="false" onAction="#onGerarPdfBaixoEstoque" styleClass="salvar-button" text="Gerar PDF" />
+                                                    </children>
+                                                </HBox>
+                                                <TableView fx:id="tabelaBaixoEstoque" prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                                    <columns>
+                                                        <TableColumn fx:id="colNomeBaixoEstoque" prefWidth="200.0" text="Produto" />
+                                                        <TableColumn fx:id="colTipoBaixoEstoque" prefWidth="150.0" text="Tipo" />
+                                                        <TableColumn fx:id="colQuantidadeAtual" prefWidth="100.0" text="Qtd. Atual (KG)" />
+                                                    </columns>
+                                                    <columnResizePolicy>
+                                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                    </columnResizePolicy>
+                                                </TableView>
 
-        <Label layoutX="14" layoutY="14" text="Histórico de Vendas"/>
-
-        <TableView fx:id="vendasTable" layoutX="14" layoutY="40" prefWidth="600" prefHeight="300">
-            <columns>
-                <TableColumn fx:id="colCliente" text="Cliente" prefWidth="100"/>
-                <TableColumn fx:id="colFuncionario" text="Funcionário" prefWidth="100"/>
-                <TableColumn fx:id="colData" text="Data" prefWidth="100"/>
-                <TableColumn fx:id="colValorTotal" text="Valor Total" prefWidth="100"/>
-            </columns>
-        </TableView>
-
-        <Button layoutX="14" layoutY="350" text="Fechar" onAction="#fechar"/>
-
+                                                <!-- Seção de Produtos Próximos do Vencimento -->
+                                                <Label styleClass="produto-label" text="Produtos Próximos do Vencimento:" />
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                    <children>
+                                                        <Label styleClass="produto-label" text="Dias para Vencer:" />
+                                                        <TextField fx:id="txtDiasVencimento" promptText="Ex: 7" prefWidth="100.0" />
+                                                        <Button mnemonicParsing="false" onAction="#gerarRelatorioProximoVencimento" styleClass="salvar-button" text="Gerar Relatório" />
+                                                        <Button mnemonicParsing="false" onAction="#onGerarPdfProximoVencimento" styleClass="salvar-button" text="Gerar PDF" />
+                                                    </children>
+                                                </HBox>
+                                                <TableView fx:id="tabelaProximoVencimento" prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                                    <columns>
+                                                        <TableColumn fx:id="colNomeVencimento" prefWidth="200.0" text="Produto" />
+                                                        <TableColumn fx:id="colTipoVencimento" prefWidth="150.0" text="Tipo" />
+                                                        <TableColumn fx:id="colDataVencimento" prefWidth="100.0" text="Data Vencimento" />
+                                                    </columns>
+                                                    <columnResizePolicy>
+                                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                    </columnResizePolicy>
+                                                </TableView>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                    </tabs>
+                </TabPane>
+                <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#fechar" styleClass="button" text="Voltar" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
     </children>
 </AnchorPane>
