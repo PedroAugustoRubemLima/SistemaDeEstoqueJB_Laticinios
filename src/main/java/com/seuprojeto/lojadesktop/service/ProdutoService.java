@@ -4,8 +4,9 @@ import com.seuprojeto.lojadesktop.model.Produto;
 import com.seuprojeto.lojadesktop.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional; // Importação necessária
+import jakarta.transaction.Transactional;
 
+import java.time.LocalDate; // Importe LocalDate
 import java.util.List;
 import java.util.Optional;
 
@@ -22,10 +23,6 @@ public class ProdutoService {
 
     // Modificado para buscar apenas produtos ativos
     public Optional<Produto> findById(Integer id) {
-        // Ao buscar por ID, podemos querer encontrar produtos inativos também,
-        // caso a UI precise de uma tela de "produtos inativos" ou para edição.
-        // Se você quiser que findById retorne APENAS ativos, mude para:
-        // return produtoRepository.findById(id).filter(Produto::getAtivo);
         return produtoRepository.findById(id);
     }
 
@@ -34,13 +31,13 @@ public class ProdutoService {
     }
 
     // MODIFICADO: Implementa o soft delete
-    @Transactional // Garante que a operação seja atômica
+    @Transactional
     public void deleteById(Integer id) {
         Optional<Produto> produtoOptional = produtoRepository.findById(id);
         if (produtoOptional.isPresent()) {
             Produto produto = produtoOptional.get();
-            produto.setAtivo(false); // Marca o produto como inativo
-            produtoRepository.save(produto); // Salva a alteração
+            produto.setAtivo(false);
+            produtoRepository.save(produto);
         } else {
             throw new RuntimeException("Produto não encontrado com ID: " + id);
         }
@@ -67,5 +64,15 @@ public class ProdutoService {
         } else {
             throw new RuntimeException("Produto não encontrado com ID: " + id);
         }
+    }
+
+    // NOVO MÉTODO: Busca produtos ativos com quantidade menor que um dado limite
+    public List<Produto> findByQuantidadeLessThanAndAtivoTrue(Double quantidade) {
+        return produtoRepository.findByQuantidadeLessThanAndAtivoTrue(quantidade);
+    }
+
+    // NOVO MÉTODO: Busca produtos ativos com data de vencimento entre duas datas
+    public List<Produto> findByDataVencimentoBetweenAndAtivoTrue(LocalDate dataInicio, LocalDate dataFim) {
+        return produtoRepository.findByDataVencimentoBetweenAndAtivoTrue(dataInicio, dataFim);
     }
 }

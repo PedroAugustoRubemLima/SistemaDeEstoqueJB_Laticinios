@@ -6,6 +6,7 @@ import com.seuprojeto.lojadesktop.repository.ComProRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate; // Importe LocalDate
 import java.util.List;
 import java.util.Optional;
 
@@ -29,5 +30,10 @@ public class ComProService {
 
     public void deleteById(ComProId id) {
         comProRepository.deleteById(id);
+    }
+
+    // NOVO MÉTODO: Busca itens de compra (ComPro) por data da Compra
+    public List<ComPro> findByCompraDataBetween(LocalDate dataInicio, LocalDate dataFim) {
+        return comProRepository.findByCompraDataBetween(dataInicio, dataFim);
     }
 }

@@ -149,6 +149,7 @@ public class ProdutoListagemController {
     public void voltarParaLogin() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/telas/Login.fxml"));
+            loader.setControllerFactory(SpringContextHolder.getContext()::getBean);
             AnchorPane pane = loader.load();
             txtPesquisar.getScene().setRoot(pane);
         } catch (IOException e) {

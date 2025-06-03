@@ -140,8 +140,7 @@ public class RetiraEstoqueController {
         double quantidadeEmKgParaAdicionar = quantidadeCaixas * 25.0; // Assumindo 25.0 kg por caixa
 
         if (quantidadeEmKgParaAdicionar > produto.getQuantidade()) { // Compara em KG
-            mostrarAlerta(Alert.AlertType.ERROR, "Estoque insuficiente para o produto: " + produto.getNome() + ". Quantidade em estoque: " + produto.getQuantidade() + " kg.");
-            return;
+            mostrarAlerta(Alert.AlertType.ERROR, "Estoque insuficiente para o produto: " + produto.getNome() + ". Quantidade em estoque: " + String.format("%.2f", produto.getQuantidade()) + " kg.");       return;
         }
 
         // Verifica se o produto já está na lista para atualizar a quantidade
