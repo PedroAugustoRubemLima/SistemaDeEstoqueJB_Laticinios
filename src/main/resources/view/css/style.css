@@ -286,3 +286,51 @@
 .adicionar-button:hover {
     -fx-background-color: #004ba0;
 }
+
+.product-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8px;
+    -fx-padding: 15px;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 8px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);
+    -fx-min-width: 700px;
+    -fx-max-width: 900px;
+}
+
+.product-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.product-info {
+    -fx-font-size: 14px;
+    -fx-text-fill: #555555;
+}
+
+.product-buttons .button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 5px 10px;
+}
+
+.product-buttons .button:hover {
+    -fx-background-color: #2980b9;
+}
+
+.add-button {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-background-color: #27ae60;
+    -fx-text-fill: white;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+}
+
+.search-bar {
+    -fx-pref-height: 35px;
+    -fx-background-radius: 5px;
+    -fx-padding: 5px 10px;
+}
