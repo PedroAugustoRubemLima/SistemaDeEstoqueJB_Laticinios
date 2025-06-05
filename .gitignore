@@ -1,2 +1,3 @@
 # Ignorar configurações locais sensíveis
 src/main/resources/application.properties
+src/main/resources/view/telas/ProdutoListagem.fxml
