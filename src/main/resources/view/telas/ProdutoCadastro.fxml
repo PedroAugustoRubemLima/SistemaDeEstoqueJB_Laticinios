@@ -31,6 +31,7 @@
                         <RowConstraints minHeight="30" />
                         <RowConstraints minHeight="30.0" prefHeight="30.0" />
                         <RowConstraints minHeight="30" />
+                        <RowConstraints minHeight="30" />
                     </rowConstraints>
 
                     <children>
@@ -43,32 +44,27 @@
                         <Label styleClass="produto-label" text="Categoria:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
                         <TextField fx:id="txtTipo" promptText="Tipo do Produto" styleClass="produto-textfield" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
+                        <!-- CORREÇÃO: TextArea de Descrição com classe específica -->
                         <Label styleClass="produto-label" text="Descrição:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                        <!-- Note: txtDescricao is not defined in ProdutoCadastroController, but it's in FXML.
-                             If you want to use it, add @FXML private TextArea txtDescricao; to the controller.
-                             For now, I'll assume it's just a placeholder or will be removed. -->
-                        <TextArea fx:id="txtDescricao" prefColumnCount="20" prefRowCount="3" styleClass="produto-textarea" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <TextArea fx:id="txtDescricao" prefColumnCount="20" prefRowCount="3" styleClass="descricao-textarea" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
                         <!-- Campo de Quantidade -->
                         <Label styleClass="produto-label" text="Quantidade (KG):" GridPane.columnIndex="0" GridPane.rowIndex="5" />
                         <TextField fx:id="txtQuantidade" promptText="Quantidade em KG (inteiro)" styleClass="produto-textfield" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Label styleClass="produto-info" text="A quantidade será armazenada em KG inteiros." GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
                         <!-- Código de Barras -->
                         <Label styleClass="produto-label" text="Código de Barras:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                        <TextField fx:id="codigoBarrasField" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <TextField fx:id="codigoBarrasField" styleClass="produto-textfield" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
-                        <!-- Data Vencimento -->
-                        <Label layoutX="14.0" layoutY="180.0" text="Data Vencimento:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
-                        <DatePicker fx:id="dataVencimentoPicker" layoutX="150.0" layoutY="175.0" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+                        <!-- CORREÇÃO: Data Vencimento com classe específica para o label -->
+                        <Label styleClass="data-vencimento-label" text="Data Vencimento:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+                        <DatePicker fx:id="dataVencimentoPicker" styleClass="produto-textfield" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
 
-                        <!-- Campo de Imagem - ATUALIZADO -->
+                        <!-- Campo de Imagem -->
                         <Label styleClass="produto-label" text="Imagem:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
                         <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="8">
                             <children>
-                                <!-- Adicionado onAction para o botão -->
                                 <Button fx:id="btnAnexarImagem" styleClass="anexar-button" text="Anexar Imagem" onAction="#handleAnexarImagem" />
-                                <!-- Adicionado fx:id para o ImageView -->
                                 <ImageView fx:id="imageViewProduto" fitHeight="50" fitWidth="50" preserveRatio="true" />
                             </children>
                         </HBox>
