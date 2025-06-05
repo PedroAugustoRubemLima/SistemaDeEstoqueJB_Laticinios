@@ -2,5 +2,5 @@
 src/main/resources/application.properties
 src/main/resources/view/telas/ProdutoListagem.fxml
 target/classes/application.properties
+target/classes/view/telas/produtoListagem.fxml
 target/
-src/main/resources/view/telas/produtoListagem.fxml
