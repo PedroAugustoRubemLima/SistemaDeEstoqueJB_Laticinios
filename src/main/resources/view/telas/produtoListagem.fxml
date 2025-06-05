@@ -16,13 +16,9 @@
 
         <Button onAction="#voltarParaLogin" styleClass="button" text="Voltar" />
 
-        <!-- Novo Label para o Valor Total do Estoque -->
-        <Label fx:id="lblValorTotalEstoque" text="Valor Total do Estoque: R$ 0,00"
-               style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white; -fx-padding: 5px 0;" />
-
         <!-- Barra de pesquisa -->
         <HBox spacing="10">
-            <TextField fx:id="txtPesquisar" alignment="CENTER_LEFT" promptText="Pesquisar" styleClass="search-bar" HBox.hgrow="ALWAYS" />
+            <TextField fx:id="txtPesquisar" alignment="CENTER" promptText="Pesquisar" styleClass="search-bar" HBox.hgrow="ALWAYS" />
             <Button onAction="#abrirCadastro" styleClass="add-button" text="+" />
             <Button layoutX="500" layoutY="20" text="Histórico de Vendas" onAction="#abrirHistoricoVendas"/>
         </HBox>
