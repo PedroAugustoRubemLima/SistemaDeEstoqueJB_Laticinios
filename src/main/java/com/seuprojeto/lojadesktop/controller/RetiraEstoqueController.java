@@ -342,29 +342,6 @@ public class RetiraEstoqueController {
     }
 
     @FXML
-    private void abrirTelaCadastroCliente() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/telas/ClienteCadastro.fxml"));
-            fxmlLoader.setControllerFactory(SpringContextHolder.getContext()::getBean);
-
-            Stage stage = new Stage();
-            stage.setTitle("Cadastro de Cliente");
-            stage.setScene(new Scene(fxmlLoader.load()));
-            stage.setResizable(false);
-            stage.showAndWait();
-
-            // Recarrega a lista de clientes após o cadastro
-            clienteComboBox.setItems(FXCollections.observableArrayList(
-                    clienteService.findAll().stream()
-                            .map(Cliente::getNome)
-                            .toList()
-            ));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
     private void abrirHistoricoVendas() {
         try {
             // Carrega o FXML do histórico de vendas
@@ -382,6 +359,50 @@ public class RetiraEstoqueController {
         } catch (IOException e) {
             e.printStackTrace();
             mostrarAlerta(Alert.AlertType.ERROR, "Erro ao abrir o histórico de vendas: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void abrirTelaCadastroCliente() {
+        try {
+            URL fxmlLocation = getClass().getResource("/view/telas/ClienteCadastro.fxml");
+            FXMLLoader loader = new FXMLLoader(fxmlLocation);
+            loader.setControllerFactory(SpringContextHolder.getContext()::getBean);
+
+            AnchorPane pane = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Cadastro de Cliente");
+            stage.setScene(new Scene(pane));
+            stage.setResizable(false);
+            stage.showAndWait();
+
+            // Recarrega a lista de clientes após o cadastro
+            carregarClientesEFucionarios(); // Chama o método para recarregar ambos os comboboxes
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarAlerta(Alert.AlertType.ERROR, "Erro ao abrir tela de cadastro de cliente: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void abrirTelaCadastroFuncionario() {
+        try {
+            URL fxmlLocation = getClass().getResource("/view/telas/FuncionarioCadastro.fxml");
+            FXMLLoader loader = new FXMLLoader(fxmlLocation);
+            loader.setControllerFactory(SpringContextHolder.getContext()::getBean);
+
+            AnchorPane pane = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Cadastro de Funcionário");
+            stage.setScene(new Scene(pane));
+            stage.setResizable(false);
+            stage.showAndWait();
+
+            // Recarrega a lista de funcionários após o cadastro
+            carregarClientesEFucionarios(); // Chama o método para recarregar ambos os comboboxes
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarAlerta(Alert.AlertType.ERROR, "Erro ao abrir tela de cadastro de funcionário: " + e.getMessage());
         }
     }
 }

@@ -1,4 +1,9 @@
 /* ============================
+   CSS Unificado - Interface Desktop JavaFX
+   Histórico e Relatórios de Vendas - VERSÃO FINAL COMPLETA
+   ============================ */
+
+/* ============================
    Estilo geral e componentes base
    ============================ */
 
@@ -135,6 +140,7 @@
     -fx-text-fill: white;
     -fx-font-size: 13px;
 }
+
 .estoque-total-label {
     -fx-font-size: 16px;
     -fx-font-weight: bold;
@@ -150,7 +156,7 @@
 }
 
 .produto-cadastro-titulo {
-    -fx-translate-x:260;
+    -fx-translate-x: 260;
     -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-text-fill: white;
@@ -159,7 +165,7 @@
 
 .cadastro-header-button {
     -fx-background-color: #0066cc;
-    -fx-translate-x:200;
+    -fx-translate-x: 200;
     -fx-text-fill: white;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
@@ -221,12 +227,20 @@
 }
 
 /* ============================
-   Tela de Retirada de Estoque
+   Tela de Retirada de Estoque - VERSÃO COMPLETA
    ============================ */
 
 .retirada-background {
-    -fx-background-color: #101a49;
-    -fx-padding: 30;
+    -fx-background-color: #0F1C4D;
+    -fx-padding: 20;
+}
+
+/* Título principal da retirada de estoque */
+.retirada-titulo {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-alignment: center;
 }
 
 .titulo {
@@ -234,6 +248,118 @@
     -fx-font-weight: bold;
     -fx-text-fill: white;
     -fx-alignment: center;
+}
+
+/* Labels específicos da tela de retirada */
+.retirada-label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: normal;
+}
+
+.label-combo {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+/* Nome do produto selecionado */
+#lblNomeProduto {
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-font-weight: normal;
+}
+
+/* ComboBoxes da tela de retirada */
+#clienteComboBox, #funcionarioComboBox, #produtoComboBox {
+    -fx-background-radius: 10;
+    -fx-padding: 6 10;
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+    -fx-font-size: 13px;
+}
+
+.combo-box {
+    -fx-background-radius: 6;
+    -fx-padding: 6 10;
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+    -fx-font-size: 13px;
+}
+
+/* DatePicker da tela de retirada */
+#dataPicker {
+    -fx-background-radius: 10;
+    -fx-padding: 6 10;
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+    -fx-font-size: 13px;
+}
+
+/* TextFields da tela de retirada */
+#formaPagamentoField, #quantidadeField {
+    -fx-background-radius: 10;
+    -fx-padding: 6 10;
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+    -fx-font-size: 13px;
+}
+
+/* Botão Adicionar Produto */
+Button:text("Adicionar Produto") {
+    -fx-background-color: #00ADEF;
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-font-weight: bold;
+}
+
+Button:text("Adicionar Produto"):hover {
+    -fx-background-color: #0099d4;
+}
+
+/* Botões específicos da tela de retirada */
+Button:text("Voltar") {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-font-weight: bold;
+}
+
+Button:text("Voltar"):hover {
+    -fx-background-color: #45a049;
+}
+
+Button:text("Finalizar Venda") {
+    -fx-background-color: #00ADEF;
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-font-weight: bold;
+}
+
+Button:text("Finalizar Venda"):hover {
+    -fx-background-color: #0099d4;
+}
+
+Button:text("Histórico de Vendas") {
+    -fx-background-color: #00ADEF;
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-font-weight: bold;
+}
+
+Button:text("Histórico de Vendas"):hover {
+    -fx-background-color: #0099d4;
+}
+
+Button:text("Cadastrar Cliente"), Button:text("Cadastrar Funcionário") {
+    -fx-background-color: #FFC107;
+    -fx-text-fill: black;
+    -fx-background-radius: 10;
+    -fx-font-weight: bold;
+}
+
+Button:text("Cadastrar Cliente"):hover, Button:text("Cadastrar Funcionário"):hover {
+    -fx-background-color: #e6ac00;
 }
 
 .botaoPrincipal {
@@ -249,31 +375,6 @@
     -fx-background-color: #096509;
 }
 
-.label, .label-combo {
-    -fx-text-fill: white;
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
-}
-
-.combo-box, .text-field {
-    -fx-background-radius: 6;
-    -fx-padding: 6 10;
-    -fx-background-color: white;
-    -fx-border-color: transparent;
-    -fx-font-size: 13px;
-}
-
-.table-view {
-    -fx-background-color: white;
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
-}
-
-.table-column {
-    -fx-font-size: 13px;
-}
-
 /* Botão de adicionar produto */
 .adicionar-button {
     -fx-background-color: #0056b3;
@@ -285,4 +386,262 @@
 
 .adicionar-button:hover {
     -fx-background-color: #004ba0;
+}
+
+/* ============================
+   HISTÓRICO E RELATÓRIOS DE VENDAS
+   ============================ */
+
+/* Fundo padrão em azul escuro para as novas telas */
+.default-screen-background {
+    -fx-background-color: #101a49;
+}
+
+/* TabPane com abas arredondadas e destaque na aba ativa */
+.tab-pane, .tab-header-background {
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 16 0;
+}
+
+.tab {
+    -fx-background-color: #162263;
+    -fx-background-radius: 14;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 26px;
+    -fx-border-color: transparent;
+    -fx-border-radius: 14;
+    -fx-min-width: 170px;
+    -fx-min-height: 40px;
+}
+
+.tab:selected {
+    -fx-background-color: #0066cc;
+    -fx-text-fill: white;
+}
+
+.tab:hover {
+    -fx-background-color: #337be3;
+}
+
+/* Título principal da tela de histórico */
+.historico-titulo {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    -fx-padding: 10 0 20 0;
+}
+
+/* Container para os botões de ação */
+.historico-buttons-container {
+    -fx-spacing: 10;
+    -fx-alignment: center-right;
+    -fx-padding: 15 0 0 0;
+}
+
+/* Botões específicos para a tela de histórico */
+.historico-button {
+    -fx-background-radius: 8px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-padding: 10 34;
+    -fx-cursor: hand;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+    -fx-effect: none;
+}
+
+.historico-button.gerar-pdf {
+    -fx-background-color: #028A0F;
+    -fx-pref-width: 165px;
+}
+
+.historico-button.gerar-pdf:hover {
+    -fx-background-color: #026c0c;
+}
+
+.historico-button.voltar {
+    -fx-background-color: #2BBB0F;
+    -fx-pref-width: 120px;
+}
+
+.historico-button.voltar:hover {
+    -fx-background-color: #23960d;
+}
+
+/* Centralização de conteúdo */
+.centered {
+    -fx-alignment: center;
+}
+
+/* ============================
+   TABELAS - CONFIGURAÇÃO FINAL CORRIGIDA
+   ============================ */
+
+/* TableView - fundo branco com bordas arredondadas */
+.table-view {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 6, 0, 0, 2);
+    -fx-padding: 0;
+}
+
+/* CABEÇALHO DAS COLUNAS - AZUL */
+.table-view .column-header-background {
+    -fx-background-color: #0066cc;
+    -fx-background-radius: 12 12 0 0;
+    -fx-border-radius: 12 12 0 0;
+    -fx-padding: 0;
+    -fx-border-color: transparent;
+}
+
+.table-view .column-header {
+    -fx-background-color: #0066cc;
+    -fx-border-color: rgba(255,255,255,0.2);
+    -fx-border-width: 0 1 0 0;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 8 5 8 5;
+    -fx-alignment: center;
+}
+
+/* CÉLULAS DE DADOS - BRANCAS COM TEXTO ESCURO */
+.table-view .table-cell {
+    -fx-background-color: white !important;
+    -fx-text-fill: #21263c !important;
+    -fx-padding: 8 5;
+    -fx-font-size: 13px;
+    -fx-border-color: transparent transparent #f0f0f0 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* LINHAS DA TABELA - SEMPRE BRANCAS */
+.table-view .table-row-cell {
+    -fx-background-color: white !important;
+    -fx-background-insets: 0;
+}
+
+.table-row-cell:odd,
+.table-row-cell:even {
+    -fx-background-color: white !important;
+}
+
+/* Linha selecionada - azul bem claro */
+.table-view .table-row-cell:filled:selected {
+    -fx-background-color: #e7f1fd !important;
+}
+
+.table-view .table-row-cell:filled:hover {
+    -fx-background-color: #f0f8ff !important;
+}
+
+/* FORÇA TEXTO ESCURO NAS CÉLULAS */
+.table-view .table-row-cell .table-cell {
+    -fx-text-fill: #21263c !important;
+}
+
+/* ============================
+   ESTILIZAÇÃO ESPECÍFICA PARA TABELA DE RETIRADA DE ESTOQUE
+   ============================ */
+
+/* Estilo específico para a tabela de produtos na tela de retirada */
+#produtosTable {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 6, 0, 0, 2);
+}
+
+/* Cabeçalho da tabela de produtos - EXATAMENTE IGUAL AO HISTÓRICO */
+#produtosTable .column-header-background {
+    -fx-background-color: #0066cc;
+    -fx-background-radius: 12 12 0 0;
+    -fx-border-radius: 12 12 0 0;
+    -fx-padding: 0;
+}
+
+/* Colunas específicas da tabela de retirada */
+#produtoColumn, #quantidadeColumn, #acaoColumn {
+    -fx-background-color: #0066cc;
+    -fx-border-color: rgba(255,255,255,0.2);
+    -fx-border-width: 0 1 0 0;
+}
+
+/* Labels dos cabeçalhos das colunas */
+#produtoColumn .label, #quantidadeColumn .label, #acaoColumn .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 8 5 8 5;
+    -fx-alignment: center;
+}
+
+/* Mensagem de tabela vazia */
+.table-view .placeholder .label {
+    -fx-text-fill: #666;
+    -fx-font-size: 14px;
+}
+
+/* ============================
+   ESPECÍFICO PARA AS TABELAS DO FXML
+   ============================ */
+
+/* Específico para as TableViews do FXML */
+#vendasTable .column-header-background,
+#tabelaRelatorioVendas .column-header-background,
+#tabelaProdutosMaisVendidos .column-header-background,
+#tabelaBaixoEstoque .column-header-background,
+#tabelaProximoVencimento .column-header-background,
+#produtosTable .column-header-background {
+    -fx-background-color: #0066cc;
+    -fx-background-radius: 12 12 0 0;
+}
+
+/* Colunas específicas com IDs */
+#colCliente, #colFuncionario, #colData, #colValorTotal,
+#colDataVenda, #colTotalVendas,
+#colNomeProdutoVendido, #colTipoProdutoVendido, #colQuantidadeVendida,
+#colNomeBaixoEstoque, #colTipoBaixoEstoque, #colQuantidadeAtual,
+#colNomeVencimento, #colTipoVencimento, #colDataVencimento,
+#produtoColumn, #quantidadeColumn, #acaoColumn {
+    -fx-background-color: #0066cc;
+}
+
+/* Labels dos cabeçalhos das colunas específicas */
+#colCliente .label, #colFuncionario .label, #colData .label, #colValorTotal .label,
+#colDataVenda .label, #colTotalVendas .label,
+#colNomeProdutoVendido .label, #colTipoProdutoVendido .label, #colQuantidadeVendida .label,
+#colNomeBaixoEstoque .label, #colTipoBaixoEstoque .label, #colQuantidadeAtual .label,
+#colNomeVencimento .label, #colTipoVencimento .label, #colDataVencimento .label,
+#produtoColumn .label, #quantidadeColumn .label, #acaoColumn .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* ============================
+   LABELS ESPECÍFICOS POR CONTEXTO
+   ============================ */
+
+/* Labels específicos para telas com fundo escuro */
+.produto-label, .label-combo, .retirada-label {
+    -fx-text-fill: white;
+}
+
+/* Labels gerais em telas normais mantêm cor escura */
+.label:not(.produto-label):not(.label-combo):not(.retirada-label) {
+    -fx-text-fill: #333;
+}
+
+/* Labels em telas de fundo escuro ficam brancos */
+.default-screen-background .label,
+.retirada-background .label {
+    -fx-text-fill: white;
 }

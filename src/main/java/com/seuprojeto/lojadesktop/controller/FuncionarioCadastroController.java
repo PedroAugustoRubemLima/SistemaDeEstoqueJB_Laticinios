@@ -1,7 +1,7 @@
 package com.seuprojeto.lojadesktop.controller;
 
-import com.seuprojeto.lojadesktop.model.Cliente;
-import com.seuprojeto.lojadesktop.service.ClienteService;
+import com.seuprojeto.lojadesktop.model.Funcionario;
+import com.seuprojeto.lojadesktop.service.FuncionarioService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class ClienteCadastroController {
+public class FuncionarioCadastroController {
 
     @FXML
     private TextField nomeField;
@@ -30,21 +30,21 @@ public class ClienteCadastroController {
     private TextField txtPesquisar; // Campo de pesquisa
 
     @FXML
-    private TableView<Cliente> clientesTable; // Tabela para exibir clientes
+    private TableView<Funcionario> funcionariosTable; // Tabela para exibir funcionários
 
     @FXML
-    private TableColumn<Cliente, String> colNome; // Coluna Nome
+    private TableColumn<Funcionario, String> colNome; // Coluna Nome
     @FXML
-    private TableColumn<Cliente, String> colCpf; // Coluna CPF
+    private TableColumn<Funcionario, String> colCpf; // Coluna CPF
     @FXML
-    private TableColumn<Cliente, String> colTelefone; // Coluna Telefone
+    private TableColumn<Funcionario, String> colTelefone; // Coluna Telefone
     @FXML
-    private TableColumn<Cliente, Void> colAcao; // Coluna para o botão de ação (excluir)
+    private TableColumn<Funcionario, Void> colAcao; // Coluna para o botão de ação (excluir)
 
     @Autowired
-    private ClienteService clienteService;
+    private FuncionarioService funcionarioService;
 
-    private ObservableList<Cliente> listaClientes = FXCollections.observableArrayList();
+    private ObservableList<Funcionario> listaFuncionarios = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
@@ -59,8 +59,8 @@ public class ClienteCadastroController {
 
             {
                 deleteButton.setOnAction(event -> {
-                    Cliente cliente = getTableView().getItems().get(getIndex());
-                    deletarCliente(cliente);
+                    Funcionario funcionario = getTableView().getItems().get(getIndex());
+                    deletarFuncionario(funcionario);
                 });
             }
 
@@ -75,28 +75,28 @@ public class ClienteCadastroController {
             }
         });
 
-        clientesTable.setItems(listaClientes); // Vincula a lista observável à tabela
-        carregarClientes(); // Carrega os clientes ao iniciar a tela
+        funcionariosTable.setItems(listaFuncionarios); // Vincula a lista observável à tabela
+        carregarFuncionarios(); // Carrega os funcionários ao iniciar a tela
     }
 
-    // Método para salvar o cliente
+    // Método para salvar o funcionário
     @FXML
-    private void salvarCliente() {
+    private void salvarFuncionario() {
         if (validarCampos()) {
             try {
-                Cliente cliente = new Cliente();
-                cliente.setNome(nomeField.getText());
+                Funcionario funcionario = new Funcionario();
+                funcionario.setNome(nomeField.getText());
                 // CPF e Telefone são opcionais, então não há validação de preenchimento aqui
-                cliente.setCpf(cpfField.getText().isEmpty() ? null : cpfField.getText());
-                cliente.setTelefone(telefoneField.getText().isEmpty() ? null : telefoneField.getText());
+                funcionario.setCpf(cpfField.getText().isEmpty() ? null : cpfField.getText());
+                funcionario.setTelefone(telefoneField.getText().isEmpty() ? null : telefoneField.getText());
 
-                clienteService.save(cliente);
+                funcionarioService.save(funcionario);
 
-                mostrarAlerta(Alert.AlertType.INFORMATION, "Sucesso", "Cliente cadastrado com sucesso!");
+                mostrarAlerta(Alert.AlertType.INFORMATION, "Sucesso", "Funcionário cadastrado com sucesso!");
                 limparCampos(); // Limpa os campos após o cadastro
-                carregarClientes(); // Recarrega a lista na tabela
+                carregarFuncionarios(); // Recarrega a lista na tabela
             } catch (Exception e) {
-                mostrarAlerta(Alert.AlertType.ERROR, "Erro", "Erro ao salvar cliente: " + e.getMessage());
+                mostrarAlerta(Alert.AlertType.ERROR, "Erro", "Erro ao salvar funcionário: " + e.getMessage());
             }
         }
     }
@@ -124,44 +124,44 @@ public class ClienteCadastroController {
         return true;
     }
 
-    // Método para carregar e exibir clientes na tabela
-    private void carregarClientes() {
-        listaClientes.clear();
-        List<Cliente> todosClientes = clienteService.findAll();
-        listaClientes.addAll(todosClientes);
+    // Método para carregar e exibir funcionários na tabela
+    private void carregarFuncionarios() {
+        listaFuncionarios.clear();
+        List<Funcionario> todosFuncionarios = funcionarioService.findAll();
+        listaFuncionarios.addAll(todosFuncionarios);
     }
 
-    // Método para pesquisar clientes
+    // Método para pesquisar funcionários
     @FXML
-    private void pesquisarCliente() {
+    private void pesquisarFuncionario() {
         String termoPesquisa = txtPesquisar.getText().toLowerCase().trim();
-        listaClientes.clear();
+        listaFuncionarios.clear();
         if (termoPesquisa.isEmpty()) {
-            listaClientes.addAll(clienteService.findAll());
+            listaFuncionarios.addAll(funcionarioService.findAll());
         } else {
-            List<Cliente> resultados = clienteService.findAll().stream()
-                    .filter(cliente -> cliente.getNome().toLowerCase().contains(termoPesquisa) ||
-                            (cliente.getCpf() != null && cliente.getCpf().toLowerCase().contains(termoPesquisa)))
+            List<Funcionario> resultados = funcionarioService.findAll().stream()
+                    .filter(funcionario -> funcionario.getNome().toLowerCase().contains(termoPesquisa) ||
+                            (funcionario.getCpf() != null && funcionario.getCpf().toLowerCase().contains(termoPesquisa)))
                     .toList();
-            listaClientes.addAll(resultados);
+            listaFuncionarios.addAll(resultados);
         }
     }
 
-    // Método para deletar um cliente
-    private void deletarCliente(Cliente cliente) {
+    // Método para deletar um funcionário
+    private void deletarFuncionario(Funcionario funcionario) {
         Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmAlert.setTitle("Confirmar Exclusão");
-        confirmAlert.setHeaderText("Tem certeza que deseja excluir o cliente " + cliente.getNome() + "?");
+        confirmAlert.setHeaderText("Tem certeza que deseja excluir o funcionário " + funcionario.getNome() + "?");
         confirmAlert.setContentText("Esta ação não pode ser desfeita.");
 
         Optional<ButtonType> result = confirmAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                clienteService.deleteById(cliente.getId());
-                mostrarAlerta(Alert.AlertType.INFORMATION, "Sucesso", "Cliente excluído com sucesso!");
-                carregarClientes(); // Recarrega a lista após a exclusão
+                funcionarioService.deleteById(funcionario.getIdFuncionario());
+                mostrarAlerta(Alert.AlertType.INFORMATION, "Sucesso", "Funcionário excluído com sucesso!");
+                carregarFuncionarios(); // Recarrega a lista após a exclusão
             } catch (Exception e) {
-                mostrarAlerta(Alert.AlertType.ERROR, "Erro", "Erro ao excluir cliente: " + e.getMessage());
+                mostrarAlerta(Alert.AlertType.ERROR, "Erro", "Erro ao excluir funcionário: " + e.getMessage());
             }
         }
     }

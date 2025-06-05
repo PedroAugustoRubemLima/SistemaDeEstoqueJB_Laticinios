@@ -12,7 +12,7 @@ public class Cliente {
     @Column(name = "id_cliente")
     private Integer id;
 
-    @Column(name = "cpf", length = 11, nullable = false, unique = true)
+    @Column(name = "cpf", length = 11)
     private String cpf;
 
     @Column(name = "nome", length = 100, nullable = false)
@@ -56,6 +56,7 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return nome + " (" + cpf + ")";
+        // Adicionado uma verificação para evitar NullPointerException se o CPF for nulo
+        return nome + (cpf != null && !cpf.isEmpty() ? " (" + cpf + ")" : "");
     }
 }
