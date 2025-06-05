@@ -75,4 +75,19 @@ public class ClienteCadastroController {
         Stage stage = (Stage) nomeField.getScene().getWindow();
         stage.close();
     }
+
+    public void initialize() {
+        // Manter fullscreen ao redimensionar
+        Stage stage = (Stage) nomeField.getScene().getWindow();
+        stage.setFullScreen(true);
+
+        // Listener para manter fullscreen
+        stage.widthProperty().addListener((obs, oldVal, newVal) -> {
+            stage.setFullScreen(true);
+        });
+
+        stage.heightProperty().addListener((obs, oldVal, newVal) -> {
+            stage.setFullScreen(true);
+        });
+    }
 }
