@@ -1,5 +1,6 @@
 package com.seuprojeto.lojadesktop.model;
 
+import com.seuprojeto.lojadesktop.util.CryptoUtil;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,15 +15,14 @@ public class Funcionario {
     @Column(name = "nome", length = 100, nullable = false)
     private String nome;
 
-    // CPF agora é opcional (nullable = true por padrão) e não precisa ser único se for nulo
-    @Column(name = "cpf", length = 14) // Removido nullable = false e unique = true
+    @Column(name = "cpf", length = 200) // comprimento aumentado para suportar criptografia
     private String cpf;
 
-    // Telefone já é opcional por padrão
-    @Column(name = "telefone", length = 20)
+    @Column(name = "telefone", length = 200)
     private String telefone;
 
     // Getters e setters
+
     public Integer getIdFuncionario() {
         return idFuncionario;
     }
@@ -40,23 +40,23 @@ public class Funcionario {
     }
 
     public String getCpf() {
-        return cpf;
+        return cpf != null ? CryptoUtil.decrypt(cpf) : null;
     }
 
     public void setCpf(String cpf) {
-        this.cpf = cpf;
+        this.cpf = (cpf != null && !cpf.isBlank()) ? CryptoUtil.encrypt(cpf) : null;
     }
 
     public String getTelefone() {
-        return telefone;
+        return telefone != null ? CryptoUtil.decrypt(telefone) : null;
     }
 
     public void setTelefone(String telefone) {
-        this.telefone = telefone;
+        this.telefone = (telefone != null && !telefone.isBlank()) ? CryptoUtil.encrypt(telefone) : null;
     }
 
     @Override
     public String toString() {
-        return nome;
+        return nome + (getCpf() != null && !getCpf().isEmpty() ? " (" + getCpf() + ")" : "");
     }
 }

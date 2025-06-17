@@ -83,23 +83,35 @@ public class FuncionarioCadastroController {
     @FXML
     private void salvarFuncionario() {
         if (validarCampos()) {
+            // Validação de CPF (opcional, mas com limite de tamanho)
+            if (!cpfField.getText().isEmpty() && cpfField.getText().length() > 11) {
+                mostrarAlerta(Alert.AlertType.WARNING, "Validação", "O CPF não pode ter mais de 11 dígitos.");
+                return;
+            }
+
+            // Validação de Telefone (opcional, mas com limite de tamanho)
+            if (!telefoneField.getText().isEmpty() && telefoneField.getText().length() > 11) {
+                mostrarAlerta(Alert.AlertType.WARNING, "Validação", "O Telefone não pode ter mais de 11 dígitos.");
+                return;
+            }
+
             try {
                 Funcionario funcionario = new Funcionario();
-                funcionario.setNome(nomeField.getText());
-                // CPF e Telefone são opcionais, então não há validação de preenchimento aqui
-                funcionario.setCpf(cpfField.getText().isEmpty() ? null : cpfField.getText());
-                funcionario.setTelefone(telefoneField.getText().isEmpty() ? null : telefoneField.getText());
+                funcionario.setNome(nomeField.getText().trim());
+                funcionario.setCpf(cpfField.getText().isEmpty() ? null : cpfField.getText().trim());
+                funcionario.setTelefone(telefoneField.getText().isEmpty() ? null : telefoneField.getText().trim());
 
                 funcionarioService.save(funcionario);
 
                 mostrarAlerta(Alert.AlertType.INFORMATION, "Sucesso", "Funcionário cadastrado com sucesso!");
-                limparCampos(); // Limpa os campos após o cadastro
-                carregarFuncionarios(); // Recarrega a lista na tabela
+                limparCampos();
+                carregarFuncionarios();
             } catch (Exception e) {
                 mostrarAlerta(Alert.AlertType.ERROR, "Erro", "Erro ao salvar funcionário: " + e.getMessage());
             }
         }
     }
+
 
     // Método para limpar os campos do formulário
     @FXML

@@ -83,23 +83,35 @@ public class ClienteCadastroController {
     @FXML
     private void salvarCliente() {
         if (validarCampos()) {
+            // Validação de CPF
+            if (!cpfField.getText().isEmpty() && cpfField.getText().length() > 11) {
+                mostrarAlerta(Alert.AlertType.WARNING, "Validação", "O CPF não pode ter mais de 11 dígitos.");
+                return;
+            }
+
+            // Validação de Telefone
+            if (!telefoneField.getText().isEmpty() && telefoneField.getText().length() > 11) {
+                mostrarAlerta(Alert.AlertType.WARNING, "Validação", "O Telefone não pode ter mais de 11 dígitos.");
+                return;
+            }
+
             try {
                 Cliente cliente = new Cliente();
-                cliente.setNome(nomeField.getText());
-                // CPF e Telefone são opcionais, então não há validação de preenchimento aqui
-                cliente.setCpf(cpfField.getText().isEmpty() ? null : cpfField.getText());
-                cliente.setTelefone(telefoneField.getText().isEmpty() ? null : telefoneField.getText());
+                cliente.setNome(nomeField.getText().trim());
+                cliente.setCpf(cpfField.getText().isEmpty() ? null : cpfField.getText().trim());
+                cliente.setTelefone(telefoneField.getText().isEmpty() ? null : telefoneField.getText().trim());
 
                 clienteService.save(cliente);
 
                 mostrarAlerta(Alert.AlertType.INFORMATION, "Sucesso", "Cliente cadastrado com sucesso!");
-                limparCampos(); // Limpa os campos após o cadastro
-                carregarClientes(); // Recarrega a lista na tabela
+                limparCampos();
+                carregarClientes();
             } catch (Exception e) {
                 mostrarAlerta(Alert.AlertType.ERROR, "Erro", "Erro ao salvar cliente: " + e.getMessage());
             }
         }
     }
+
 
     // Método para limpar os campos do formulário
     @FXML
