@@ -1,98 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="500" prefWidth="800" styleClass="produto-cadastro-background" stylesheets="@../css/style.css"
-            xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.seuprojeto.lojadesktop.controller.ProdutoCadastroController">
+<AnchorPane prefHeight="500" prefWidth="800" styleClass="produto-cadastro-background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.seuprojeto.lojadesktop.controller.ProdutoCadastroController">
 
-    <!-- Layout principal responsivo -->
-    <VBox AnchorPane.topAnchor="20" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20"
-          spacing="20">
+    <children>
+        <VBox layoutX="41.0" layoutY="14.0" prefHeight="517.0" prefWidth="606.0" spacing="20">
+            <children>
+                <!-- Título principal -->
+                <Label alignment="CENTER" styleClass="produto-cadastro-titulo" text="JB LATICÍNIOS" />
 
-        <!-- Título principal -->
-        <Label alignment="CENTER" styleClass="produto-cadastro-titulo" text="JB LATICÍNIOS"
-               VBox.vgrow="NEVER"/>
+                <!-- Subtítulo botão azul -->
+                <Button alignment="CENTER" prefHeight="35.0" prefWidth="283.0" styleClass="cadastro-header-button" text="NOVO REGISTRO DE PRODUTO" />
 
-        <!-- Subtítulo botão azul -->
-        <Button alignment="CENTER" prefHeight="35.0" maxWidth="1.7976931348623157E308"
-                styleClass="cadastro-header-button" text="NOVO REGISTRO DE PRODUTO"
-                VBox.vgrow="NEVER"/>
+                <!-- Formulário -->
+                <GridPane alignment="CENTER" hgap="15" vgap="12">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="100" />
+                        <ColumnConstraints minWidth="250" />
+                    </columnConstraints>
 
-        <!-- Formulário responsivo -->
-        <GridPane hgap="15" vgap="12" VBox.vgrow="ALWAYS">
-            <columnConstraints>
-                <ColumnConstraints minWidth="100" halignment="RIGHT"/>
-                <ColumnConstraints hgrow="ALWAYS" minWidth="250"/>
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints minHeight="30" valignment="CENTER"/>
-                <RowConstraints minHeight="30" valignment="CENTER"/>
-                <RowConstraints minHeight="30" valignment="CENTER"/>
-                <RowConstraints minHeight="80" valignment="TOP"/>
-                <RowConstraints minHeight="30" valignment="CENTER"/>
-                <RowConstraints minHeight="30" valignment="CENTER"/>
-                <RowConstraints minHeight="30" valignment="CENTER"/>
-                <RowConstraints minHeight="30" valignment="CENTER"/>
-                <RowConstraints minHeight="30" valignment="CENTER"/> <!-- Linha adicional para a imagem -->
-            </rowConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" />
+                        <RowConstraints minHeight="30" />
+                        <RowConstraints minHeight="30" />
+                        <RowConstraints minHeight="30" />
+                        <RowConstraints minHeight="80" />
+                        <RowConstraints minHeight="30" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" />
+                        <RowConstraints minHeight="30" />
+                        <RowConstraints minHeight="30" />
+                    </rowConstraints>
 
-            <!-- Campos do formulário -->
-            <Label styleClass="produto-label" text="Nome:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-            <TextField fx:id="txtNome" promptText="Nome do Produto" styleClass="produto-textfield"
-                       maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                    <children>
+                        <Label styleClass="produto-label" text="Nome:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="txtNome" promptText="Nome do Produto" styleClass="produto-textfield" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-            <Label styleClass="produto-label" text="Preço:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <TextField fx:id="txtPreco" promptText="Preço do Produto" styleClass="produto-textfield"
-                       maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <Label styleClass="produto-label" text="Preço:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField fx:id="txtPreco" promptText="Preço do Produto" styleClass="produto-textfield" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-            <Label styleClass="produto-label" text="Categoria:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <TextField fx:id="txtTipo" promptText="Tipo do Produto" styleClass="produto-textfield"
-                       maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        <Label styleClass="produto-label" text="Categoria:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <TextField fx:id="txtTipo" promptText="Tipo do Produto" styleClass="produto-textfield" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-            <Label styleClass="produto-label" text="Descrição:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-            <TextArea fx:id="txtDescricao" styleClass="produto-textarea"
-                      maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                        <!-- CORREÇÃO: TextArea de Descrição com classe específica -->
+                        <Label styleClass="produto-label" text="Descrição:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <TextArea fx:id="txtDescricao" prefColumnCount="20" prefRowCount="3" styleClass="descricao-textarea" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-            <Label styleClass="produto-label" text="Quantidade (KG):" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-            <TextField fx:id="txtQuantidade" promptText="Quantidade em KG" styleClass="produto-textfield"
-                       maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                        <!-- Campo de Quantidade -->
+                        <Label styleClass="produto-label" text="Quantidade (KG):" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <TextField fx:id="txtQuantidade" promptText="Quantidade em KG (inteiro)" styleClass="produto-textfield" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-            <Label styleClass="produto-info" text="A quantidade será armazenada em KG inteiros."
-                   GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.halignment="LEFT"/>
+                        <!-- Código de Barras -->
+                        <Label styleClass="produto-label" text="Código de Barras:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                        <TextField fx:id="codigoBarrasField" styleClass="produto-textfield" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
-            <Label styleClass="produto-label" text="Código de Barras:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-            <TextField fx:id="codigoBarrasField" maxWidth="1.7976931348623157E308"
-                       GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                        <!-- CORREÇÃO: Data Vencimento com classe específica para o label -->
+                        <Label styleClass="data-vencimento-label" text="Data Vencimento:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+                        <DatePicker fx:id="dataVencimentoPicker" styleClass="produto-textfield" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
 
-            <Label styleClass="produto-label" text="Data Vencimento:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
-            <DatePicker fx:id="dataVencimentoPicker" maxWidth="1.7976931348623157E308"
-                        GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+                        <!-- Campo de Imagem -->
+                        <Label styleClass="produto-label" text="Imagem:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                        <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                            <children>
+                                <Button fx:id="btnAnexarImagem" styleClass="anexar-button" text="Anexar Imagem" onAction="#handleAnexarImagem" />
+                                <ImageView fx:id="imageViewProduto" fitHeight="50" fitWidth="50" preserveRatio="true" />
+                            </children>
+                        </HBox>
+                    </children>
+                </GridPane>
 
-            <Label styleClass="produto-label" text="Imagem:" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
-            <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="8">
-                <Button fx:id="btnAnexarImagem" styleClass="anexar-button" text="Anexar Imagem"
-                        onAction="#handleAnexarImagem"/>
-                <ImageView fx:id="imageViewProduto" fitHeight="50" fitWidth="50" preserveRatio="true"/>
-            </HBox>
-        </GridPane>
-
-        <!-- BOTÕES INFERIORES RESPONSIVOS - VERSÃO MELHORADA -->
-        <HBox alignment="CENTER" spacing="20" VBox.vgrow="NEVER" HBox.hgrow="ALWAYS">
-            <Button onAction="#cadastrarProduto" styleClass="salvar-button" text="SALVAR"
-                    minWidth="100" HBox.hgrow="NEVER"/>
-
-            <Label fx:id="lblMensagem" wrapText="true"
-                   HBox.hgrow="ALWAYS"
-                   maxWidth="10000"
-                   maxHeight="50"
-                   alignment="CENTER"/>
-
-            <Button onAction="#voltarParaListagem" styleClass="button" text="Voltar"
-                    minWidth="100" HBox.hgrow="NEVER"/>
-        </HBox>
-    </VBox>
+                <!-- Botão salvar e mensagem -->
+                <HBox alignment="CENTER_LEFT" spacing="20">
+                    <children>
+                        <Button onAction="#cadastrarProduto" styleClass="salvar-button" text="SALVAR" />
+                        <Label fx:id="lblMensagem" text="Mensagem de status aparecerá aqui" />
+                        <Button onAction="#voltarParaListagem" prefHeight="31.0" prefWidth="139.0" styleClass="button" text="Voltar" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
 </AnchorPane>

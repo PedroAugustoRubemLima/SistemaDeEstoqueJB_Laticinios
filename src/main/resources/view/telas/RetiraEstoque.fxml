@@ -75,6 +75,11 @@
                     style="-fx-background-color: #00ADEF; -fx-text-fill: white; -fx-background-radius: 10;"/>
             <Button layoutX="450" layoutY="350" text="Histórico de Vendas" onAction="#abrirHistoricoVendas"/>
 
+            <!-- NOVOS BOTÕES -->
+            <Button text="Cadastrar Cliente" onAction="#abrirTelaCadastroCliente"
+                    style="-fx-background-color: #FFC107; -fx-text-fill: black; -fx-background-radius: 10;"/>
+            <Button text="Cadastrar Funcionário" onAction="#abrirTelaCadastroFuncionario"
+                    style="-fx-background-color: #FFC107; -fx-text-fill: black; -fx-background-radius: 10;"/>
         </HBox>
     </VBox>
 </AnchorPane>
